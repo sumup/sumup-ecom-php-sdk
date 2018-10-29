@@ -2,9 +2,8 @@
 
 namespace SumUp;
 
-use SumUp\Application\Application;
-use SumUp\Authentication\AccessToken;
-use SumUp\HttpClients\SumUpHttpClientInterface;
+use SumUp\Application\ApplicationConfiguration;
+use SumUp\Services\Authorization;
 
 /**
  * Class SumUp
@@ -16,112 +15,46 @@ class SumUp
     /**
      * The application's configuration.
      *
-     * @var Application
+     * @var ApplicationConfiguration
      */
-    protected $app;
+    protected $appConfig;
 
     /**
      * The access token that holds the data from the response.
      *
      * @var Authentication\AccessToken
      */
-    protected $access_token;
+    protected $accessToken;
 
     /** @var HttpClients\SumUpGuzzleHttpClient */
     protected $client;
 
-    protected $allowedTokenTypes = ['authorization_code', 'client_credentials', 'password'];
-
     public function __construct(array $config = [])
     {
-        $config = array_merge([
-            'app_id' => null,
-            'app_secret' => null,
-            'grant_type' => 'authorization_code',
-            'scopes' => [],
-            'code' => null,
-            'username' => null,
-            'password' => null,
-
-            'base_uri' => 'https://api.sumup.com'
-        ], $config);
-
-        $this->client = new HttpClients\SumUpGuzzleHttpClient($config['base_uri']);
-        $this->app = new Application($config['app_id'], $config['app_secret'], $config['scopes']);
-
-        switch ($config['grant_type']) {
-            case 'authorization_code':
-                $this->getTokenByCode($config['code']);
-                break;
-            case 'client_credentials':
-                $this->getToken();
-                break;
-            case 'password':
-                $this->getTokenByPassword($config['username'], $config['password']);
-                break;
-        }
+        $this->appConfig = new ApplicationConfiguration($config);
+        $this->client = new HttpClients\SumUpGuzzleHttpClient($this->appConfig->getBaseURL());
+        $this->accessToken = Authorization::getToken($this->client, $this->appConfig);
     }
 
+    /**
+     * @return \AccessToken
+     */
     public function getAccessToken()
     {
-        return $this->access_token;
+        return $this->accessToken;
     }
 
-    private function getToken()
+    /**
+     * @return \AccessToken
+     * @throws \Exception
+     */
+    public function refreshToken()
     {
-        $payload = [
-            'grant_type' => "client_credentials",
-            'client_id' => $this->app->getClientId(),
-            'client_secret' => $this->app->getClientSecret(),
-            'scope' => $this->app->getScopes()
-        ];
-        $response = $this->client->send( 'POST', '/token', $payload);
-
-        echo 'Response: ' . $response->getHttpResponseCode() . '<br/>';
-
-        $resBody = $response->getBody();
-        $this->access_token = new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in);
-    }
-
-    private function getTokenByCode($code)
-    {
-        $payload = [
-            'grant_type' => "authorization_code",
-            'client_id' => $this->app->getClientId(),
-            'client_secret' => $this->app->getClientSecret(),
-            'scope' => $this->app->getScopes(),
-            'code' => $code
-        ];
-        $response = $this->client->send( 'POST', '/token', $payload);
-
-        echo 'Response: ' . $response->getHttpResponseCode() . '<br/>';
-
-        $resBody = $response->getBody();
-        $scopes = [];
-        if(!empty($resBody->scope)) {
-            $scopes = explode(' ', $resBody->scope);
+        if(!isset($this->accessToken)) {
+            // TODO: throw custom error
+            throw new \Exception('There is no refresh token');
         }
-        $this->access_token = new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in, $scopes, $resBody->refresh_token);
-    }
-
-    private function getTokenByPassword($username, $password) {
-        $payload = [
-            'grant_type' => "password",
-            'client_id' => $this->app->getClientId(),
-            'client_secret' => $this->app->getClientSecret(),
-            'username' => $username,
-            'password' => $password,
-            'scope' => $this->app->getScopes()
-        ];
-        $response = $this->client->send( 'POST', '/token', $payload);
-
-        echo 'Response: ' . $response->getHttpResponseCode() . '<br/>';
-
-        $resBody = $response->getBody();
-        $scopes = [];
-        if(!empty($resBody->scope)) {
-            $scopes = explode(' ', $resBody->scope);
-        }
-        $this->access_token = new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in, $scopes, $resBody->refresh_token);
+        $this->accessToken = Authorization::refreshToken($this->client, $this->appConfig, $this->accessToken);
+        return $this->accessToken;
     }
 }
