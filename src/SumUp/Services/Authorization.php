@@ -2,6 +2,7 @@
 
 namespace SumUp\Services;
 
+use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Application\ApplicationConfiguration;
 use SumUp\Authentication\AccessToken;
@@ -13,6 +14,14 @@ use SumUp\Authentication\AccessToken;
  */
 class Authorization implements SumUpService
 {
+    /**
+     * Returns an access token according to the grant_type.
+     *
+     * @param SumUpHttpClientInterface $client
+     * @param ApplicationConfiguration $appConfig
+     * @return null|AccessToken
+     * @throws SumUpConfigurationException
+     */
     public static function getToken(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
     {
         $accessToken = null;
@@ -30,6 +39,13 @@ class Authorization implements SumUpService
         return $accessToken;
     }
 
+    /**
+     * Returns an access token for the grant type "authorization_code".
+     *
+     * @param SumUpHttpClientInterface $client
+     * @param ApplicationConfiguration $appConfig
+     * @return AccessToken
+     */
     public static function getTokenByCode(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
     {
         $payload = [
@@ -48,6 +64,13 @@ class Authorization implements SumUpService
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in, $scopes, $resBody->refresh_token);
     }
 
+    /**
+     * Returns an access token for the grant type "client_credentials".
+     *
+     * @param SumUpHttpClientInterface $client
+     * @param ApplicationConfiguration $appConfig
+     * @return AccessToken
+     */
     public static function getTokenByClientCredentials(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
     {
         $payload = [
@@ -61,15 +84,29 @@ class Authorization implements SumUpService
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in);
     }
 
+    /**
+     * Returns an access token for the grant type "password".
+     *
+     * @param SumUpHttpClientInterface $client
+     * @param ApplicationConfiguration $appConfig
+     * @return AccessToken
+     * @throws SumUpConfigurationException
+     */
     public static function getTokenByPassword(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
     {
+        if(empty($appConfig->getUsername())) {
+            throw new SumUpConfigurationException('Missing mandatory parameter "username"');
+        }
+        if(empty($appConfig->getPassword())) {
+            throw new SumUpConfigurationException('Missing mandatory parameter "password"');
+        }
         $payload = [
             'grant_type' => "password",
             'client_id' => $appConfig->getAppId(),
             'client_secret' => $appConfig->getAppSecret(),
+            'scope' => $appConfig->getScopes(),
             'username' => $appConfig->getUsername(),
-            'password' => $appConfig->getPassword(),
-            'scope' => $appConfig->getScopes()
+            'password' => $appConfig->getPassword()
         ];
         $response = $client->send( 'POST', '/token', $payload);
         $resBody = $response->getBody();
@@ -80,13 +117,21 @@ class Authorization implements SumUpService
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in, $scopes, $resBody->refresh_token);
     }
 
-    public static function refreshToken(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig, AccessToken $accessToken)
+    /**
+     * Refresh access token.
+     *
+     * @param SumUpHttpClientInterface $client
+     * @param ApplicationConfiguration $appConfig
+     * @param string $refreshToken
+     * @return AccessToken
+     */
+    public static function refreshToken(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig, $refreshToken)
     {
         $payload = [
             'grant_type' => "refresh_token",
             'client_id' => $appConfig->getAppId(),
             'client_secret' => $appConfig->getAppSecret(),
-            'refresh_token' => $accessToken->getRefreshToken(),
+            'refresh_token' => $refreshToken,
             'scope' => $appConfig->getScopes()
         ];
         $response = $client->send( 'POST', '/token', $payload);

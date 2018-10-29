@@ -40,7 +40,9 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
         } catch (\Exception $e) {
             $response = $e->getResponse();
 
+//            echo($response->getBody());
             // TODO: throw custom exception
+            throw new \Exception($response->getReasonPhrase(), $response->getStatusCode());
         }
 
         $body = json_decode($response->getBody());

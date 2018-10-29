@@ -2,6 +2,8 @@
 
 namespace SumUp\Application;
 
+use SumUp\Exceptions\SumUpConfigurationException;
+
 /**
  * Class ApplicationConfiguration
  *
@@ -190,8 +192,7 @@ class ApplicationConfiguration
     protected function setAppId($appId)
     {
         if(!isset($appId)) {
-            // TODO: throw custom error
-            throw new \Exception('Missing mandatory parameter app_id');
+            throw new SumUpConfigurationException('Missing mandatory parameter app_id');
         }
         $this->appId = $appId;
     }
@@ -205,8 +206,7 @@ class ApplicationConfiguration
     protected function setAppSecret($appSecret)
     {
         if(!isset($appSecret)) {
-            // TODO: throw custom error
-            throw new \Exception('Missing mandatory parameter app_secret');
+            throw new SumUpConfigurationException('Missing mandatory parameter app_secret');
         }
         $this->appSecret = $appSecret;
     }

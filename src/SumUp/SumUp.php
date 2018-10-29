@@ -3,6 +3,7 @@
 namespace SumUp;
 
 use SumUp\Application\ApplicationConfiguration;
+use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Services\Authorization;
 
 /**
@@ -37,7 +38,9 @@ class SumUp
     }
 
     /**
-     * @return \AccessToken
+     * Returns the access token.
+     *
+     * @return Authentication\AccessToken
      */
     public function getAccessToken()
     {
@@ -45,16 +48,22 @@ class SumUp
     }
 
     /**
-     * @return \AccessToken
+     * Refresh the access token.
+     *
+     * @param string $refreshToken
+     * @return Authentication\AccessToken
      * @throws \Exception
      */
-    public function refreshToken()
+    public function refreshToken($refreshToken = null)
     {
-        if(!isset($this->accessToken)) {
-            // TODO: throw custom error
-            throw new \Exception('There is no refresh token');
+        if(isset($refreshToken)) {
+            $rToken = $refreshToken;
+        } else if(!isset($refreshToken) && !isset($this->accessToken)) {
+            throw new SumUpConfigurationException('There is no refresh token');
+        } else {
+            $rToken = $this->accessToken->getRefreshToken();
         }
-        $this->accessToken = Authorization::refreshToken($this->client, $this->appConfig, $this->accessToken);
+        $this->accessToken = Authorization::refreshToken($this->client, $this->appConfig, $rToken);
         return $this->accessToken;
     }
 }
