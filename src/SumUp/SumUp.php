@@ -3,8 +3,10 @@
 namespace SumUp;
 
 use SumUp\Application\ApplicationConfiguration;
+use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Services\Authorization;
+use SumUp\Services\Checkouts;
 
 /**
  * Class SumUp
@@ -65,5 +67,15 @@ class SumUp
         }
         $this->accessToken = Authorization::refreshToken($this->client, $this->appConfig, $rToken);
         return $this->accessToken;
+    }
+
+    public function getServiceCheckouts(AccessToken $accessToken = null)
+    {
+        if(!empty($accessToken)) {
+            $accToken = $accessToken;
+        } else {
+            $accToken = $this->accessToken;
+        }
+        return new Checkouts($this->client, $accToken);
     }
 }
