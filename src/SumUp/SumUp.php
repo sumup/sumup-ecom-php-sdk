@@ -69,6 +69,12 @@ class SumUp
         return $this->accessToken;
     }
 
+    /**
+     * Get the service for checkouts.
+     *
+     * @param AccessToken|null $accessToken
+     * @return Checkouts
+     */
     public function getServiceCheckouts(AccessToken $accessToken = null)
     {
         if(!empty($accessToken)) {
