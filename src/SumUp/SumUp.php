@@ -7,6 +7,7 @@ use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Services\Authorization;
 use SumUp\Services\Checkouts;
+use SumUp\Services\Customers;
 
 /**
  * Class SumUp
@@ -70,7 +71,7 @@ class SumUp
     }
 
     /**
-     * Get the service for checkouts.
+     * Get the service for checkouts management.
      *
      * @param AccessToken|null $accessToken
      * @return Checkouts
@@ -83,5 +84,21 @@ class SumUp
             $accToken = $this->accessToken;
         }
         return new Checkouts($this->client, $accToken);
+    }
+
+    /**
+     * Get the service for customers management.
+     *
+     * @param AccessToken|null $accessToken
+     * @return Customers
+     */
+    public function getServiceCustomers(AccessToken $accessToken = null)
+    {
+        if(!empty($accessToken)) {
+            $accToken = $accessToken;
+        } else {
+            $accToken = $this->accessToken;
+        }
+        return new Customers($this->client, $accToken);
     }
 }
