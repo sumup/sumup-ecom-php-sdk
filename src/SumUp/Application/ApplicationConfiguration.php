@@ -9,7 +9,7 @@ use SumUp\Exceptions\SumUpConfigurationException;
  *
  * @package SumUp\ApplicationConfiguration
  */
-class ApplicationConfiguration
+class ApplicationConfiguration implements ApplicationConfigurationInterface
 {
     /**
      * The default scopes that are recommended to be requested every time.

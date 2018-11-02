@@ -2,6 +2,7 @@
 
 namespace SumUp\Services;
 
+use SumUp\Application\ApplicationConfigurationInterface;
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Application\ApplicationConfiguration;
@@ -15,25 +16,39 @@ use SumUp\Authentication\AccessToken;
 class Authorization implements SumUpService
 {
     /**
+     * The application's configuration.
+     *
+     * @var ApplicationConfiguration
+     */
+    protected $appConfig;
+
+    public function __construct(ApplicationConfigurationInterface $config)
+    {
+        if(empty($config) || !($config instanceof ApplicationConfigurationInterface)) {
+            throw new \Exception('Missing mandatory argument of type "ApplicationConfigurationInterface"');
+        }
+        $this->appConfig = $config;
+    }
+
+    /**
      * Returns an access token according to the grant_type.
      *
      * @param SumUpHttpClientInterface $client
-     * @param ApplicationConfiguration $appConfig
      * @return null|AccessToken
      * @throws SumUpConfigurationException
      */
-    public static function getToken(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
+    public function getToken(SumUpHttpClientInterface $client)
     {
         $accessToken = null;
-        switch ($appConfig->getGrantType()) {
+        switch ($this->appConfig->getGrantType()) {
             case 'authorization_code':
-                $accessToken = self::getTokenByCode($client, $appConfig);
+                $accessToken = $this->getTokenByCode($client);
                 break;
             case 'client_credentials':
-                $accessToken = self::getTokenByClientCredentials($client, $appConfig);
+                $accessToken = $this->getTokenByClientCredentials($client);
                 break;
             case 'password':
-                $accessToken = self::getTokenByPassword($client, $appConfig);
+                $accessToken = $this->getTokenByPassword($client);
                 break;
         }
         return $accessToken;
@@ -43,17 +58,16 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "authorization_code".
      *
      * @param SumUpHttpClientInterface $client
-     * @param ApplicationConfiguration $appConfig
      * @return AccessToken
      */
-    public static function getTokenByCode(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
+    public function getTokenByCode(SumUpHttpClientInterface $client)
     {
         $payload = [
             'grant_type' => "authorization_code",
-            'client_id' => $appConfig->getAppId(),
-            'client_secret' => $appConfig->getAppSecret(),
-            'scope' => $appConfig->getScopes(),
-            'code' => $appConfig->getCode()
+            'client_id' => $this->appConfig->getAppId(),
+            'client_secret' => $this->appConfig->getAppSecret(),
+            'scope' => $this->appConfig->getScopes(),
+            'code' => $this->appConfig->getCode()
         ];
         $response = $client->send( 'POST', '/token', $payload);
         $resBody = $response->getBody();
@@ -68,16 +82,15 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "client_credentials".
      *
      * @param SumUpHttpClientInterface $client
-     * @param ApplicationConfiguration $appConfig
      * @return AccessToken
      */
-    public static function getTokenByClientCredentials(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
+    public function getTokenByClientCredentials(SumUpHttpClientInterface $client)
     {
         $payload = [
             'grant_type' => "client_credentials",
-            'client_id' => $appConfig->getAppId(),
-            'client_secret' => $appConfig->getAppSecret(),
-            'scope' => $appConfig->getScopes()
+            'client_id' => $this->appConfig->getAppId(),
+            'client_secret' => $this->appConfig->getAppSecret(),
+            'scope' => $this->appConfig->getScopes()
         ];
         $response = $client->send( 'POST', '/token', $payload);
         $resBody = $response->getBody();
@@ -88,25 +101,24 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "password".
      *
      * @param SumUpHttpClientInterface $client
-     * @param ApplicationConfiguration $appConfig
      * @return AccessToken
      * @throws SumUpConfigurationException
      */
-    public static function getTokenByPassword(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig)
+    public function getTokenByPassword(SumUpHttpClientInterface $client)
     {
-        if(empty($appConfig->getUsername())) {
+        if(empty($this->appConfig->getUsername())) {
             throw new SumUpConfigurationException('Missing mandatory parameter "username"');
         }
-        if(empty($appConfig->getPassword())) {
+        if(empty($this->appConfig->getPassword())) {
             throw new SumUpConfigurationException('Missing mandatory parameter "password"');
         }
         $payload = [
             'grant_type' => "password",
-            'client_id' => $appConfig->getAppId(),
-            'client_secret' => $appConfig->getAppSecret(),
-            'scope' => $appConfig->getScopes(),
-            'username' => $appConfig->getUsername(),
-            'password' => $appConfig->getPassword()
+            'client_id' => $this->appConfig->getAppId(),
+            'client_secret' => $this->appConfig->getAppSecret(),
+            'scope' => $this->appConfig->getScopes(),
+            'username' => $this->appConfig->getUsername(),
+            'password' => $this->appConfig->getPassword()
         ];
         $response = $client->send( 'POST', '/token', $payload);
         $resBody = $response->getBody();
@@ -121,18 +133,17 @@ class Authorization implements SumUpService
      * Refresh access token.
      *
      * @param SumUpHttpClientInterface $client
-     * @param ApplicationConfiguration $appConfig
      * @param string $refreshToken
      * @return AccessToken
      */
-    public static function refreshToken(SumUpHttpClientInterface $client, ApplicationConfiguration $appConfig, $refreshToken)
+    public function refreshToken(SumUpHttpClientInterface $client, $refreshToken)
     {
         $payload = [
             'grant_type' => "refresh_token",
-            'client_id' => $appConfig->getAppId(),
-            'client_secret' => $appConfig->getAppSecret(),
+            'client_id' => $this->appConfig->getAppId(),
+            'client_secret' => $this->appConfig->getAppSecret(),
             'refresh_token' => $refreshToken,
-            'scope' => $appConfig->getScopes()
+            'scope' => $this->appConfig->getScopes()
         ];
         $response = $client->send( 'POST', '/token', $payload);
         $resBody = $response->getBody();

@@ -3,6 +3,7 @@
 namespace SumUp;
 
 use SumUp\Application\ApplicationConfiguration;
+use SumUp\Application\ApplicationConfigurationInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Services\Authorization;
@@ -37,7 +38,8 @@ class SumUp
     {
         $this->appConfig = new ApplicationConfiguration($config);
         $this->client = new HttpClients\SumUpGuzzleHttpClient($this->appConfig->getBaseURL());
-        $this->accessToken = Authorization::getToken($this->client, $this->appConfig);
+        $authorizationService = new Authorization($this->appConfig);
+        $this->accessToken = $authorizationService->getToken($this->client, $this->appConfig);
     }
 
     /**
@@ -66,8 +68,19 @@ class SumUp
         } else {
             $rToken = $this->accessToken->getRefreshToken();
         }
-        $this->accessToken = Authorization::refreshToken($this->client, $this->appConfig, $rToken);
+        $authorizationService = new Authorization($this->appConfig);
+        $this->accessToken = $authorizationService->refreshToken($this->client, $rToken);
         return $this->accessToken;
+    }
+
+    public function getAuthorizationService(ApplicationConfigurationInterface $config = null)
+    {
+        if(empty($config)) {
+            $cfg = $this->appConfig;
+        } else {
+            $cfg = $config;
+        }
+        return new Authorization($cfg);
     }
 
     /**
@@ -76,7 +89,7 @@ class SumUp
      * @param AccessToken|null $accessToken
      * @return Checkouts
      */
-    public function getServiceCheckouts(AccessToken $accessToken = null)
+    public function getCheckoutService(AccessToken $accessToken = null)
     {
         if(!empty($accessToken)) {
             $accToken = $accessToken;
@@ -92,7 +105,7 @@ class SumUp
      * @param AccessToken|null $accessToken
      * @return Customers
      */
-    public function getServiceCustomers(AccessToken $accessToken = null)
+    public function getCustomerService(AccessToken $accessToken = null)
     {
         if(!empty($accessToken)) {
             $accToken = $accessToken;
