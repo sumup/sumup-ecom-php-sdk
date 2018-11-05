@@ -27,13 +27,6 @@ class Checkouts implements SumUpService
     protected $accessToken;
 
     /**
-     * The version of the endpoint.
-     *
-     * @var string
-     */
-    protected $version = 'v0.1';
-
-    /**
      * Checkouts constructor.
      *
      * @param SumUpHttpClientInterface $client
@@ -41,6 +34,7 @@ class Checkouts implements SumUpService
      */
     public function __construct(SumUpHttpClientInterface $client, AccessToken $accessToken)
     {
+        // TODO: throw an error if the params are not passed or are null
         $this->client = $client;
         $this->accessToken = $accessToken;
     }
@@ -72,22 +66,34 @@ class Checkouts implements SumUpService
         if(isset($returnURL)) {
             $payload['return_url'] = $returnURL;
         }
-        return $this->client->send( 'POST', '/' .$this->version . '/checkouts', $payload, $this->accessToken->getValue());
+        $path = '/v0.1/checkouts';
+        return $this->client->send( 'POST', $path, $payload, $this->accessToken->getValue());
     }
 
     /**
-     * Get all checkouts. If you pass a checkout ID you'll get the data for it.
+     * Get single checkout by provided checkout ID.
      *
-     * @param null $checkoutId
+     * @param $checkoutId
      * @return \SumUp\HttpClients\Response
      */
-    public function get($checkoutId = null)
+    public function findById($checkoutId)
     {
-        if(isset($checkoutId)) {
-            return $this->client->send('GET', '/' . $this->version . '/checkouts/' . $checkoutId, [], $this->accessToken->getValue());
-        } else {
-            return $this->client->send('GET', '/' . $this->version . '/checkouts', [], $this->accessToken->getValue());
-        }
+        // TODO: throw an error if the param is not passed or is null
+        $path = '/v0.1/checkouts/' . $checkoutId;
+        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+    }
+
+    /**
+     * Get single checkout by provided checkout reference ID.
+     *
+     * @param $referenceId
+     * @return \SumUp\HttpClients\Response
+     */
+    public function findByReferenceId($referenceId)
+    {
+        // TODO: throw an error if the param is not passed or is null
+        $path = '/v0.1/checkouts?checkout_reference=' . $referenceId;
+        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
     }
 
     /**
@@ -98,6 +104,8 @@ class Checkouts implements SumUpService
      */
     public function delete($checkoutId)
     {
-        return $this->client->send('DELETE', '/' . $this->version . '/checkouts/' . $checkoutId, [], $this->accessToken->getValue());
+        // TODO: throw an error if the param is not passed or is null
+        $path = '/v0.1/checkouts/' . $checkoutId;
+        return $this->client->send('DELETE', $path, [], $this->accessToken->getValue());
     }
 }

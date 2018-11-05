@@ -27,13 +27,6 @@ class Customers implements SumUpService
     protected $accessToken;
 
     /**
-     * The version of the endpoint.
-     *
-     * @var string
-     */
-    protected $version = 'v0.1';
-
-    /**
      * Customers constructor.
      *
      * @param SumUpHttpClientInterface $client
@@ -41,6 +34,7 @@ class Customers implements SumUpService
      */
     public function __construct(SumUpHttpClientInterface $client, AccessToken $accessToken)
     {
+        // TODO: throw an error if the param is not passed or is null
         $this->client = $client;
         $this->accessToken = $accessToken;
     }
@@ -63,6 +57,7 @@ class Customers implements SumUpService
      */
     public function create($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
+        // TODO: throw an error if the param is not passed or is null
         $personalDetails = [];
         $address = [];
 
@@ -104,7 +99,7 @@ class Customers implements SumUpService
             'customer_id' => $customerId,
             'personal_details' => $personalDetails
         ];
-        $path = '/' . $this->version . '/customers';
+        $path = '/v0.1/customers';
         return $this->client->send( 'POST', $path, $payload, $this->accessToken->getValue());
     }
 
@@ -126,6 +121,7 @@ class Customers implements SumUpService
      */
     public function update($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
+        // TODO: throw an error if the param is not passed or is null
         $personalDetails = [];
         $address = [];
 
@@ -167,7 +163,7 @@ class Customers implements SumUpService
             'customer_id' => $customerId,
             'personal_details' => $personalDetails
         ];
-        $path = '/' . $this->version . '/customers/' . $customerId;
+        $path = '/v0.1/customers/' . $customerId;
         return $this->client->send( 'PUT', $path, $payload, $this->accessToken->getValue());
     }
 
@@ -179,7 +175,8 @@ class Customers implements SumUpService
      */
     public function get($customerId)
     {
-        $path = '/' . $this->version . '/customers/' . $customerId;
+        // TODO: throw an error if the param is not passed or is null
+        $path = '/v0.1/customers/' . $customerId;
         return $this->client->send('GET',  $path, [], $this->accessToken->getValue());
     }
 
@@ -196,6 +193,7 @@ class Customers implements SumUpService
      */
     public function createPaymentInstruments($customerId, $cardName, $cardNumber, $cardExpiryYear, $cardExpiryMonth, $cardCVV)
     {
+        // TODO: throw an error if the param is not passed or is null
         $payload = [
             'type' => 'card',
             'card' => [
@@ -206,7 +204,7 @@ class Customers implements SumUpService
                 'cvv' => $cardCVV
             ]
         ];
-        $path = '/' . $this->version . '/customers/' . $customerId . '/payment-instruments';
+        $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
         return $this->client->send('POST', $path, $payload, $this->accessToken->getValue());
     }
 
@@ -218,7 +216,8 @@ class Customers implements SumUpService
      */
     public function getPaymentInstruments($customerId)
     {
-        $path = '/' . $this->version . '/customers/' . $customerId . '/payment-instruments';
+        // TODO: throw an error if the param is not passed or is null
+        $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
         return $this->client->send('GET',  $path, [], $this->accessToken->getValue());
     }
 
@@ -231,7 +230,8 @@ class Customers implements SumUpService
      */
     public function deletePaymentInstruments($customerId, $cardToken)
     {
-        $path = '/' . $this->version . '/customers/' . $customerId . '/payment-instruments/' . $cardToken;
+        // TODO: throw an error if the param is not passed or is null
+        $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;
         return $this->client->send('DELETE',  $path, [], $this->accessToken->getValue());
     }
 }
