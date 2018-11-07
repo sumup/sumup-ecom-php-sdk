@@ -108,4 +108,26 @@ class Checkouts implements SumUpService
         $path = '/v0.1/checkouts/' . $checkoutId;
         return $this->client->send('DELETE', $path, [], $this->accessToken->getValue());
     }
+
+    /**
+     * Pay a checkout with tokenized card.
+     *
+     * @param $checkoutId
+     * @param $customerId
+     * @param $cardToken
+     * @param int $installments
+     * @return \SumUp\HttpClients\Response
+     */
+    public function pay($checkoutId, $customerId, $cardToken, $installments = 1)
+    {
+        // TODO: throw an error if the param is not passed or is null
+        $payload = [
+            'payment_type' => 'card',
+            'customer_id' => $customerId,
+            'token' => $cardToken,
+            'installments' => $installments
+        ];
+        $path = '/v0.1/checkouts/' . $checkoutId;
+        return $this->client->send('PUT', $path, $payload, $this->accessToken->getValue());
+    }
 }
