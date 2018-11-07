@@ -9,6 +9,7 @@ use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Services\Authorization;
 use SumUp\Services\Checkouts;
 use SumUp\Services\Customers;
+use SumUp\Services\Transactions;
 
 /**
  * Class SumUp
@@ -73,6 +74,13 @@ class SumUp
         return $this->accessToken;
     }
 
+    /**
+     * Get the service for authorization.
+     *
+     * @param ApplicationConfigurationInterface|null $config
+     * @return Authorization
+     * @throws \Exception
+     */
     public function getAuthorizationService(ApplicationConfigurationInterface $config = null)
     {
         if(empty($config)) {
@@ -113,5 +121,21 @@ class SumUp
             $accToken = $this->accessToken;
         }
         return new Customers($this->client, $accToken);
+    }
+
+    /**
+     * Get the service for transactions management.
+     *
+     * @param AccessToken|null $accessToken
+     * @return Transactions
+     */
+    public function getTransactionService(AccessToken $accessToken = null)
+    {
+        if(!empty($accessToken)) {
+            $accToken = $accessToken;
+        } else {
+            $accToken = $this->accessToken;
+        }
+        return new Transactions($this->client, $accToken);
     }
 }
