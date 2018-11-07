@@ -181,34 +181,6 @@ class Customers implements SumUpService
     }
 
     /**
-     * Create payment instruments for a customer.
-     *
-     * @param $customerId
-     * @param $cardName
-     * @param $cardNumber
-     * @param $cardExpiryYear
-     * @param $cardExpiryMonth
-     * @param $cardCVV
-     * @return \SumUp\HttpClients\Response
-     */
-    public function createPaymentInstruments($customerId, $cardName, $cardNumber, $cardExpiryYear, $cardExpiryMonth, $cardCVV)
-    {
-        // TODO: throw an error if the param is not passed or is null
-        $payload = [
-            'type' => 'card',
-            'card' => [
-                'name' => $cardName,
-                'number' => $cardNumber,
-                'expiry_year' => $cardExpiryYear,
-                'expiry_month' => $cardExpiryMonth,
-                'cvv' => $cardCVV
-            ]
-        ];
-        $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
-        return $this->client->send('POST', $path, $payload, $this->accessToken->getValue());
-    }
-
-    /**
      * Get payment instruments for a customer.
      *
      * @param $customerId
