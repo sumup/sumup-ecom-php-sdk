@@ -9,6 +9,7 @@ use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Services\Authorization;
 use SumUp\Services\Checkouts;
 use SumUp\Services\Customers;
+use SumUp\Services\Merchant;
 use SumUp\Services\Transactions;
 
 /**
@@ -137,5 +138,21 @@ class SumUp
             $accToken = $this->accessToken;
         }
         return new Transactions($this->client, $accToken);
+    }
+
+    /**
+     * Get the service for merchant management.
+     *
+     * @param AccessToken|null $accessToken
+     * @return Merchant
+     */
+    public function getMerchantService(AccessToken $accessToken = null)
+    {
+        if(!empty($accessToken)) {
+            $accToken = $accessToken;
+        } else {
+            $accToken = $this->accessToken;
+        }
+        return new Merchant($this->client, $accToken);
     }
 }
