@@ -4,6 +4,7 @@ namespace SumUp\Services;
 
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
+use SumUp\Exceptions\SumUpArgumentException;
 
 /**
  * Class Merchant
@@ -83,9 +84,7 @@ class Merchant implements SumUpService
      *
      * @return \SumUp\HttpClients\Response
      *
-     * @throws SumUpAuthenticationException
-     * @throws SumUpResponseException
-     * @throws SumUpValidationException
+     * @throws SumUpArgumentException
      */
     public function updateDoingBusinessAs(array $data)
     {

@@ -4,6 +4,7 @@ namespace SumUp\Services;
 
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
+use SumUp\Exceptions\SumUpArgumentException;
 
 /**
  * Class Customers
@@ -54,6 +55,8 @@ class Customers implements SumUpService
      * @param string $state
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function create($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
@@ -121,6 +124,8 @@ class Customers implements SumUpService
      * @param string $state
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function update($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
@@ -178,6 +183,8 @@ class Customers implements SumUpService
      * @param $customerId
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function get($customerId)
     {
@@ -194,6 +201,8 @@ class Customers implements SumUpService
      * @param $customerId
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function getPaymentInstruments($customerId)
     {
@@ -211,6 +220,8 @@ class Customers implements SumUpService
      * @param $cardToken
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function deletePaymentInstruments($customerId, $cardToken)
     {

@@ -4,6 +4,7 @@ namespace SumUp\Services;
 
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
+USE SumUp\Exceptions\SumUpArgumentException;
 
 /**
  * Class Transactions
@@ -44,6 +45,8 @@ class Transactions implements SumUpService
      * @param $transactionId
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function findById($transactionId)
     {
@@ -60,6 +63,8 @@ class Transactions implements SumUpService
      * @param $internalId
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function findByInternalId($internalId)
     {
@@ -76,6 +81,8 @@ class Transactions implements SumUpService
      * @param $transactionCode
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function findByTransactionCode($transactionCode)
     {
@@ -127,6 +134,8 @@ class Transactions implements SumUpService
      * @param $amount
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function refund($transactionId, $amount)
     {
@@ -150,6 +159,8 @@ class Transactions implements SumUpService
      * @param $merchantId
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function getReceipt($transactionId, $merchantId)
     {

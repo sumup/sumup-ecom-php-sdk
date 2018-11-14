@@ -49,30 +49,44 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * The merchant's username. Needed only if the authorization flow is "password".
      *
-     * @var string;
+     * @var string
      */
     protected $username;
 
     /**
      * The merchant's account password. Needed only if the authorization flow is "password".
      *
-     * @var string;
+     * @var string
      */
     protected $password;
 
     /**
-     * The authorization grant type.
+     * The authorization grant type. Allowed values are: 'authorization_code'|'client_credentials'|'password'.
      *
-     * @var 'authorization_code'|'client_credentials'|'password';
+     * @var string
      */
     protected $grantType;
 
     /**
      * The authorization code.
      *
-     * @var string;
+     * @var string
      */
     protected $code;
+
+    /**
+     * Default access token.
+     *
+     * @var null|string
+     */
+    protected $accessToken;
+
+    /**
+     * Default refresh token.
+     *
+     * @var null|string
+     */
+    protected $refreshToken;
 
     /**
      * Create a new application configuration.
@@ -90,6 +104,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
             'base_uri' => 'https://api.sumup.com',
             'scopes' => [],
             'code' => null,
+            'default_access_token' => null,
+            'default_refresh_token' => null,
             'username' => null,
             'password' => null
         ], $config);
@@ -102,6 +118,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
         $this->username = $config['username'];
         $this->password = $config['password'];
         $this->code = $config['code'];
+        $this->accessToken = $config['default_access_token'];
+        $this->refreshToken = $config['default_refresh_token'];
     }
 
     /**
@@ -125,11 +143,21 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     }
 
     /**
+     * Returns the scopes.
+     *
+     * @return array
+     */
+    public function getScopes()
+    {
+        return $this->scopes;
+    }
+
+    /**
      * Returns the scopes formatted as they should appear in the request.
      *
      * @return string
      */
-    public function getScopes()
+    public function getFormattedScopes()
     {
         return implode(' ', $this->scopes);
     }
@@ -182,6 +210,26 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Returns initial access token.
+     *
+     * @return null|string
+     */
+    public function getDefaultAccessToken()
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * Returns initial refresh token.
+     *
+     * @return null|string
+     */
+    public function getDefaultRefreshToken()
+    {
+        return $this->refreshToken;
     }
 
     /**
