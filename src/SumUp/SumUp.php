@@ -6,6 +6,7 @@ use SumUp\Application\ApplicationConfiguration;
 use SumUp\Application\ApplicationConfigurationInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpConfigurationException;
+use SumUp\Exceptions\SumUpSDKException;
 use SumUp\Services\Authorization;
 use SumUp\Services\Checkouts;
 use SumUp\Services\Customers;
@@ -36,6 +37,13 @@ class SumUp
     /** @var HttpClients\SumUpGuzzleHttpClient */
     protected $client;
 
+    /**
+     * SumUp constructor.
+     *
+     * @param array $config
+     *
+     * @throws SumUpSDKException
+     */
     public function __construct(array $config = [])
     {
         $this->appConfig = new ApplicationConfiguration($config);
@@ -58,8 +66,10 @@ class SumUp
      * Refresh the access token.
      *
      * @param string $refreshToken
+     *
      * @return Authentication\AccessToken
-     * @throws \Exception
+     *
+     * @throws SumUpSDKException
      */
     public function refreshToken($refreshToken = null)
     {
@@ -79,8 +89,10 @@ class SumUp
      * Get the service for authorization.
      *
      * @param ApplicationConfigurationInterface|null $config
+     *
      * @return Authorization
-     * @throws \Exception
+     *
+     * @throws SumUpSDKException
      */
     public function getAuthorizationService(ApplicationConfigurationInterface $config = null)
     {
@@ -96,7 +108,10 @@ class SumUp
      * Get the service for checkouts management.
      *
      * @param AccessToken|null $accessToken
+     *
      * @return Checkouts
+     *
+     * @throws SumUpSDKException
      */
     public function getCheckoutService(AccessToken $accessToken = null)
     {
@@ -112,7 +127,10 @@ class SumUp
      * Get the service for customers management.
      *
      * @param AccessToken|null $accessToken
+     *
      * @return Customers
+     *
+     * @throws SumUpSDKException
      */
     public function getCustomerService(AccessToken $accessToken = null)
     {
@@ -128,7 +146,10 @@ class SumUp
      * Get the service for transactions management.
      *
      * @param AccessToken|null $accessToken
+     *
      * @return Transactions
+     *
+     * @throws SumUpSDKException
      */
     public function getTransactionService(AccessToken $accessToken = null)
     {
@@ -144,7 +165,10 @@ class SumUp
      * Get the service for merchant management.
      *
      * @param AccessToken|null $accessToken
+     *
      * @return Merchant
+     *
+     * @throws SumUpSDKException
      */
     public function getMerchantService(AccessToken $accessToken = null)
     {

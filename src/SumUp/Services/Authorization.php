@@ -25,7 +25,7 @@ class Authorization implements SumUpService
     public function __construct(ApplicationConfigurationInterface $config)
     {
         if(empty($config) || !($config instanceof ApplicationConfigurationInterface)) {
-            throw new \Exception('Missing mandatory argument of type "ApplicationConfigurationInterface"');
+            throw new \SumUpConfigurationException('Missing mandatory argument of type "ApplicationConfigurationInterface"');
         }
         $this->appConfig = $config;
     }
@@ -34,7 +34,9 @@ class Authorization implements SumUpService
      * Returns an access token according to the grant_type.
      *
      * @param SumUpHttpClientInterface $client
+     *
      * @return null|AccessToken
+     *
      * @throws SumUpConfigurationException
      */
     public function getToken(SumUpHttpClientInterface $client)
@@ -58,6 +60,7 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "authorization_code".
      *
      * @param SumUpHttpClientInterface $client
+     *
      * @return AccessToken
      */
     public function getTokenByCode(SumUpHttpClientInterface $client)
@@ -82,6 +85,7 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "client_credentials".
      *
      * @param SumUpHttpClientInterface $client
+     *
      * @return AccessToken
      */
     public function getTokenByClientCredentials(SumUpHttpClientInterface $client)
@@ -101,7 +105,9 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "password".
      *
      * @param SumUpHttpClientInterface $client
+     *
      * @return AccessToken
+     *
      * @throws SumUpConfigurationException
      */
     public function getTokenByPassword(SumUpHttpClientInterface $client)
@@ -134,10 +140,14 @@ class Authorization implements SumUpService
      *
      * @param SumUpHttpClientInterface $client
      * @param string $refreshToken
+     *
      * @return AccessToken
      */
     public function refreshToken(SumUpHttpClientInterface $client, $refreshToken)
     {
+        if(empty($refreshToken)) {
+            throw new SumUpArgumentException('Argument is missing. Refresh token is not provided.');
+        }
         $payload = [
             'grant_type' => "refresh_token",
             'client_id' => $this->appConfig->getAppId(),

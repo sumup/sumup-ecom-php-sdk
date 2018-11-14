@@ -78,7 +78,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      * Create a new application configuration.
      *
      * @param array $config
-     * @throws \Exception
+     *
+     * @throws SumUpConfigurationException
      */
     public function __construct(array $config = [])
     {
@@ -164,7 +165,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     }
 
     /**
-     * Returns merchant's username;
+     * Returns merchant's username.
      *
      * @return string
      */
@@ -174,7 +175,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     }
 
     /**
-     * Returns merchant's passowrd;
+     * Returns merchant's password.
      *
      * @return string
      */
@@ -187,7 +188,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      * Set application ID.
      *
      * @param $appId
-     * @throws \Exception
+     *
+     * @throws SumUpConfigurationException
      */
     protected function setAppId($appId)
     {
@@ -201,7 +203,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      * Set application secret.
      *
      * @param $appSecret
-     * @throws \Exception
+     *
+     * @throws SumUpConfigurationException
      */
     protected function setAppSecret($appSecret)
     {
@@ -215,12 +218,13 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      * Set the authorization grant type.
      *
      * @param $grantType
-     * @throws \Exception
+     *
+     * @throws SumUpConfigurationException
      */
     protected function setGrantType($grantType)
     {
         if(!in_array($grantType, ['authorization_code', 'client_credentials', 'password'])) {
-            throw new \Exception('Invalid parameter for grant_type. \
+            throw new SumUpConfigurationException('Invalid parameter for grant_type. \
             Allowed values are: \'authorization_code\'|\'client_credentials\'|\'password\'');
         }
         $this->grantType = $grantType;

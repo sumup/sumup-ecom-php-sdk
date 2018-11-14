@@ -2,6 +2,7 @@
 
 namespace SumUp\Services;
 
+use SumUp\Exceptions\SumUpArgumentException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 
@@ -34,7 +35,6 @@ class Checkouts implements SumUpService
      */
     public function __construct(SumUpHttpClientInterface $client, AccessToken $accessToken)
     {
-        // TODO: throw an error if the params are not passed or are null
         $this->client = $client;
         $this->accessToken = $accessToken;
     }
@@ -49,10 +49,25 @@ class Checkouts implements SumUpService
      * @param string $description
      * @param null $payFromEmail
      * @param null $returnURL
-     * @return \SumUp\HttpClients\Response
+     *
+     * @return mixed|\SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null)
     {
+        if(empty($amount)) {
+            throw new SumUpArgumentException('Argument is missing. Amount is not provided.');
+        }
+        if(empty($currency)) {
+            throw new SumUpArgumentException('Argument is missing. Currency is not provided.');
+        }
+        if(empty($checkoutRef)) {
+            throw new SumUpArgumentException('Argument is missing. Checkout reference id is not provided.');
+        }
+        if(empty($payToEmail)) {
+            throw new SumUpArgumentException('Argument is missing. Pay to email is not provided.');
+        }
         $payload = [
             'amount' => $amount,
             'currency' => $currency,
@@ -74,11 +89,16 @@ class Checkouts implements SumUpService
      * Get single checkout by provided checkout ID.
      *
      * @param $checkoutId
-     * @return \SumUp\HttpClients\Response
+     *
+     * @return mixed|\SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function findById($checkoutId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($checkoutId)) {
+            throw new SumUpArgumentException('Argument is missing. Checkout id is not provided.');
+        }
         $path = '/v0.1/checkouts/' . $checkoutId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
     }
@@ -87,11 +107,16 @@ class Checkouts implements SumUpService
      * Get single checkout by provided checkout reference ID.
      *
      * @param $referenceId
+     *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function findByReferenceId($referenceId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($referenceId)) {
+            throw new SumUpArgumentException('Argument is missing. Reference id is not provided.');
+        }
         $path = '/v0.1/checkouts?checkout_reference=' . $referenceId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
     }
@@ -101,10 +126,14 @@ class Checkouts implements SumUpService
      *
      * @param $checkoutId
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function delete($checkoutId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($checkoutId)) {
+            throw new SumUpArgumentException('Argument is missing. Checkout id is not provided.');
+        }
         $path = '/v0.1/checkouts/' . $checkoutId;
         return $this->client->send('DELETE', $path, [], $this->accessToken->getValue());
     }
@@ -116,11 +145,22 @@ class Checkouts implements SumUpService
      * @param $customerId
      * @param $cardToken
      * @param int $installments
+     *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function pay($checkoutId, $customerId, $cardToken, $installments = 1)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($checkoutId)) {
+            throw new SumUpArgumentException('Argument is missing. Checkout id is not provided.');
+        }
+        if(empty($customerId)) {
+            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+        }
+        if(empty($cardToken)) {
+            throw new SumUpArgumentException('Argument is missing. Card token is not provided.');
+        }
         $payload = [
             'payment_type' => 'card',
             'customer_id' => $customerId,

@@ -34,7 +34,6 @@ class Customers implements SumUpService
      */
     public function __construct(SumUpHttpClientInterface $client, AccessToken $accessToken)
     {
-        // TODO: throw an error if the param is not passed or is null
         $this->client = $client;
         $this->accessToken = $accessToken;
     }
@@ -43,21 +42,24 @@ class Customers implements SumUpService
      * Create new customer.
      *
      * @param $customerId
-     * @param null $firstName
-     * @param null $lastName
-     * @param null $email
-     * @param null $phone
-     * @param null $city
-     * @param null $country
-     * @param null $line1
-     * @param null $line2
-     * @param null $postalCode
-     * @param null $state
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $email
+     * @param string $phone
+     * @param string $city
+     * @param string $country
+     * @param string $line1
+     * @param string $line2
+     * @param string $postalCode
+     * @param string $state
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function create($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($customerId)) {
+            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+        }
         $personalDetails = [];
         $address = [];
 
@@ -107,21 +109,24 @@ class Customers implements SumUpService
      * Update existing customer.
      *
      * @param $customerId
-     * @param null $firstName
-     * @param null $lastName
-     * @param null $email
-     * @param null $phone
-     * @param null $city
-     * @param null $country
-     * @param null $line1
-     * @param null $line2
-     * @param null $postalCode
-     * @param null $state
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $email
+     * @param string $phone
+     * @param string $city
+     * @param string $country
+     * @param string $line1
+     * @param string $line2
+     * @param string $postalCode
+     * @param string $state
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function update($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($customerId)) {
+            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+        }
         $personalDetails = [];
         $address = [];
 
@@ -171,11 +176,14 @@ class Customers implements SumUpService
      * Get customer by ID.
      *
      * @param $customerId
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function get($customerId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($customerId)) {
+            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+        }
         $path = '/v0.1/customers/' . $customerId;
         return $this->client->send('GET',  $path, [], $this->accessToken->getValue());
     }
@@ -184,11 +192,14 @@ class Customers implements SumUpService
      * Get payment instruments for a customer.
      *
      * @param $customerId
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function getPaymentInstruments($customerId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($customerId)) {
+            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+        }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
         return $this->client->send('GET',  $path, [], $this->accessToken->getValue());
     }
@@ -198,11 +209,17 @@ class Customers implements SumUpService
      *
      * @param $customerId
      * @param $cardToken
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function deletePaymentInstruments($customerId, $cardToken)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($customerId)) {
+            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+        }
+        if(empty($cardToken)) {
+            throw new SumUpArgumentException('Argument is missing. Card token is not provided.');
+        }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;
         return $this->client->send('DELETE',  $path, [], $this->accessToken->getValue());
     }

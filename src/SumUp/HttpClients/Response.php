@@ -2,6 +2,10 @@
 
 namespace SumUp\HttpClients;
 
+use SumUp\Exceptions\SumUpAuthenticationException;
+use SumUp\Exceptions\SumUpResponseException;
+use SumUp\Exceptions\SumUpValidationException;
+
 /**
  * Class Response
  *
@@ -28,11 +32,15 @@ class Response
      *
      * @param $httpResponseCode
      * @param $body
+     *
+     * @throws SumUpAuthenticationException
+     * @throws SumUpResponseException
+     * @throws SumUpValidationException
      */
     public function __construct($httpResponseCode, $body)
     {
         $this->httpResponseCode = $httpResponseCode;
-        $this->body = $body;
+        $this->body = $this->parseBody($body);
     }
 
     /**
@@ -53,5 +61,36 @@ class Response
     public function getBody()
     {
         return $this->body;
+    }
+
+    /**
+     * @param $body
+     *
+     * @return mixed
+     *
+     * @throws SumUpAuthenticationException
+     * @throws SumUpResponseException
+     * @throws SumUpValidationException
+     */
+    protected function parseBody($body)
+    {
+        if(isset($body->error_code) && $body->error_code === 'NOT_AUTHORIZED') {
+            throw new SumUpAuthenticationException($body->error_message, $this->httpResponseCode);
+        }
+        if(isset($body->error_code) && $body->error_code === 'MISSING') {
+            throw new SumUpValidationException([$body->param], $this->httpResponseCode);
+        }
+        if(is_array($body) && isset($body[0]->error_code) && $body[0]->error_code === 'MISSING') {
+            $invalidFields = [];
+            foreach ($body as $errorObject) {
+                $invalidFields[] = $errorObject->param;
+            }
+            throw new SumUpValidationException($invalidFields, $this->httpResponseCode);
+        }
+        if($this->httpResponseCode >= 400) {
+            throw new SumUpResponseException($body->message, $this->httpResponseCode);
+        }
+
+        return $body;
     }
 }

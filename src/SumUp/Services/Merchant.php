@@ -34,7 +34,6 @@ class Merchant implements SumUpService
      */
     public function __construct(SumUpHttpClientInterface $client, AccessToken $accessToken)
     {
-        // TODO: throw an error if the params are not passed or are null
         $this->client = $client;
         $this->accessToken = $accessToken;
     }
@@ -54,11 +53,14 @@ class Merchant implements SumUpService
      * Update merchant's profile.
      *
      * @param array $data
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function updateProfile(array $data)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(!isset($data)) {
+            throw new SumUpArgumentException('Argument is missing. Payload data is not provided.');
+        }
         $path = '/v0.1/me/merchant-profile';
         return $this->client->send('PUT', $path, $data, $this->accessToken->getValue());
     }
@@ -78,11 +80,18 @@ class Merchant implements SumUpService
      * Update data for doing business as.
      *
      * @param array $data
+     *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpAuthenticationException
+     * @throws SumUpResponseException
+     * @throws SumUpValidationException
      */
     public function updateDoingBusinessAs(array $data)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(!isset($data)) {
+            throw new SumUpArgumentException('Argument is missing. Payload data is not provided.');
+        }
         $path = '/v0.1/me/merchant-profile/doing-business-as';
         return $this->client->send('PUT', $path, $data, $this->accessToken->getValue());
     }

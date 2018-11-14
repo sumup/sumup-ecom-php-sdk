@@ -15,7 +15,7 @@ interface SumUpHttpClientInterface
      * @param string $body        The body of the request.
      * @param string $accessToken The value of the access token.
      *
-     * @return Response
+     * @return Response|mixed
      */
     public function send($method, $url, $body, $accessToken);
 }

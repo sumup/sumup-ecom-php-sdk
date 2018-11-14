@@ -34,7 +34,6 @@ class Transactions implements SumUpService
      */
     public function __construct(SumUpHttpClientInterface $client, AccessToken $accessToken)
     {
-        // TODO: throw an error if the params are not passed or are null
         $this->client = $client;
         $this->accessToken = $accessToken;
     }
@@ -43,11 +42,14 @@ class Transactions implements SumUpService
      * Get single transaction by transaction ID.
      *
      * @param $transactionId
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function findById($transactionId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($transactionId)) {
+            throw new SumUpArgumentException('Argument is missing. Transaction id is not provided.');
+        }
         $path = '/v0.1/me/transactions?id=' . $transactionId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
     }
@@ -56,11 +58,14 @@ class Transactions implements SumUpService
      * Get single transaction by internal ID.
      *
      * @param $internalId
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function findByInternalId($internalId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($internalId)) {
+            throw new SumUpArgumentException('Argument is missing. Internal id is not provided.');
+        }
         $path = '/v0.1/me/transactions?internal_id=' . $internalId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
     }
@@ -69,11 +74,14 @@ class Transactions implements SumUpService
      * Get single transaction by transaction code.
      *
      * @param $transactionCode
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function findByTransactionCode($transactionCode)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($transactionCode)) {
+            throw new SumUpArgumentException('Argument is missing. Transaction code is not provided.');
+        }
         $path = '/v0.1/me/transactions?transaction_code=' . $transactionCode;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
     }
@@ -82,6 +90,7 @@ class Transactions implements SumUpService
      * Get a list of transactions.
      *
      * @param array $filters
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function getTransactionHistory($filters = [])
@@ -116,11 +125,17 @@ class Transactions implements SumUpService
      *
      * @param $transactionId
      * @param $amount
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function refund($transactionId, $amount)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($transactionId)) {
+            throw new SumUpArgumentException('Argument is missing. Transaction id is not provided.');
+        }
+        if(empty($amount)) {
+            throw new SumUpArgumentException('Argument is missing. Amount is not provided.');
+        }
         $payload = [
             'amount' => $amount
         ];
@@ -133,11 +148,17 @@ class Transactions implements SumUpService
      *
      * @param $transactionId
      * @param $merchantId
+     *
      * @return \SumUp\HttpClients\Response
      */
     public function getReceipt($transactionId, $merchantId)
     {
-        // TODO: throw an error if the param is not passed or is null
+        if(empty($transactionId)) {
+            throw new SumUpArgumentException('Argument is missing. Transaction id is not provided.');
+        }
+        if(empty($merchantId)) {
+            throw new SumUpArgumentException('Argument is missing. Merchant id is not provided.');
+        }
         $queryParams = http_build_query(['mid' => $merchantId]);
         $path = '/v1.0/receipts/' . $transactionId . '?' . $queryParams;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
