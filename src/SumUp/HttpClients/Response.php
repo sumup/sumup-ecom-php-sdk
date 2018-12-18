@@ -30,7 +30,7 @@ class Response
     /**
      * Response constructor.
      *
-     * @param $httpResponseCode
+     * @param number $httpResponseCode
      * @param $body
      *
      * @throws SumUpAuthenticationException
