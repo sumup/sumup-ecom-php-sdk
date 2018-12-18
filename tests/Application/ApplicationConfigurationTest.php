@@ -72,4 +72,15 @@ class ApplicationConfigurationTest extends TestCase
         $this->assertSame($appConf->getPassword(), 'pass');
         $this->assertSame($appConf->getBaseURL(), 'https://api.sumup.com');
     }
+
+    public function testFormattingOfScopes()
+    {
+        $appConf = new ApplicationConfiguration([
+            'app_id' => 'application-id',
+            'app_secret' => 'application-secret',
+            'scopes' => ['payments', 'transactions.history'],
+        ]);
+
+        $this->assertSame($appConf->getFormattedScopes(), 'payments transactions.history user.app-settings user.profile_readonly');
+    }
 }

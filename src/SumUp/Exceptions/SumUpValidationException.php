@@ -40,14 +40,4 @@ class SumUpValidationException extends SumUpSDKException
     {
         return $this->fields;
     }
-
-    /**
-     * Return formatted validation error message.
-     *
-     * @return string
-     */
-    protected function formatMessage()
-    {
-        return self::VALIDATION_ERROR_BASE . implode(', ', $this->fields);
-    }
 }
