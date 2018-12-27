@@ -27,14 +27,9 @@ class Authorization implements SumUpService
      * Authorization constructor.
      *
      * @param ApplicationConfigurationInterface $config
-     *
-     * @throws SumUpConfigurationException
      */
     public function __construct(ApplicationConfigurationInterface $config)
     {
-        if(empty($config) || !($config instanceof ApplicationConfigurationInterface)) {
-            throw new SumUpConfigurationException('Missing mandatory argument of type "ApplicationConfigurationInterface"');
-        }
         $this->appConfig = $config;
     }
 
