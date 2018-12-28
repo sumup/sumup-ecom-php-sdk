@@ -5,6 +5,7 @@ namespace SumUp\Services;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Utils\ExceptionMessages;
 
 /**
  * Class Merchant
@@ -62,7 +63,7 @@ class Merchant implements SumUpService
     public function updateProfile(array $data)
     {
         if(!isset($data)) {
-            throw new SumUpArgumentException('Argument is missing. Payload data is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile';
         return $this->client->send('PUT', $path, $data, $this->accessToken->getValue());
@@ -91,10 +92,9 @@ class Merchant implements SumUpService
     public function updateDoingBusinessAs(array $data)
     {
         if(!isset($data)) {
-            throw new SumUpArgumentException('Argument is missing. Payload data is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile/doing-business-as';
         return $this->client->send('PUT', $path, $data, $this->accessToken->getValue());
     }
-
 }

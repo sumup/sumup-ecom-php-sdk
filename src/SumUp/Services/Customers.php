@@ -5,6 +5,7 @@ namespace SumUp\Services;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Utils\ExceptionMessages;
 
 /**
  * Class Customers
@@ -61,7 +62,7 @@ class Customers implements SumUpService
     public function create($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
         if(empty($customerId)) {
-            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $personalDetails = [];
         $address = [];
@@ -130,7 +131,7 @@ class Customers implements SumUpService
     public function update($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
         if(empty($customerId)) {
-            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $personalDetails = [];
         $address = [];
@@ -189,7 +190,7 @@ class Customers implements SumUpService
     public function get($customerId)
     {
         if(empty($customerId)) {
-            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $path = '/v0.1/customers/' . $customerId;
         return $this->client->send('GET',  $path, [], $this->accessToken->getValue());
@@ -207,7 +208,7 @@ class Customers implements SumUpService
     public function getPaymentInstruments($customerId)
     {
         if(empty($customerId)) {
-            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
         return $this->client->send('GET',  $path, [], $this->accessToken->getValue());
@@ -226,10 +227,10 @@ class Customers implements SumUpService
     public function deletePaymentInstruments($customerId, $cardToken)
     {
         if(empty($customerId)) {
-            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         if(empty($cardToken)) {
-            throw new SumUpArgumentException('Argument is missing. Card token is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('card token'));
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;
         return $this->client->send('DELETE',  $path, [], $this->accessToken->getValue());

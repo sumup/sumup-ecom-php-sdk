@@ -5,6 +5,7 @@ namespace SumUp\Services;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Utils\ExceptionMessages;
 
 /**
  * Class Payouts
@@ -55,19 +56,19 @@ class Payouts implements SumUpService
     public function getPayouts($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
         if(!isset($startDate)) {
-            throw new SumUpArgumentException('Argument is missing. Start date is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
         }
         if(!isset($endDate)) {
-            throw new SumUpArgumentException('Argument is missing. End date is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('end date'));
         }
         if(!isset($limit) || !is_int($limit)) {
-            throw new SumUpArgumentException('Argument is missing. Limit is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
         }
         if(!isset($descendingOrder)) {
-            throw new SumUpArgumentException('Argument is missing. Order is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
         if(!isset($format)) {
-            throw new SumUpArgumentException('Argument is missing. End date is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
         }
         $filters = [
             'start_date' => $startDate,
@@ -97,19 +98,19 @@ class Payouts implements SumUpService
     public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
         if(!isset($startDate)) {
-            throw new SumUpArgumentException('Argument is missing. Start date is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
         }
         if(!isset($endDate)) {
-            throw new SumUpArgumentException('Argument is missing. End date is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('end date'));
         }
         if(!isset($limit) || !is_int($limit)) {
-            throw new SumUpArgumentException('Argument is missing. Limit is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
         }
         if(!isset($descendingOrder)) {
-            throw new SumUpArgumentException('Argument is missing. Order is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
         if(!isset($format)) {
-            throw new SumUpArgumentException('Argument is missing. Format is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
         }
         $filters = [
             'start_date' => $startDate,

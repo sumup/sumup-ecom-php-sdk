@@ -5,6 +5,7 @@ namespace SumUp\Services;
 use SumUp\Exceptions\SumUpArgumentException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
+use SumUp\Utils\ExceptionMessages;
 
 /**
  * Class Checkouts
@@ -57,16 +58,16 @@ class Checkouts implements SumUpService
     public function create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null)
     {
         if(empty($amount) || !is_numeric($amount)) {
-            throw new SumUpArgumentException('Argument is missing. Amount is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('amount'));
         }
         if(empty($currency)) {
-            throw new SumUpArgumentException('Argument is missing. Currency is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('currency'));
         }
         if(empty($checkoutRef)) {
-            throw new SumUpArgumentException('Argument is missing. Checkout reference id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout reference id'));
         }
         if(empty($payToEmail)) {
-            throw new SumUpArgumentException('Argument is missing. Pay to email is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('pay to email'));
         }
         $payload = [
             'amount' => $amount,
@@ -97,7 +98,7 @@ class Checkouts implements SumUpService
     public function findById($checkoutId)
     {
         if(empty($checkoutId)) {
-            throw new SumUpArgumentException('Argument is missing. Checkout id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
         $path = '/v0.1/checkouts/' . $checkoutId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
@@ -115,7 +116,7 @@ class Checkouts implements SumUpService
     public function findByReferenceId($referenceId)
     {
         if(empty($referenceId)) {
-            throw new SumUpArgumentException('Argument is missing. Reference id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('reference id'));
         }
         $path = '/v0.1/checkouts?checkout_reference=' . $referenceId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
@@ -133,7 +134,7 @@ class Checkouts implements SumUpService
     public function delete($checkoutId)
     {
         if(empty($checkoutId)) {
-            throw new SumUpArgumentException('Argument is missing. Checkout id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
         $path = '/v0.1/checkouts/' . $checkoutId;
         return $this->client->send('DELETE', $path, [], $this->accessToken->getValue());
@@ -154,16 +155,16 @@ class Checkouts implements SumUpService
     public function pay($checkoutId, $customerId, $cardToken, $installments = 1)
     {
         if(empty($checkoutId)) {
-            throw new SumUpArgumentException('Argument is missing. Checkout id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
         if(empty($customerId)) {
-            throw new SumUpArgumentException('Argument is missing. Customer id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         if(empty($cardToken)) {
-            throw new SumUpArgumentException('Argument is missing. Card token is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('card token'));
         }
         if(empty($installments) || !is_int($installments)) {
-            throw new SumUpArgumentException('Argument is missing. Installments are not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('installments'));
         }
         $payload = [
             'payment_type' => 'card',

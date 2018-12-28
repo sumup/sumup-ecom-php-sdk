@@ -8,6 +8,7 @@ use SumUp\Exceptions\SumUpArgumentException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Application\ApplicationConfiguration;
 use SumUp\Authentication\AccessToken;
+use SumUp\Utils\ExceptionMessages;
 
 /**
  * Class Authorization
@@ -134,10 +135,10 @@ class Authorization implements SumUpService
     public function getTokenByPassword(SumUpHttpClientInterface $client)
     {
         if(empty($this->appConfig->getUsername())) {
-            throw new SumUpConfigurationException('Missing mandatory parameter "username"');
+            throw new SumUpConfigurationException(ExceptionMessages::getMissingParamMsg('username'));
         }
         if(empty($this->appConfig->getPassword())) {
-            throw new SumUpConfigurationException('Missing mandatory parameter "password"');
+            throw new SumUpConfigurationException(ExceptionMessages::getMissingParamMsg("password"));
         }
         $payload = [
             'grant_type' => 'password',
@@ -169,7 +170,7 @@ class Authorization implements SumUpService
     public function refreshToken(SumUpHttpClientInterface $client, $refreshToken)
     {
         if(empty($refreshToken)) {
-            throw new SumUpArgumentException('Argument is missing. Refresh token is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('refresh token'));
         }
         $payload = [
             'grant_type' => 'refresh_token',

@@ -5,6 +5,7 @@ namespace SumUp\Services;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 USE SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Utils\ExceptionMessages;
 
 /**
  * Class Transactions
@@ -51,7 +52,7 @@ class Transactions implements SumUpService
     public function findById($transactionId)
     {
         if(empty($transactionId)) {
-            throw new SumUpArgumentException('Argument is missing. Transaction id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
         $path = '/v0.1/me/transactions?id=' . $transactionId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
@@ -69,7 +70,7 @@ class Transactions implements SumUpService
     public function findByInternalId($internalId)
     {
         if(empty($internalId)) {
-            throw new SumUpArgumentException('Argument is missing. Internal id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('internal id'));
         }
         $path = '/v0.1/me/transactions?internal_id=' . $internalId;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
@@ -87,7 +88,7 @@ class Transactions implements SumUpService
     public function findByTransactionCode($transactionCode)
     {
         if(empty($transactionCode)) {
-            throw new SumUpArgumentException('Argument is missing. Transaction code is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction code'));
         }
         $path = '/v0.1/me/transactions?transaction_code=' . $transactionCode;
         return $this->client->send('GET', $path, [], $this->accessToken->getValue());
@@ -119,7 +120,7 @@ class Transactions implements SumUpService
 
         $queryParams = http_build_query($filters);
         /**
-         * Remove index from the [] because the server doesn't parses the data correctly.
+         * Remove index from the [] because the server doesn't support it this way.
          */
         $queryParams = preg_replace('/%5B[0-9]+%5D/', '%5B%5D', $queryParams);
 
@@ -140,10 +141,10 @@ class Transactions implements SumUpService
     public function refund($transactionId, $amount)
     {
         if(empty($transactionId)) {
-            throw new SumUpArgumentException('Argument is missing. Transaction id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
         if(empty($amount)) {
-            throw new SumUpArgumentException('Argument is missing. Amount is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('amount'));
         }
         $payload = [
             'amount' => $amount
@@ -165,10 +166,10 @@ class Transactions implements SumUpService
     public function getReceipt($transactionId, $merchantId)
     {
         if(empty($transactionId)) {
-            throw new SumUpArgumentException('Argument is missing. Transaction id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
         if(empty($merchantId)) {
-            throw new SumUpArgumentException('Argument is missing. Merchant id is not provided.');
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('merchant id'));
         }
         $queryParams = http_build_query(['mid' => $merchantId]);
         $path = '/v1.0/receipts/' . $transactionId . '?' . $queryParams;
