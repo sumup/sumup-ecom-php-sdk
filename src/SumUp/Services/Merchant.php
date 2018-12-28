@@ -56,6 +56,8 @@ class Merchant implements SumUpService
      * @param array $data
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws SumUpArgumentException
      */
     public function updateProfile(array $data)
     {

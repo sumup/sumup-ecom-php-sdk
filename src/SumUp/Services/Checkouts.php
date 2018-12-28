@@ -43,20 +43,20 @@ class Checkouts implements SumUpService
      * Create new checkout.
      *
      * @param $amount
-     * @param $currency
-     * @param $checkoutRef
-     * @param $payToEmail
+     * @param string $currency
+     * @param string $checkoutRef
+     * @param string $payToEmail
      * @param string $description
      * @param null $payFromEmail
      * @param null $returnURL
      *
-     * @return mixed|\SumUp\HttpClients\Response
+     * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
      */
     public function create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null)
     {
-        if(empty($amount)) {
+        if(empty($amount) || !is_numeric($amount)) {
             throw new SumUpArgumentException('Argument is missing. Amount is not provided.');
         }
         if(empty($currency)) {
@@ -88,9 +88,9 @@ class Checkouts implements SumUpService
     /**
      * Get single checkout by provided checkout ID.
      *
-     * @param $checkoutId
+     * @param string $checkoutId
      *
-     * @return mixed|\SumUp\HttpClients\Response
+     * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
      */
@@ -106,7 +106,7 @@ class Checkouts implements SumUpService
     /**
      * Get single checkout by provided checkout reference ID.
      *
-     * @param $referenceId
+     * @param string $referenceId
      *
      * @return \SumUp\HttpClients\Response
      *
@@ -124,7 +124,8 @@ class Checkouts implements SumUpService
     /**
      * Delete a checkout.
      *
-     * @param $checkoutId
+     * @param string $checkoutId
+     *
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
@@ -141,9 +142,9 @@ class Checkouts implements SumUpService
     /**
      * Pay a checkout with tokenized card.
      *
-     * @param $checkoutId
-     * @param $customerId
-     * @param $cardToken
+     * @param string $checkoutId
+     * @param string $customerId
+     * @param string $cardToken
      * @param int $installments
      *
      * @return \SumUp\HttpClients\Response
@@ -160,6 +161,9 @@ class Checkouts implements SumUpService
         }
         if(empty($cardToken)) {
             throw new SumUpArgumentException('Argument is missing. Card token is not provided.');
+        }
+        if(empty($installments) || !is_int($installments)) {
+            throw new SumUpArgumentException('Argument is missing. Installments are not provided.');
         }
         $payload = [
             'payment_type' => 'card',

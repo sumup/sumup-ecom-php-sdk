@@ -12,6 +12,7 @@ use SumUp\Services\Checkouts;
 use SumUp\Services\Customers;
 use SumUp\Services\Merchant;
 use SumUp\Services\Transactions;
+use SumUp\Services\Payouts;
 
 /**
  * Class SumUp
@@ -178,5 +179,23 @@ class SumUp
             $accToken = $this->accessToken;
         }
         return new Merchant($this->client, $accToken);
+    }
+
+    /**
+     * Get the service for payouts.
+     *
+     * @param AccessToken|null $accessToken
+     * @return Payouts
+     *
+     * @throws SumUpSDKException
+     */
+    public function getPayoutService(AccessToken $accessToken = null)
+    {
+        if(!empty($accessToken)) {
+            $accToken = $accessToken;
+        } else {
+            $accToken = $this->accessToken;
+        }
+        return new Payouts($this->client, $accToken);
     }
 }
