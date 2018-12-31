@@ -13,9 +13,9 @@ interface SumUpHttpClientInterface
      * @param string $method      The request method.
      * @param string $url         The endpoint to send the request to.
      * @param string $body        The body of the request.
-     * @param string $accessToken The value of the access token.
+     * @param array $headers      The headers of the request.
      *
      * @return Response|mixed
      */
-    public function send($method, $url, $body, $accessToken);
+    public function send($method, $url, $body, $headers);
 }

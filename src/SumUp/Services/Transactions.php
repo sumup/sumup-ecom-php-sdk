@@ -6,6 +6,7 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 USE SumUp\Exceptions\SumUpArgumentException;
 use SumUp\Utils\ExceptionMessages;
+use SumUp\Utils\Headers;
 
 /**
  * Class Transactions
@@ -55,7 +56,9 @@ class Transactions implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
         $path = '/v0.1/me/transactions?id=' . $transactionId;
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -73,7 +76,9 @@ class Transactions implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('internal id'));
         }
         $path = '/v0.1/me/transactions?internal_id=' . $internalId;
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -91,7 +96,9 @@ class Transactions implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction code'));
         }
         $path = '/v0.1/me/transactions?transaction_code=' . $transactionCode;
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -125,7 +132,9 @@ class Transactions implements SumUpService
         $queryParams = preg_replace('/%5B[0-9]+%5D/', '%5B%5D', $queryParams);
 
         $path = '/v0.1/me/transactions/history?' . $queryParams;
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -150,7 +159,9 @@ class Transactions implements SumUpService
             'amount' => $amount
         ];
         $path = '/v0.1/me/refund/' . $transactionId;
-        return $this->client->send('POST', $path, $payload, $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('POST', $path, $payload, $headers);
     }
 
     /**
@@ -173,7 +184,8 @@ class Transactions implements SumUpService
         }
         $queryParams = http_build_query(['mid' => $merchantId]);
         $path = '/v1.0/receipts/' . $transactionId . '?' . $queryParams;
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
-
 }

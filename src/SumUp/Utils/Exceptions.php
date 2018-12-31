@@ -9,8 +9,15 @@ namespace SumUp\Utils;
  */
 class ExceptionMessages
 {
-    public static function getMissingParamMsg($wrongParamName)
+    /**
+     * Get formatted message for missing parameter.
+     *
+     * @param $missingParamName
+     *
+     * @return string
+     */
+    public static function getMissingParamMsg($missingParamName)
     {
-        return 'Missing parameter: "' . $wrongParamName . '".';
+        return 'Missing parameter: "' . $missingParamName . '".';
     }
 }

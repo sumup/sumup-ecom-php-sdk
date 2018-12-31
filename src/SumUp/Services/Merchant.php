@@ -6,6 +6,7 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
 use SumUp\Utils\ExceptionMessages;
+use SumUp\Utils\Headers;
 
 /**
  * Class Merchant
@@ -48,7 +49,9 @@ class Merchant implements SumUpService
     public function getProfile()
     {
         $path = '/v0.1/me/merchant-profile';
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -66,7 +69,9 @@ class Merchant implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile';
-        return $this->client->send('PUT', $path, $data, $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('PUT', $path, $data, $headers);
     }
 
     /**
@@ -77,7 +82,9 @@ class Merchant implements SumUpService
     public function getDoingBusinessAs()
     {
         $path = '/v0.1/me/merchant-profile/doing-business-as';
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -95,6 +102,8 @@ class Merchant implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile/doing-business-as';
-        return $this->client->send('PUT', $path, $data, $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('PUT', $path, $data, $headers);
     }
 }

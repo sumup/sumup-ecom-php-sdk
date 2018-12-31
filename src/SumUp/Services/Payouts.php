@@ -6,6 +6,7 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
 use SumUp\Utils\ExceptionMessages;
+use SumUp\Utils\Headers;
 
 /**
  * Class Payouts
@@ -79,7 +80,9 @@ class Payouts implements SumUpService
         ];
         $queryParams = http_build_query($filters);
         $path = '/v0.1/me/financials/payouts?' . $queryParams;
-        return $this->client->send('GET', $path, null, $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, null, $headers);
     }
 
     /**
@@ -89,13 +92,12 @@ class Payouts implements SumUpService
      * @param string $endDate
      * @param int $limit
      * @param bool $descendingOrder
-     * @param string $format
      *
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
      */
-    public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
+    public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true)
     {
         if(!isset($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
@@ -109,18 +111,17 @@ class Payouts implements SumUpService
         if(!isset($descendingOrder)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
-        if(!isset($format)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
-        }
         $filters = [
             'start_date' => $startDate,
             'end_date' => $endDate,
             'limit' => $limit,
             'order' => $descendingOrder ? 'desc' : 'asc',
-            'format' => $format
+            'format' => 'json'
         ];
         $queryParams = http_build_query($filters);
         $path = '/v0.1/me/financials/transactions?' . $queryParams;
-        return $this->client->send('GET', $path, null, $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, null, $headers);
     }
 }

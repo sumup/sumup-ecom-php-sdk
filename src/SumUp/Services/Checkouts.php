@@ -6,6 +6,7 @@ use SumUp\Exceptions\SumUpArgumentException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Utils\ExceptionMessages;
+use SumUp\Utils\Headers;
 
 /**
  * Class Checkouts
@@ -83,7 +84,9 @@ class Checkouts implements SumUpService
             $payload['return_url'] = $returnURL;
         }
         $path = '/v0.1/checkouts';
-        return $this->client->send( 'POST', $path, $payload, $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send( 'POST', $path, $payload, $headers);
     }
 
     /**
@@ -101,7 +104,9 @@ class Checkouts implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
         $path = '/v0.1/checkouts/' . $checkoutId;
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -119,7 +124,9 @@ class Checkouts implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('reference id'));
         }
         $path = '/v0.1/checkouts?checkout_reference=' . $referenceId;
-        return $this->client->send('GET', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -137,7 +144,9 @@ class Checkouts implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
         $path = '/v0.1/checkouts/' . $checkoutId;
-        return $this->client->send('DELETE', $path, [], $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('DELETE', $path, [], $headers);
     }
 
     /**
@@ -173,6 +182,8 @@ class Checkouts implements SumUpService
             'installments' => $installments
         ];
         $path = '/v0.1/checkouts/' . $checkoutId;
-        return $this->client->send('PUT', $path, $payload, $this->accessToken->getValue());
+        $headers = Headers::getCTJson();
+        $headers += Headers::getAuth($this->accessToken);
+        return $this->client->send('PUT', $path, $payload, $headers);
     }
 }

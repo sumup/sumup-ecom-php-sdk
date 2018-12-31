@@ -38,15 +38,8 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
     /**
      * @inheritdoc
      */
-    public function send($method, $url, $body, $accessToken = null)
+    public function send($method, $url, $body, $headers = [])
     {
-        $headers = [
-            'Content-Type' => 'application/json'
-        ];
-        if ($accessToken) {
-            $headers['Authorization'] = 'Bearer ' . $accessToken;
-        }
-
         $options = [
             'headers' => $headers,
 //            'debug' => true,
@@ -61,17 +54,25 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
             throw new SumUpConnectionException($e->getMessage(), $e->getCode(), $e->getPrevious());
         } catch (ClientException $e) {
             $response = $e->getResponse();
-            $body = json_decode($response->getBody());
+            $body = $this->parseBody($response);
             return new Response($response->getStatusCode(), $body);
         } catch (ServerException $e) {
             $response = $e->getResponse();
-            $body = json_decode($response->getBody());
+            $body = $this->parseBody($response);
             throw new SumUpServerException($body->error_code, $e->getCode(), $e->getPrevious());
         } catch (\Exception $e) {
             throw new SumUpSDKException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
-
-        $body = json_decode($response->getBody());
+        $body = $this->parseBody($response);
         return new Response($response->getStatusCode(), $body);
+    }
+
+    private function parseBody($response)
+    {
+        $jsonBody = json_decode($response->getBody());
+        if (isset($jsonBody)) {
+            return $jsonBody;
+        }
+        return $response->getBody();
     }
 }
