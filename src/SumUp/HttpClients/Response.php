@@ -16,7 +16,7 @@ class Response
     /**
      * The HTTP response code.
      *
-     * @var number;
+     * @var number
      */
     protected $httpResponseCode;
 
@@ -64,6 +64,8 @@ class Response
     }
 
     /**
+     * Parses the body for containing errors.
+     *
      * @param $body
      *
      * @return mixed

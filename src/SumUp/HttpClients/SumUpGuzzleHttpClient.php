@@ -21,7 +21,7 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
     /**
      * The Guzzle Client instance.
      *
-     * @var Client
+     * @var client
      */
     protected $guzzleClient;
 
@@ -42,7 +42,6 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
     {
         $options = [
             'headers' => $headers,
-//            'debug' => true,
             'json' => $body
         ];
 
@@ -67,6 +66,13 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
         return new Response($response->getStatusCode(), $body);
     }
 
+    /**
+     * Returns JSON encoded the response's body if it is of JSON type.
+     *
+     * @param $response
+     *
+     * @return mixed
+     */
     private function parseBody($response)
     {
         $jsonBody = json_decode($response->getBody());

@@ -64,4 +64,11 @@ interface ApplicationConfigurationInterface
      * @return string
      */
     public function getPassword();
+
+    /**
+     * Returns a flag whether to use GuzzleHttp over cURL if both are present.
+     *
+     * @return bool
+     */
+    public function getUseGuzzle();
 }

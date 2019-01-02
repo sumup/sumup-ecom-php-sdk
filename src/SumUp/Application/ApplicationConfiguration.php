@@ -89,6 +89,13 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     protected $refreshToken;
 
     /**
+     * Flag whether to use GuzzleHttp over cURL if both are present.
+     *
+     * @var $useGuzzle
+     */
+    protected $useGuzzle;
+
+    /**
      * Create a new application configuration.
      *
      * @param array $config
@@ -107,7 +114,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
             'default_access_token' => null,
             'default_refresh_token' => null,
             'username' => null,
-            'password' => null
+            'password' => null,
+            'use_guzzlehttp_over_curl' => false
         ], $config);
 
         $this->setAppId($config['app_id']);
@@ -120,6 +128,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
         $this->code = $config['code'];
         $this->accessToken = $config['default_access_token'];
         $this->refreshToken = $config['default_refresh_token'];
+        $this->setUseGuzzle($config['use_guzzlehttp_over_curl']);
     }
 
     /**
@@ -233,6 +242,16 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     }
 
     /**
+     * Return the flag whether to use GuzzleHttp.
+     *
+     * @return bool
+     */
+    public function getUseGuzzle()
+    {
+        return $this->useGuzzle;
+    }
+
+    /**
      * Set application ID.
      *
      * @param $appId
@@ -286,5 +305,20 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     protected function setScopes(array $scopes = [])
     {
         $this->scopes = array_unique(array_merge($this->defaultScopes, $scopes), SORT_REGULAR);;
+    }
+
+    /**
+     * Set the flag whether to use GuzzleHttp.
+     *
+     * @param $useGuzzle
+     *
+     * @throws SumUpConfigurationException
+     */
+    protected function setUseGuzzle($useGuzzle)
+    {
+        if (!is_bool($useGuzzle)) {
+            throw new SumUpConfigurationException('Invalid value for boolean parameter use_guzzlehttp_over_curl.');
+        }
+        $this->useGuzzle = $useGuzzle;
     }
 }

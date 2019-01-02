@@ -4,6 +4,8 @@ namespace SumUp;
 
 use SumUp\Application\ApplicationConfiguration;
 use SumUp\Application\ApplicationConfigurationInterface;
+use SumUp\HttpClients\HttpClientsFactory;
+use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Exceptions\SumUpSDKException;
@@ -42,13 +44,14 @@ class SumUp
      * SumUp constructor.
      *
      * @param array $config
+     * @param SumUpHttpClientInterface|null $customHttpClient
      *
      * @throws SumUpSDKException
      */
-    public function __construct(array $config = [])
+    public function __construct(array $config = [], SumUpHttpClientInterface $customHttpClient = null)
     {
         $this->appConfig = new ApplicationConfiguration($config);
-        $this->client = new HttpClients\SumUpGuzzleHttpClient($this->appConfig->getBaseURL());
+        $this->client = HttpClientsFactory::createHttpClient($this->appConfig, $customHttpClient);
         $authorizationService = new Authorization($this->appConfig);
         $this->accessToken = $authorizationService->getToken($this->client, $this->appConfig);
     }
