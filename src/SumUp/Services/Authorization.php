@@ -43,6 +43,10 @@ class Authorization implements SumUpService
      * @return null|AccessToken
      *
      * @throws SumUpConfigurationException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getToken(SumUpHttpClientInterface $client)
     {

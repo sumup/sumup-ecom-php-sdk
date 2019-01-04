@@ -35,7 +35,8 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
     /**
      * SumUpGuzzleHttpClient constructor.
      *
-     * @param $baseUrl
+     * @param string $baseUrl
+     * @param array  $customHeaders
      */
     public function __construct($baseUrl, $customHeaders)
     {
@@ -52,7 +53,8 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
      * @return Response
      *
      * @throws SumUpConnectionException
-     * @throws SumUpResponseException
+     * @throws SumUpServerException
+     * @throws \SumUp\Exceptions\SumUpResponseException
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpValidationException
      * @throws SumUpSDKException
@@ -77,7 +79,14 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
         } catch (ServerException $e) {
             $response = $e->getResponse();
             $body = $this->parseBody($response);
-            throw new SumUpServerException($body->error_code, $e->getCode(), $e->getPrevious());
+            if (isset($body) && isset($body->message)) {
+                $message = $body->message;
+            } else {
+                $message = $body;
+            }
+            throw new SumUpServerException($message, $e->getCode(), $e->getPrevious());
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            throw new SumUpSDKException($e->getMessage(), $e->getCode(), $e->getPrevious());
         } catch (\Exception $e) {
             throw new SumUpSDKException($e->getMessage(), $e->getCode(), $e->getPrevious());
         }

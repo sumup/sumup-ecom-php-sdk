@@ -46,8 +46,8 @@ class Payouts implements SumUpService
      *
      * @param string $startDate
      * @param string $endDate
-     * @param int $limit
-     * @param bool $descendingOrder
+     * @param int    $limit
+     * @param bool   $descendingOrder
      * @param string $format
      *
      * @return \SumUp\HttpClients\Response
@@ -95,8 +95,9 @@ class Payouts implements SumUpService
      *
      * @param string $startDate
      * @param string $endDate
-     * @param int $limit
-     * @param bool $descendingOrder
+     * @param int    $limit
+     * @param bool   $descendingOrder
+     * @param string $format
      *
      * @return \SumUp\HttpClients\Response
      *
@@ -106,7 +107,7 @@ class Payouts implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true)
+    public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
         if(!isset($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
@@ -125,7 +126,7 @@ class Payouts implements SumUpService
             'end_date' => $endDate,
             'limit' => $limit,
             'order' => $descendingOrder ? 'desc' : 'asc',
-            'format' => 'json'
+            'format' => $format
         ];
         $queryParams = http_build_query($filters);
         $path = '/v0.1/me/financials/transactions?' . $queryParams;

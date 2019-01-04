@@ -95,7 +95,7 @@ class Response
             }
             throw new SumUpValidationException($invalidFields, $this->httpResponseCode);
         }
-        if($this->httpResponseCode >= 400) {
+        if($this->httpResponseCode >= 500) {
             if (isset($body) && isset($body->message)) {
                 $message = $body->message;
             } else {

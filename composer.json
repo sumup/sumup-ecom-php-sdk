@@ -2,7 +2,7 @@
     "name": "sumup/sumup-ecom-php-sdk",
     "description": "SumUp eCom SDK for PHP",
     "type": "library",
-    "version": "1.0.0",
+    "version": "1.0.0-alpha",
     "keywords": ["sumup", "sdk", "payment processing", "ecommerce", "payment", "checkout"],
     "homepage": "https://developer.sumup.com",
     "authors": [
