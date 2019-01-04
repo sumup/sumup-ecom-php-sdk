@@ -23,7 +23,7 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
      *
      * @var client
      */
-    protected $guzzleClient;
+    private $guzzleClient;
 
     /**
      * SumUpGuzzleHttpClient constructor.

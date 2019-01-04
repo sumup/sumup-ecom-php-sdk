@@ -2,6 +2,7 @@
 
 namespace SumUp\HttpClients;
 
+use SumUp\Exceptions\SumUpConnectionException;
 use SumUp\Exceptions\SumUpSDKException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 
@@ -17,7 +18,7 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
      *
      * @var $baseUrl
      */
-    protected $baseUrl;
+    private $baseUrl;
 
     /**
      * SumUpCUrlClient constructor.
@@ -47,8 +48,14 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
         $response = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+        $error = curl_error($ch);
+        if ($error) {
+            curl_close ($ch);
+            throw new SumUpConnectionException($error, $code);
+        }
+
         curl_close ($ch);
-        return new Response($code, json_decode($response));
+        return new Response($code, $this->parseBody($response));
     }
 
     /**
@@ -58,7 +65,7 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
      *
      * @return array
      */
-    protected function formatHeaders($headers = null)
+    private function formatHeaders($headers = null)
     {
         if (count($headers) == 0) {
             return $headers;
@@ -70,5 +77,21 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
             $formattedHeaders[] = $key . ': ' . $headers[$key];
         }
         return $formattedHeaders;
+    }
+
+    /**
+     * Returns JSON encoded the response's body if it is of JSON type.
+     *
+     * @param $response
+     *
+     * @return mixed
+     */
+    private function parseBody($response)
+    {
+        $jsonBody = json_decode($response);
+        if (isset($jsonBody)) {
+            return $jsonBody;
+        }
+        return $response;
     }
 }
