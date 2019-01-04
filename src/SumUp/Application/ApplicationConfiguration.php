@@ -96,6 +96,13 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     protected $useGuzzle;
 
     /**
+     * Send custom headers with every request.
+     *
+     * @var array $customHeaders
+     */
+    protected $customHeaders;
+
+    /**
      * Create a new application configuration.
      *
      * @param array $config
@@ -115,7 +122,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
             'default_refresh_token' => null,
             'username' => null,
             'password' => null,
-            'use_guzzlehttp_over_curl' => false
+            'use_guzzlehttp_over_curl' => false,
+            'custom_headers' => []
         ], $config);
 
         $this->setAppId($config['app_id']);
@@ -129,6 +137,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
         $this->accessToken = $config['default_access_token'];
         $this->refreshToken = $config['default_refresh_token'];
         $this->setUseGuzzle($config['use_guzzlehttp_over_curl']);
+        $this->setCustomHeaders($config['custom_headers']);
     }
 
     /**
@@ -242,13 +251,23 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     }
 
     /**
-     * Return the flag whether to use GuzzleHttp.
+     * Returns the flag whether to use GuzzleHttp.
      *
      * @return bool
      */
     public function getUseGuzzle()
     {
         return $this->useGuzzle;
+    }
+
+    /**
+     * Returns associative array with custom headers.
+     *
+     * @return array
+     */
+    public function getCustomHeaders()
+    {
+        return $this->customHeaders;
     }
 
     /**
@@ -320,5 +339,20 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
             throw new SumUpConfigurationException('Invalid value for boolean parameter use_guzzlehttp_over_curl.');
         }
         $this->useGuzzle = $useGuzzle;
+    }
+
+    /**
+     * Set the associative array with custom headers.
+     *
+     * @param $customHeaders
+     */
+    public function setCustomHeaders($customHeaders)
+    {
+        if (is_array($customHeaders)) {
+            $headers = $customHeaders;
+        } else {
+            $headers = [];
+        }
+        $this->customHeaders = $headers;
     }
 }

@@ -59,6 +59,10 @@ class Customers implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function create($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
@@ -109,6 +113,7 @@ class Customers implements SumUpService
         $path = '/v0.1/customers';
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send( 'POST', $path, $payload, $headers);
     }
 
@@ -130,6 +135,10 @@ class Customers implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function update($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
@@ -180,6 +189,7 @@ class Customers implements SumUpService
         $path = '/v0.1/customers/' . $customerId;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send( 'PUT', $path, $payload, $headers);
     }
 
@@ -191,6 +201,10 @@ class Customers implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function get($customerId)
     {
@@ -200,6 +214,7 @@ class Customers implements SumUpService
         $path = '/v0.1/customers/' . $customerId;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET',  $path, [], $headers);
     }
 
@@ -211,6 +226,10 @@ class Customers implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getPaymentInstruments($customerId)
     {
@@ -220,6 +239,7 @@ class Customers implements SumUpService
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET',  $path, [], $headers);
     }
 
@@ -232,6 +252,10 @@ class Customers implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function deletePaymentInstruments($customerId, $cardToken)
     {
@@ -244,6 +268,7 @@ class Customers implements SumUpService
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('DELETE',  $path, [], $headers);
     }
 }

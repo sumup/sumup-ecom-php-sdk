@@ -85,6 +85,11 @@ class Authorization implements SumUpService
      * @param SumUpHttpClientInterface $client
      *
      * @return AccessToken
+     *
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getTokenByCode(SumUpHttpClientInterface $client)
     {
@@ -96,6 +101,7 @@ class Authorization implements SumUpService
             'code' => $this->appConfig->getCode()
         ];
         $headers = Headers::getCTJson();
+        $headers += Headers::getTrk();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
@@ -111,6 +117,11 @@ class Authorization implements SumUpService
      * @param SumUpHttpClientInterface $client
      *
      * @return AccessToken
+     *
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getTokenByClientCredentials(SumUpHttpClientInterface $client)
     {
@@ -121,6 +132,7 @@ class Authorization implements SumUpService
             'scope' => $this->appConfig->getFormattedScopes()
         ];
         $headers = Headers::getCTJson();
+        $headers += Headers::getTrk();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in);
@@ -134,6 +146,10 @@ class Authorization implements SumUpService
      * @return AccessToken
      *
      * @throws SumUpConfigurationException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getTokenByPassword(SumUpHttpClientInterface $client)
     {
@@ -152,6 +168,7 @@ class Authorization implements SumUpService
             'password' => $this->appConfig->getPassword()
         ];
         $headers = Headers::getCTJson();
+        $headers += Headers::getTrk();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
@@ -170,6 +187,10 @@ class Authorization implements SumUpService
      * @return AccessToken
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function refreshToken(SumUpHttpClientInterface $client, $refreshToken)
     {
@@ -184,6 +205,7 @@ class Authorization implements SumUpService
             'scope' => $this->appConfig->getFormattedScopes()
         ];
         $headers = Headers::getCTJson();
+        $headers += Headers::getTrk();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];

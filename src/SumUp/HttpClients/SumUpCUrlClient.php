@@ -4,7 +4,6 @@ namespace SumUp\HttpClients;
 
 use SumUp\Exceptions\SumUpConnectionException;
 use SumUp\Exceptions\SumUpSDKException;
-use SumUp\HttpClients\SumUpHttpClientInterface;
 
 /**
  * Class SumUpCUrlClient
@@ -21,24 +20,45 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
     private $baseUrl;
 
     /**
+     * Custom headers for every request.
+     *
+     * @var $customHeaders
+     */
+    private $customHeaders;
+
+    /**
      * SumUpCUrlClient constructor.
      *
-     * @param $baseUrl
+     * @param string $baseUrl
+     * @param array  $customHeaders
      */
-    public function __construct($baseUrl)
+    public function __construct($baseUrl, $customHeaders)
     {
         $this->baseUrl = $baseUrl;
+        $this->customHeaders = $customHeaders;
     }
 
     /**
-     * @inheritdoc
+     * @param string $method      The request method.
+     * @param string $url         The endpoint to send the request to.
+     * @param string $body        The body of the request.
+     * @param array  $headers     The headers of the request.
+     *
+     * @return Response
+     *
+     * @throws SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpValidationException
+     * @throws SumUpSDKException
      */
     public function send($method, $url, $body, $headers = [])
     {
+        $reqHeaders = array_merge($headers, $this->customHeaders);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl . $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->formatHeaders($headers));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->formatHeaders($reqHeaders));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
         if (!empty($body)) {
             $payload = json_encode($body);

@@ -53,6 +53,10 @@ class Payouts implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getPayouts($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
@@ -82,6 +86,7 @@ class Payouts implements SumUpService
         $path = '/v0.1/me/financials/payouts?' . $queryParams;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, null, $headers);
     }
 
@@ -96,6 +101,10 @@ class Payouts implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true)
     {
@@ -122,6 +131,7 @@ class Payouts implements SumUpService
         $path = '/v0.1/me/financials/transactions?' . $queryParams;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, null, $headers);
     }
 }

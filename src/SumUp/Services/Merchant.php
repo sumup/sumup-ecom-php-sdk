@@ -45,12 +45,18 @@ class Merchant implements SumUpService
      * Get merchant's profile.
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getProfile()
     {
         $path = '/v0.1/me/merchant-profile';
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -62,6 +68,10 @@ class Merchant implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function updateProfile(array $data)
     {
@@ -71,6 +81,7 @@ class Merchant implements SumUpService
         $path = '/v0.1/me/merchant-profile';
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('PUT', $path, $data, $headers);
     }
 
@@ -78,12 +89,18 @@ class Merchant implements SumUpService
      * Get data for going business as.
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getDoingBusinessAs()
     {
         $path = '/v0.1/me/merchant-profile/doing-business-as';
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -95,6 +112,10 @@ class Merchant implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function updateDoingBusinessAs(array $data)
     {
@@ -104,6 +125,7 @@ class Merchant implements SumUpService
         $path = '/v0.1/me/merchant-profile/doing-business-as';
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('PUT', $path, $data, $headers);
     }
 }

@@ -42,4 +42,17 @@ class Headers
     {
         return ['Authorization' => 'Bearer ' . $accessToken->getValue()];
     }
+
+    /**
+     * Get custom array.
+     *
+     * @return array
+     */
+    public static function getTrk()
+    {
+        $pathToComposer = realpath(dirname(__FILE__) . '/../../../composer.json');
+        $content = file_get_contents($pathToComposer);
+        $content = json_decode($content, true);
+        return ['X-SDK' => 'PHP/v' . $content['version']];
+    }
 }

@@ -26,22 +26,41 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
     private $guzzleClient;
 
     /**
+     * Custom headers for every request.
+     *
+     * @var $customHeaders
+     */
+    private $customHeaders;
+
+    /**
      * SumUpGuzzleHttpClient constructor.
      *
      * @param $baseUrl
      */
-    public function __construct($baseUrl)
+    public function __construct($baseUrl, $customHeaders)
     {
         $this->guzzleClient = new Client(['base_uri' => $baseUrl]);
+        $this->customHeaders = $customHeaders;
     }
 
     /**
-     * @inheritdoc
+     * @param string $method      The request method.
+     * @param string $url         The endpoint to send the request to.
+     * @param string $body        The body of the request.
+     * @param array  $headers     The headers of the request.
+     *
+     * @return Response
+     *
+     * @throws SumUpConnectionException
+     * @throws SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpValidationException
+     * @throws SumUpSDKException
      */
     public function send($method, $url, $body, $headers = [])
     {
         $options = [
-            'headers' => $headers,
+            'headers' => array_merge($headers, $this->customHeaders),
             'json' => $body
         ];
 

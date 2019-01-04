@@ -49,6 +49,10 @@ class Transactions implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function findById($transactionId)
     {
@@ -58,6 +62,7 @@ class Transactions implements SumUpService
         $path = '/v0.1/me/transactions?id=' . $transactionId;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -69,6 +74,10 @@ class Transactions implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function findByInternalId($internalId)
     {
@@ -78,6 +87,7 @@ class Transactions implements SumUpService
         $path = '/v0.1/me/transactions?internal_id=' . $internalId;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -89,6 +99,10 @@ class Transactions implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function findByTransactionCode($transactionCode)
     {
@@ -98,6 +112,7 @@ class Transactions implements SumUpService
         $path = '/v0.1/me/transactions?transaction_code=' . $transactionCode;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -107,6 +122,11 @@ class Transactions implements SumUpService
      * @param array $filters
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getTransactionHistory($filters = [])
     {
@@ -134,6 +154,7 @@ class Transactions implements SumUpService
         $path = '/v0.1/me/transactions/history?' . $queryParams;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -146,6 +167,10 @@ class Transactions implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function refund($transactionId, $amount)
     {
@@ -161,6 +186,7 @@ class Transactions implements SumUpService
         $path = '/v0.1/me/refund/' . $transactionId;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('POST', $path, $payload, $headers);
     }
 
@@ -173,6 +199,10 @@ class Transactions implements SumUpService
      * @return \SumUp\HttpClients\Response
      *
      * @throws SumUpArgumentException
+     * @throws \SumUp\Exceptions\SumUpConnectionException
+     * @throws \SumUp\Exceptions\SumUpResponseException
+     * @throws \SumUp\Exceptions\SumUpAuthenticationException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function getReceipt($transactionId, $merchantId)
     {
@@ -186,6 +216,7 @@ class Transactions implements SumUpService
         $path = '/v1.0/receipts/' . $transactionId . '?' . $queryParams;
         $headers = Headers::getCTJson();
         $headers += Headers::getAuth($this->accessToken);
+        $headers += Headers::getTrk();
         return $this->client->send('GET', $path, [], $headers);
     }
 }

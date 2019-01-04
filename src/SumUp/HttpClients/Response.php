@@ -4,6 +4,7 @@ namespace SumUp\HttpClients;
 
 use SumUp\Exceptions\SumUpAuthenticationException;
 use SumUp\Exceptions\SumUpResponseException;
+use SumUp\Exceptions\SumUpServerException;
 use SumUp\Exceptions\SumUpValidationException;
 
 /**
@@ -35,6 +36,9 @@ class Response
      *
      * @throws SumUpAuthenticationException
      * @throws SumUpResponseException
+     * @throws SumUpValidationException
+     * @throws SumUpServerException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      * @throws SumUpValidationException
      */
     public function __construct($httpResponseCode, $body)
@@ -73,6 +77,8 @@ class Response
      * @throws SumUpAuthenticationException
      * @throws SumUpResponseException
      * @throws SumUpValidationException
+     * @throws SumUpServerException
+     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     protected function parseBody($body)
     {
@@ -88,6 +94,14 @@ class Response
                 $invalidFields[] = $errorObject->param;
             }
             throw new SumUpValidationException($invalidFields, $this->httpResponseCode);
+        }
+        if($this->httpResponseCode >= 400) {
+            if (isset($body) && isset($body->message)) {
+                $message = $body->message;
+            } else {
+                $message = $body;
+            }
+            throw new SumUpServerException($message, $this->httpResponseCode);
         }
         if($this->httpResponseCode >= 400) {
             if (isset($body) && isset($body->message)) {

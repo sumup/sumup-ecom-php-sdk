@@ -34,7 +34,7 @@ class HttpClientsFactory
         if ($customHttpClient) {
             return $customHttpClient;
         }
-        return self::detectDefaultClient($appConfig->getBaseURL(), $appConfig->getUseGuzzle());
+        return self::detectDefaultClient($appConfig->getBaseURL(), $appConfig->getUseGuzzle(), $appConfig->getCustomHeaders());
     }
 
     /**
@@ -47,13 +47,13 @@ class HttpClientsFactory
      *
      * @throws SumUpConfigurationException
      */
-    private static function detectDefaultClient($baseURL, $forceUseGuzzle)
+    private static function detectDefaultClient($baseURL, $forceUseGuzzle, $customHeaders)
     {
         if (extension_loaded('curl') && !$forceUseGuzzle) {
-            return new SumUpCUrlClient($baseURL);
+            return new SumUpCUrlClient($baseURL, $customHeaders);
         }
         if (class_exists('GuzzleHttp\Client')) {
-            return new SumUpGuzzleHttpClient($baseURL);
+            return new SumUpGuzzleHttpClient($baseURL, $customHeaders);
         }
 
         throw new SumUpConfigurationException('No default http client found. Please install cURL or GuzzleHttp.');

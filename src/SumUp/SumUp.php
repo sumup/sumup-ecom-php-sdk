@@ -95,8 +95,6 @@ class SumUp
      * @param ApplicationConfigurationInterface|null $config
      *
      * @return Authorization
-     *
-     * @throws SumUpSDKException
      */
     public function getAuthorizationService(ApplicationConfigurationInterface $config = null)
     {
@@ -114,8 +112,6 @@ class SumUp
      * @param AccessToken|null $accessToken
      *
      * @return Checkouts
-     *
-     * @throws SumUpSDKException
      */
     public function getCheckoutService(AccessToken $accessToken = null)
     {
@@ -133,8 +129,6 @@ class SumUp
      * @param AccessToken|null $accessToken
      *
      * @return Customers
-     *
-     * @throws SumUpSDKException
      */
     public function getCustomerService(AccessToken $accessToken = null)
     {
@@ -152,8 +146,6 @@ class SumUp
      * @param AccessToken|null $accessToken
      *
      * @return Transactions
-     *
-     * @throws SumUpSDKException
      */
     public function getTransactionService(AccessToken $accessToken = null)
     {
@@ -171,8 +163,6 @@ class SumUp
      * @param AccessToken|null $accessToken
      *
      * @return Merchant
-     *
-     * @throws SumUpSDKException
      */
     public function getMerchantService(AccessToken $accessToken = null)
     {
@@ -188,9 +178,8 @@ class SumUp
      * Get the service for payouts.
      *
      * @param AccessToken|null $accessToken
-     * @return Payouts
      *
-     * @throws SumUpSDKException
+     * @return Payouts
      */
     public function getPayoutService(AccessToken $accessToken = null)
     {
