@@ -75,7 +75,7 @@ class Merchant implements SumUpService
      */
     public function updateProfile(array $data)
     {
-        if(!isset($data)) {
+        if (!isset($data)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile';
@@ -119,7 +119,7 @@ class Merchant implements SumUpService
      */
     public function updateDoingBusinessAs(array $data)
     {
-        if(!isset($data)) {
+        if (!isset($data)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile/doing-business-as';

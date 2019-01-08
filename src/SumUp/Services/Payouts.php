@@ -60,19 +60,19 @@ class Payouts implements SumUpService
      */
     public function getPayouts($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
-        if(!isset($startDate)) {
+        if (!isset($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
         }
-        if(!isset($endDate)) {
+        if (!isset($endDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('end date'));
         }
-        if(!isset($limit) || !is_int($limit)) {
+        if (!isset($limit) || !is_int($limit)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
         }
-        if(!isset($descendingOrder)) {
+        if (!isset($descendingOrder)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
-        if(!isset($format)) {
+        if (!isset($format)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
         }
         $filters = [
@@ -109,16 +109,16 @@ class Payouts implements SumUpService
      */
     public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
-        if(!isset($startDate)) {
+        if (!isset($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
         }
-        if(!isset($endDate)) {
+        if (!isset($endDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('end date'));
         }
-        if(!isset($limit) || !is_int($limit)) {
+        if (!isset($limit) || !is_int($limit)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
         }
-        if(!isset($descendingOrder)) {
+        if (!isset($descendingOrder)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
         $filters = [

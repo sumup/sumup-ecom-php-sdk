@@ -279,7 +279,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      */
     protected function setAppId($appId)
     {
-        if(!isset($appId)) {
+        if (!isset($appId)) {
             throw new SumUpConfigurationException('Missing mandatory parameter app_id');
         }
         $this->appId = $appId;
@@ -294,7 +294,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      */
     protected function setAppSecret($appSecret)
     {
-        if(!isset($appSecret)) {
+        if (!isset($appSecret)) {
             throw new SumUpConfigurationException('Missing mandatory parameter app_secret');
         }
         $this->appSecret = $appSecret;
@@ -309,7 +309,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      */
     protected function setGrantType($grantType)
     {
-        if(!in_array($grantType, ['authorization_code', 'client_credentials', 'password'])) {
+        if (!in_array($grantType, ['authorization_code', 'client_credentials', 'password'])) {
             throw new SumUpConfigurationException('Invalid parameter for grant_type. \
             Allowed values are: \'authorization_code\'|\'client_credentials\'|\'password\'');
         }

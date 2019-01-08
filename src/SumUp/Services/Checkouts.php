@@ -62,16 +62,16 @@ class Checkouts implements SumUpService
      */
     public function create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null)
     {
-        if(empty($amount) || !is_numeric($amount)) {
+        if (empty($amount) || !is_numeric($amount)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('amount'));
         }
-        if(empty($currency)) {
+        if (empty($currency)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('currency'));
         }
-        if(empty($checkoutRef)) {
+        if (empty($checkoutRef)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout reference id'));
         }
-        if(empty($payToEmail)) {
+        if (empty($payToEmail)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('pay to email'));
         }
         $payload = [
@@ -81,10 +81,10 @@ class Checkouts implements SumUpService
             'pay_to_email' => $payToEmail,
             'description' => $description
         ];
-        if(isset($payFromEmail)) {
+        if (isset($payFromEmail)) {
             $payload['pay_from_email'] = $payFromEmail;
         }
-        if(isset($returnURL)) {
+        if (isset($returnURL)) {
             $payload['return_url'] = $returnURL;
         }
         $path = '/v0.1/checkouts';
@@ -109,7 +109,7 @@ class Checkouts implements SumUpService
      */
     public function findById($checkoutId)
     {
-        if(empty($checkoutId)) {
+        if (empty($checkoutId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
         $path = '/v0.1/checkouts/' . $checkoutId;
@@ -134,7 +134,7 @@ class Checkouts implements SumUpService
      */
     public function findByReferenceId($referenceId)
     {
-        if(empty($referenceId)) {
+        if (empty($referenceId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('reference id'));
         }
         $path = '/v0.1/checkouts?checkout_reference=' . $referenceId;
@@ -159,7 +159,7 @@ class Checkouts implements SumUpService
      */
     public function delete($checkoutId)
     {
-        if(empty($checkoutId)) {
+        if (empty($checkoutId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
         $path = '/v0.1/checkouts/' . $checkoutId;
@@ -187,16 +187,16 @@ class Checkouts implements SumUpService
      */
     public function pay($checkoutId, $customerId, $cardToken, $installments = 1)
     {
-        if(empty($checkoutId)) {
+        if (empty($checkoutId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
         }
-        if(empty($customerId)) {
+        if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
-        if(empty($cardToken)) {
+        if (empty($cardToken)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('card token'));
         }
-        if(empty($installments) || !is_int($installments)) {
+        if (empty($installments) || !is_int($installments)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('installments'));
         }
         $payload = [

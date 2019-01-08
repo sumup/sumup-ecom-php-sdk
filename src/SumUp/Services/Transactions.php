@@ -56,7 +56,7 @@ class Transactions implements SumUpService
      */
     public function findById($transactionId)
     {
-        if(empty($transactionId)) {
+        if (empty($transactionId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
         $path = '/v0.1/me/transactions?id=' . $transactionId;
@@ -81,7 +81,7 @@ class Transactions implements SumUpService
      */
     public function findByInternalId($internalId)
     {
-        if(empty($internalId)) {
+        if (empty($internalId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('internal id'));
         }
         $path = '/v0.1/me/transactions?internal_id=' . $internalId;
@@ -106,7 +106,7 @@ class Transactions implements SumUpService
      */
     public function findByTransactionCode($transactionCode)
     {
-        if(empty($transactionCode)) {
+        if (empty($transactionCode)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction code'));
         }
         $path = '/v0.1/me/transactions?transaction_code=' . $transactionCode;
@@ -174,10 +174,10 @@ class Transactions implements SumUpService
      */
     public function refund($transactionId, $amount)
     {
-        if(empty($transactionId)) {
+        if (empty($transactionId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
-        if(empty($amount)) {
+        if (empty($amount)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('amount'));
         }
         $payload = [
@@ -206,10 +206,10 @@ class Transactions implements SumUpService
      */
     public function getReceipt($transactionId, $merchantId)
     {
-        if(empty($transactionId)) {
+        if (empty($transactionId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
-        if(empty($merchantId)) {
+        if (empty($merchantId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('merchant id'));
         }
         $queryParams = http_build_query(['mid' => $merchantId]);

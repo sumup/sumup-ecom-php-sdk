@@ -66,44 +66,44 @@ class Customers implements SumUpService
      */
     public function create($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
-        if(empty($customerId)) {
+        if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $personalDetails = [];
         $address = [];
 
-        if(isset($firstName)) {
+        if (isset($firstName)) {
             $personalDetails['first_name'] = $firstName;
         }
-        if(isset($lastName)) {
+        if (isset($lastName)) {
             $personalDetails['last_name'] = $lastName;
         }
-        if(isset($email)) {
+        if (isset($email)) {
             $personalDetails['email'] = $email;
         }
-        if(isset($phone)) {
+        if (isset($phone)) {
             $personalDetails['phone'] = $phone;
         }
 
-        if(isset($city)) {
+        if (isset($city)) {
             $address['city'] = $city;
         }
-        if(isset($country)) {
+        if (isset($country)) {
             $address['country'] = $country;
         }
-        if(isset($line1)) {
+        if (isset($line1)) {
             $address['line1'] = $line1;
         }
-        if(isset($line2)) {
+        if (isset($line2)) {
             $address['line2'] = $line2;
         }
-        if(isset($postalCode)) {
+        if (isset($postalCode)) {
             $address['postalCode'] = $postalCode;
         }
-        if(isset($state)) {
+        if (isset($state)) {
             $address['state'] = $state;
         }
-        if(count($address) > 0) {
+        if (count($address) > 0) {
             $personalDetails['address'] = $address;
         }
         $payload = [
@@ -142,44 +142,44 @@ class Customers implements SumUpService
      */
     public function update($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
     {
-        if(empty($customerId)) {
+        if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $personalDetails = [];
         $address = [];
 
-        if(isset($firstName)) {
+        if (isset($firstName)) {
             $personalDetails['first_name'] = $firstName;
         }
-        if(isset($lastName)) {
+        if (isset($lastName)) {
             $personalDetails['last_name'] = $lastName;
         }
-        if(isset($email)) {
+        if (isset($email)) {
             $personalDetails['email'] = $email;
         }
-        if(isset($phone)) {
+        if (isset($phone)) {
             $personalDetails['phone'] = $phone;
         }
 
-        if(isset($city)) {
+        if (isset($city)) {
             $address['city'] = $city;
         }
-        if(isset($country)) {
+        if (isset($country)) {
             $address['country'] = $country;
         }
-        if(isset($line1)) {
+        if (isset($line1)) {
             $address['line1'] = $line1;
         }
-        if(isset($line2)) {
+        if (isset($line2)) {
             $address['line2'] = $line2;
         }
-        if(isset($postalCode)) {
+        if (isset($postalCode)) {
             $address['postalCode'] = $postalCode;
         }
-        if(isset($state)) {
+        if (isset($state)) {
             $address['state'] = $state;
         }
-        if(count($address) > 0) {
+        if (count($address) > 0) {
             $personalDetails['address'] = $address;
         }
         $payload = [
@@ -208,7 +208,7 @@ class Customers implements SumUpService
      */
     public function get($customerId)
     {
-        if(empty($customerId)) {
+        if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $path = '/v0.1/customers/' . $customerId;
@@ -233,7 +233,7 @@ class Customers implements SumUpService
      */
     public function getPaymentInstruments($customerId)
     {
-        if(empty($customerId)) {
+        if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
@@ -259,10 +259,10 @@ class Customers implements SumUpService
      */
     public function deletePaymentInstruments($customerId, $cardToken)
     {
-        if(empty($customerId)) {
+        if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
-        if(empty($cardToken)) {
+        if (empty($cardToken)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('card token'));
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;

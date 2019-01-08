@@ -82,20 +82,20 @@ class Response
      */
     protected function parseBody($body)
     {
-        if(isset($body->error_code) && $body->error_code === 'NOT_AUTHORIZED') {
+        if (isset($body->error_code) && $body->error_code === 'NOT_AUTHORIZED') {
             throw new SumUpAuthenticationException($body->error_message, $this->httpResponseCode);
         }
-        if(isset($body->error_code) && $body->error_code === 'MISSING') {
+        if (isset($body->error_code) && $body->error_code === 'MISSING') {
             throw new SumUpValidationException([$body->param], $this->httpResponseCode);
         }
-        if(is_array($body) && isset($body[0]->error_code) && $body[0]->error_code === 'MISSING') {
+        if (is_array($body) && isset($body[0]->error_code) && $body[0]->error_code === 'MISSING') {
             $invalidFields = [];
             foreach ($body as $errorObject) {
                 $invalidFields[] = $errorObject->param;
             }
             throw new SumUpValidationException($invalidFields, $this->httpResponseCode);
         }
-        if($this->httpResponseCode >= 500) {
+        if ($this->httpResponseCode >= 500) {
             if (isset($body) && isset($body->message)) {
                 $message = $body->message;
             } else {
@@ -103,7 +103,7 @@ class Response
             }
             throw new SumUpServerException($message, $this->httpResponseCode);
         }
-        if($this->httpResponseCode >= 400) {
+        if ($this->httpResponseCode >= 400) {
             if (isset($body) && isset($body->message)) {
                 $message = $body->message;
             } else {

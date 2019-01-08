@@ -77,9 +77,9 @@ class SumUp
      */
     public function refreshToken($refreshToken = null)
     {
-        if(isset($refreshToken)) {
+        if (isset($refreshToken)) {
             $rToken = $refreshToken;
-        } else if(!isset($refreshToken) && !isset($this->accessToken)) {
+        } else if (!isset($refreshToken) && !isset($this->accessToken)) {
             throw new SumUpConfigurationException('There is no refresh token');
         } else {
             $rToken = $this->accessToken->getRefreshToken();
@@ -98,7 +98,7 @@ class SumUp
      */
     public function getAuthorizationService(ApplicationConfigurationInterface $config = null)
     {
-        if(empty($config)) {
+        if (empty($config)) {
             $cfg = $this->appConfig;
         } else {
             $cfg = $config;
@@ -115,7 +115,7 @@ class SumUp
      */
     public function getCheckoutService(AccessToken $accessToken = null)
     {
-        if(!empty($accessToken)) {
+        if (!empty($accessToken)) {
             $accToken = $accessToken;
         } else {
             $accToken = $this->accessToken;
@@ -132,7 +132,7 @@ class SumUp
      */
     public function getCustomerService(AccessToken $accessToken = null)
     {
-        if(!empty($accessToken)) {
+        if (!empty($accessToken)) {
             $accToken = $accessToken;
         } else {
             $accToken = $this->accessToken;
@@ -149,7 +149,7 @@ class SumUp
      */
     public function getTransactionService(AccessToken $accessToken = null)
     {
-        if(!empty($accessToken)) {
+        if (!empty($accessToken)) {
             $accToken = $accessToken;
         } else {
             $accToken = $this->accessToken;
@@ -166,7 +166,7 @@ class SumUp
      */
     public function getMerchantService(AccessToken $accessToken = null)
     {
-        if(!empty($accessToken)) {
+        if (!empty($accessToken)) {
             $accToken = $accessToken;
         } else {
             $accToken = $this->accessToken;
@@ -183,7 +183,7 @@ class SumUp
      */
     public function getPayoutService(AccessToken $accessToken = null)
     {
-        if(!empty($accessToken)) {
+        if (!empty($accessToken)) {
             $accToken = $accessToken;
         } else {
             $accToken = $this->accessToken;

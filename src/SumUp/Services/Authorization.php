@@ -51,7 +51,7 @@ class Authorization implements SumUpService
     public function getToken(SumUpHttpClientInterface $client)
     {
         $accessToken = null;
-        if(!empty($this->appConfig->getDefaultAccessToken())) {
+        if (!empty($this->appConfig->getDefaultAccessToken())) {
             $accessToken = new AccessToken(
                 $this->appConfig->getDefaultAccessToken(),
                 '',
@@ -109,7 +109,7 @@ class Authorization implements SumUpService
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
-        if(!empty($resBody->scope)) {
+        if (!empty($resBody->scope)) {
             $scopes = explode(' ', $resBody->scope);
         }
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in, $scopes, $resBody->refresh_token);
@@ -157,10 +157,10 @@ class Authorization implements SumUpService
      */
     public function getTokenByPassword(SumUpHttpClientInterface $client)
     {
-        if(empty($this->appConfig->getUsername())) {
+        if (empty($this->appConfig->getUsername())) {
             throw new SumUpConfigurationException(ExceptionMessages::getMissingParamMsg('username'));
         }
-        if(empty($this->appConfig->getPassword())) {
+        if (empty($this->appConfig->getPassword())) {
             throw new SumUpConfigurationException(ExceptionMessages::getMissingParamMsg("password"));
         }
         $payload = [
@@ -176,7 +176,7 @@ class Authorization implements SumUpService
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
-        if(!empty($resBody->scope)) {
+        if (!empty($resBody->scope)) {
             $scopes = explode(' ', $resBody->scope);
         }
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in, $scopes, $resBody->refresh_token);
@@ -198,7 +198,7 @@ class Authorization implements SumUpService
      */
     public function refreshToken(SumUpHttpClientInterface $client, $refreshToken)
     {
-        if(empty($refreshToken)) {
+        if (empty($refreshToken)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('refresh token'));
         }
         $payload = [
@@ -213,7 +213,7 @@ class Authorization implements SumUpService
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
-        if(!empty($resBody->scope)) {
+        if (!empty($resBody->scope)) {
             $scopes = explode(' ', $resBody->scope);
         }
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in, $scopes, $resBody->refresh_token);
