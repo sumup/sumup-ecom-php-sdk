@@ -96,7 +96,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     protected $useGuzzle;
 
     /**
-     * Send custom headers with every request.
+     * Custom headers to be sent with every request.
      *
      * @var array $customHeaders
      */
