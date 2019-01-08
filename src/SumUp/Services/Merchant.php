@@ -86,7 +86,7 @@ class Merchant implements SumUpService
     }
 
     /**
-     * Get data for going business as.
+     * Get data for doing business as.
      *
      * @return \SumUp\HttpClients\Response
      *
