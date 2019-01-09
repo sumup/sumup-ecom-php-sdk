@@ -45,16 +45,8 @@ class Customers implements SumUpService
      * Create new customer.
      *
      * @param $customerId
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
-     * @param string $phone
-     * @param string $city
-     * @param string $country
-     * @param string $line1
-     * @param string $line2
-     * @param string $postalCode
-     * @param string $state
+     * @param array $customerDetails
+     * @param array $customerAddress
      *
      * @return \SumUp\HttpClients\Response
      *
@@ -64,71 +56,49 @@ class Customers implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function create($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
+    public function create($customerId, array $customerDetails = [], array $customerAddress = [])
     {
         if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
-        $personalDetails = [];
-        $address = [];
 
-        if (isset($firstName)) {
-            $personalDetails['first_name'] = $firstName;
-        }
-        if (isset($lastName)) {
-            $personalDetails['last_name'] = $lastName;
-        }
-        if (isset($email)) {
-            $personalDetails['email'] = $email;
-        }
-        if (isset($phone)) {
-            $personalDetails['phone'] = $phone;
+        $details = array_merge([
+            'first_name' => null,
+            'last_name' => null,
+            'email' => null,
+            'phone' => null
+        ], $customerDetails);
+        $details = array_filter($details);
+
+        $address = array_merge([
+            'city' => null,
+            'country' => null,
+            'line1' => null,
+            'line2' => null,
+            'state' => null,
+            'postalCode' => null
+        ], $customerAddress);
+        $address = array_filter($address);
+
+        if (sizeof($address) > 0) {
+            $details['address'] = $address;
         }
 
-        if (isset($city)) {
-            $address['city'] = $city;
-        }
-        if (isset($country)) {
-            $address['country'] = $country;
-        }
-        if (isset($line1)) {
-            $address['line1'] = $line1;
-        }
-        if (isset($line2)) {
-            $address['line2'] = $line2;
-        }
-        if (isset($postalCode)) {
-            $address['postalCode'] = $postalCode;
-        }
-        if (isset($state)) {
-            $address['state'] = $state;
-        }
-        if (count($address) > 0) {
-            $personalDetails['address'] = $address;
-        }
         $payload = [
             'customer_id' => $customerId,
-            'personal_details' => $personalDetails
+            'personal_details' => $details
         ];
         $path = '/v0.1/customers';
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send( 'POST', $path, $payload, $headers);
+        return $this->client->send('POST', $path, $payload, $headers);
     }
 
     /**
      * Update existing customer.
      *
      * @param $customerId
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
-     * @param string $phone
-     * @param string $city
-     * @param string $country
-     * @param string $line1
-     * @param string $line2
-     * @param string $postalCode
-     * @param string $state
+     * @param array $customerDetails
+     * @param array $customerAddress
      *
      * @return \SumUp\HttpClients\Response
      *
@@ -138,55 +108,40 @@ class Customers implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function update($customerId, $firstName = null, $lastName = null, $email = null, $phone = null, $city = null, $country = null, $line1 = null, $line2 = null, $postalCode = null, $state = null)
+    public function update($customerId, array $customerDetails = [], array $customerAddress = [])
     {
         if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
-        $personalDetails = [];
-        $address = [];
 
-        if (isset($firstName)) {
-            $personalDetails['first_name'] = $firstName;
-        }
-        if (isset($lastName)) {
-            $personalDetails['last_name'] = $lastName;
-        }
-        if (isset($email)) {
-            $personalDetails['email'] = $email;
-        }
-        if (isset($phone)) {
-            $personalDetails['phone'] = $phone;
-        }
+        $details = array_merge([
+            'first_name' => null,
+            'last_name' => null,
+            'email' => null,
+            'phone' => null
+        ], $customerDetails);
+        $details = array_filter($details);
 
-        if (isset($city)) {
-            $address['city'] = $city;
-        }
-        if (isset($country)) {
-            $address['country'] = $country;
-        }
-        if (isset($line1)) {
-            $address['line1'] = $line1;
-        }
-        if (isset($line2)) {
-            $address['line2'] = $line2;
-        }
-        if (isset($postalCode)) {
-            $address['postalCode'] = $postalCode;
-        }
-        if (isset($state)) {
-            $address['state'] = $state;
-        }
-        if (count($address) > 0) {
-            $personalDetails['address'] = $address;
+        $address = array_merge([
+            'city' => null,
+            'country' => null,
+            'line1' => null,
+            'line2' => null,
+            'state' => null,
+            'postalCode' => null
+        ], $customerAddress);
+        $address = array_filter($address);
+
+        if (sizeof($address) > 0) {
+            $details['address'] = $address;
         }
         $payload = [
             'customer_id' => $customerId,
-            'personal_details' => $personalDetails
+            'personal_details' => $details
         ];
         $path = '/v0.1/customers/' . $customerId;
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send( 'PUT', $path, $payload, $headers);
+        return $this->client->send('PUT', $path, $payload, $headers);
     }
 
     /**
@@ -209,7 +164,7 @@ class Customers implements SumUpService
         }
         $path = '/v0.1/customers/' . $customerId;
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET',  $path, [], $headers);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -232,7 +187,7 @@ class Customers implements SumUpService
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET',  $path, [], $headers);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
@@ -259,6 +214,6 @@ class Customers implements SumUpService
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('DELETE',  $path, [], $headers);
+        return $this->client->send('DELETE', $path, [], $headers);
     }
 }

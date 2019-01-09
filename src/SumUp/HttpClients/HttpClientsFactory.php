@@ -4,8 +4,6 @@ namespace SumUp\HttpClients;
 
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Application\ApplicationConfigurationInterface;
-use SumUp\HttpClients\SumUpHttpClientInterface;
-use SumUp\HttpClients\SumUpGuzzleHttpClient;
 
 /**
  * Class HttpClientsFactory
@@ -34,7 +32,7 @@ class HttpClientsFactory
         if ($customHttpClient) {
             return $customHttpClient;
         }
-        return self::detectDefaultClient($appConfig->getBaseURL(), $appConfig->getUseGuzzle(), $appConfig->getCustomHeaders());
+        return self::detectDefaultClient($appConfig->getBaseURL(), $appConfig->getForceGuzzle(), $appConfig->getCustomHeaders());
     }
 
     /**
