@@ -104,8 +104,7 @@ class Authorization implements SumUpService
             'scope' => $this->appConfig->getFormattedScopes(),
             'code' => $this->appConfig->getCode()
         ];
-        $headers = Headers::getCTJson();
-        $headers += Headers::getTrk();
+        $headers = Headers::getStandardHeaders();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
@@ -135,8 +134,7 @@ class Authorization implements SumUpService
             'client_secret' => $this->appConfig->getAppSecret(),
             'scope' => $this->appConfig->getFormattedScopes()
         ];
-        $headers = Headers::getCTJson();
-        $headers += Headers::getTrk();
+        $headers = Headers::getStandardHeaders();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in);
@@ -171,8 +169,7 @@ class Authorization implements SumUpService
             'username' => $this->appConfig->getUsername(),
             'password' => $this->appConfig->getPassword()
         ];
-        $headers = Headers::getCTJson();
-        $headers += Headers::getTrk();
+        $headers = Headers::getStandardHeaders();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
@@ -208,8 +205,7 @@ class Authorization implements SumUpService
             'refresh_token' => $refreshToken,
             'scope' => $this->appConfig->getFormattedScopes()
         ];
-        $headers = Headers::getCTJson();
-        $headers += Headers::getTrk();
+        $headers = Headers::getStandardHeaders();
         $response = $client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];

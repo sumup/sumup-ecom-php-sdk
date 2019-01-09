@@ -70,7 +70,7 @@ interface ApplicationConfigurationInterface
      *
      * @return bool
      */
-    public function getUseGuzzle();
+    public function getForceGuzzle();
 
     /**
      * Returns associative array with custom headers.

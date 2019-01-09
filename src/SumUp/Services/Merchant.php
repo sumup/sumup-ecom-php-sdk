@@ -54,9 +54,7 @@ class Merchant implements SumUpService
     public function getProfile()
     {
         $path = '/v0.1/me/merchant-profile';
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -75,13 +73,11 @@ class Merchant implements SumUpService
      */
     public function updateProfile(array $data)
     {
-        if (!isset($data)) {
+        if (empty($data)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile';
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('PUT', $path, $data, $headers);
     }
 
@@ -98,9 +94,7 @@ class Merchant implements SumUpService
     public function getDoingBusinessAs()
     {
         $path = '/v0.1/me/merchant-profile/doing-business-as';
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('GET', $path, [], $headers);
     }
 
@@ -119,13 +113,11 @@ class Merchant implements SumUpService
      */
     public function updateDoingBusinessAs(array $data)
     {
-        if (!isset($data)) {
+        if (empty($data)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
         }
         $path = '/v0.1/me/merchant-profile/doing-business-as';
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('PUT', $path, $data, $headers);
     }
 }

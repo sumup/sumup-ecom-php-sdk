@@ -111,9 +111,7 @@ class Customers implements SumUpService
             'personal_details' => $personalDetails
         ];
         $path = '/v0.1/customers';
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send( 'POST', $path, $payload, $headers);
     }
 
@@ -187,9 +185,7 @@ class Customers implements SumUpService
             'personal_details' => $personalDetails
         ];
         $path = '/v0.1/customers/' . $customerId;
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send( 'PUT', $path, $payload, $headers);
     }
 
@@ -212,9 +208,7 @@ class Customers implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $path = '/v0.1/customers/' . $customerId;
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('GET',  $path, [], $headers);
     }
 
@@ -237,9 +231,7 @@ class Customers implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('GET',  $path, [], $headers);
     }
 
@@ -266,9 +258,7 @@ class Customers implements SumUpService
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('card token'));
         }
         $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('DELETE',  $path, [], $headers);
     }
 }

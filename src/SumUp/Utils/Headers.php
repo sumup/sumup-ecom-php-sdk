@@ -12,6 +12,12 @@ use SumUp\Authentication\AccessToken;
 class Headers
 {
     /**
+     * Cached value of the project's version.
+     *
+     * @var string $cacheVersion
+     */
+    protected static $cacheVersion;
+    /**
      * Get the common header for Content-Type: application/json.
      *
      * @return array
@@ -50,9 +56,36 @@ class Headers
      */
     public static function getTrk()
     {
-        $pathToComposer = realpath(dirname(__FILE__) . '/../../../composer.json');
-        $content = file_get_contents($pathToComposer);
-        $content = json_decode($content, true);
-        return ['X-SDK' => 'PHP/v' . $content['version']];
+        $version = self::getProjectVersion();
+        return ['X-SDK' => 'PHP/v' . $version];
+    }
+
+    /**
+     * Get the version of the project accroding to the composer.json
+     *
+     * @return string
+     */
+    public static function getProjectVersion()
+    {
+        if (is_null(self::$cacheVersion)) {
+            $pathToComposer = realpath(dirname(__FILE__) . '/../../../composer.json');
+            $content = file_get_contents($pathToComposer);
+            $content = json_decode($content, true);
+            self::$cacheVersion = $content['version'];
+        }
+
+        return self::$cacheVersion;
+    }
+
+    /**
+     * Get standard headers needed for every request.
+     *
+     * @return array
+     */
+    public static function getStandardHeaders()
+    {
+        $headers = self::getCTJson();
+        $headers += self::getTrk();
+        return $headers;
     }
 }

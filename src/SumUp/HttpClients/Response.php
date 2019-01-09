@@ -24,7 +24,7 @@ class Response
     /**
      * The response body.
      *
-     * @var array
+     * @var mixed
      */
     protected $body;
 
@@ -44,7 +44,8 @@ class Response
     public function __construct($httpResponseCode, $body)
     {
         $this->httpResponseCode = $httpResponseCode;
-        $this->body = $this->parseBody($body);
+        $this->body = $body;
+        $this->parseResponseForErrors();
     }
 
     /**
@@ -68,9 +69,7 @@ class Response
     }
 
     /**
-     * Parses the body for containing errors.
-     *
-     * @param $body
+     * Parses the response for containing errors.
      *
      * @return mixed
      *
@@ -80,38 +79,28 @@ class Response
      * @throws SumUpServerException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    protected function parseBody($body)
+    protected function parseResponseForErrors()
     {
-        if (isset($body->error_code) && $body->error_code === 'NOT_AUTHORIZED') {
-            throw new SumUpAuthenticationException($body->error_message, $this->httpResponseCode);
+        if (isset($this->body->error_code) && $this->body->error_code === 'NOT_AUTHORIZED') {
+            throw new SumUpAuthenticationException($this->body->error_message, $this->httpResponseCode);
         }
-        if (isset($body->error_code) && $body->error_code === 'MISSING') {
-            throw new SumUpValidationException([$body->param], $this->httpResponseCode);
+        if (isset($this->body->error_code) && $this->body->error_code === 'MISSING') {
+            throw new SumUpValidationException([$this->body->param], $this->httpResponseCode);
         }
-        if (is_array($body) && isset($body[0]->error_code) && $body[0]->error_code === 'MISSING') {
+        if (is_array($this->body) && sizeof($this->body) > 0 && isset($this->body[0]->error_code) && $this->body[0]->error_code === 'MISSING') {
             $invalidFields = [];
-            foreach ($body as $errorObject) {
+            foreach ($this->body as $errorObject) {
                 $invalidFields[] = $errorObject->param;
             }
             throw new SumUpValidationException($invalidFields, $this->httpResponseCode);
         }
         if ($this->httpResponseCode >= 500) {
-            if (isset($body) && isset($body->message)) {
-                $message = $body->message;
-            } else {
-                $message = $body;
-            }
+            $message = (is_null($this->body) && is_null($this->body->message)) ? $this->body : $this->body->message;
             throw new SumUpServerException($message, $this->httpResponseCode);
         }
         if ($this->httpResponseCode >= 400) {
-            if (isset($body) && isset($body->message)) {
-                $message = $body->message;
-            } else {
-                $message = $body;
-            }
+            $message = (is_null($this->body) && is_null($this->body->message)) ? $this->body : $this->body->message;
             throw new SumUpResponseException($message, $this->httpResponseCode);
         }
-
-        return $body;
     }
 }

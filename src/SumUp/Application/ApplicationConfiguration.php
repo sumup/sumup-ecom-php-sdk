@@ -13,10 +13,13 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
 {
     /**
      * The default scopes that are recommended to be requested every time.
-     *
-     * @var array
      */
-    protected $defaultScopes = ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'];
+    const DEFAULT_SCOPES = ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'];
+
+    /**
+     * The possible values for grant type.
+     */
+    const GRANT_TYPES = ['authorization_code', 'client_credentials', 'password'];
 
     /**
      * The client ID.
@@ -91,9 +94,9 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Flag whether to use GuzzleHttp over cURL if both are present.
      *
-     * @var $useGuzzle
+     * @var $forceGuzzle
      */
-    protected $useGuzzle;
+    protected $forceGuzzle;
 
     /**
      * Custom headers to be sent with every request.
@@ -136,7 +139,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
         $this->code = $config['code'];
         $this->accessToken = $config['default_access_token'];
         $this->refreshToken = $config['default_refresh_token'];
-        $this->setUseGuzzle($config['use_guzzlehttp_over_curl']);
+        $this->setForceGuzzle($config['use_guzzlehttp_over_curl']);
         $this->setCustomHeaders($config['custom_headers']);
     }
 
@@ -255,9 +258,9 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return bool
      */
-    public function getUseGuzzle()
+    public function getForceGuzzle()
     {
-        return $this->useGuzzle;
+        return $this->forceGuzzle;
     }
 
     /**
@@ -273,13 +276,13 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Set application ID.
      *
-     * @param $appId
+     * @param string $appId
      *
      * @throws SumUpConfigurationException
      */
     protected function setAppId($appId)
     {
-        if (!isset($appId)) {
+        if (empty($appId)) {
             throw new SumUpConfigurationException('Missing mandatory parameter app_id');
         }
         $this->appId = $appId;
@@ -288,13 +291,13 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Set application secret.
      *
-     * @param $appSecret
+     * @param string $appSecret
      *
      * @throws SumUpConfigurationException
      */
     protected function setAppSecret($appSecret)
     {
-        if (!isset($appSecret)) {
+        if (empty($appSecret)) {
             throw new SumUpConfigurationException('Missing mandatory parameter app_secret');
         }
         $this->appSecret = $appSecret;
@@ -303,56 +306,50 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Set the authorization grant type.
      *
-     * @param $grantType
+     * @param array $grantType
      *
      * @throws SumUpConfigurationException
      */
     protected function setGrantType($grantType)
     {
-        if (!in_array($grantType, ['authorization_code', 'client_credentials', 'password'])) {
-            throw new SumUpConfigurationException('Invalid parameter for grant_type. \
-            Allowed values are: \'authorization_code\'|\'client_credentials\'|\'password\'');
+        if (!in_array($grantType, $this::GRANT_TYPES)) {
+            throw new SumUpConfigurationException('Invalid parameter for "grant_type". Allowed values are: ' . implode($this::GRANT_TYPES, ' | ') . '.');
         }
         $this->grantType = $grantType;
     }
 
     /**
-     * Set the scopes and always include the default ones
+     * Set the scopes and always include the default ones.
      *
      * @param array $scopes
      */
     protected function setScopes(array $scopes = [])
     {
-        $this->scopes = array_unique(array_merge($this->defaultScopes, $scopes), SORT_REGULAR);;
+        $this->scopes = array_unique(array_merge($this::DEFAULT_SCOPES, $scopes), SORT_REGULAR);;
     }
 
     /**
      * Set the flag whether to use GuzzleHttp.
      *
-     * @param $useGuzzle
+     * @param bool $forceGuzzle
      *
      * @throws SumUpConfigurationException
      */
-    protected function setUseGuzzle($useGuzzle)
+    protected function setForceGuzzle($forceGuzzle)
     {
-        if (!is_bool($useGuzzle)) {
+        if (!is_bool($forceGuzzle)) {
             throw new SumUpConfigurationException('Invalid value for boolean parameter use_guzzlehttp_over_curl.');
         }
-        $this->useGuzzle = $useGuzzle;
+        $this->forceGuzzle = $forceGuzzle;
     }
 
     /**
      * Set the associative array with custom headers.
      *
-     * @param $customHeaders
+     * @param array $customHeaders
      */
     public function setCustomHeaders($customHeaders)
     {
-        if (is_array($customHeaders)) {
-            $headers = $customHeaders;
-        } else {
-            $headers = [];
-        }
-        $this->customHeaders = $headers;
+        $this->customHeaders = is_array($customHeaders) ? $customHeaders : [];
     }
 }

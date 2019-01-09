@@ -60,19 +60,19 @@ class Payouts implements SumUpService
      */
     public function getPayouts($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
-        if (!isset($startDate)) {
+        if (empty($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
         }
-        if (!isset($endDate)) {
+        if (empty($endDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('end date'));
         }
-        if (!isset($limit) || !is_int($limit)) {
+        if (empty($limit) || !is_int($limit)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
         }
-        if (!isset($descendingOrder)) {
+        if (empty($descendingOrder)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
-        if (!isset($format)) {
+        if (empty($format)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
         }
         $filters = [
@@ -84,9 +84,7 @@ class Payouts implements SumUpService
         ];
         $queryParams = http_build_query($filters);
         $path = '/v0.1/me/financials/payouts?' . $queryParams;
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('GET', $path, null, $headers);
     }
 
@@ -109,17 +107,20 @@ class Payouts implements SumUpService
      */
     public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
     {
-        if (!isset($startDate)) {
+        if (empty($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
         }
-        if (!isset($endDate)) {
+        if (empty($endDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('end date'));
         }
-        if (!isset($limit) || !is_int($limit)) {
+        if (empty($limit) || !is_int($limit)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
         }
-        if (!isset($descendingOrder)) {
+        if (empty($descendingOrder)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
+        }
+        if (empty($format)) {
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
         }
         $filters = [
             'start_date' => $startDate,
@@ -130,9 +131,7 @@ class Payouts implements SumUpService
         ];
         $queryParams = http_build_query($filters);
         $path = '/v0.1/me/financials/transactions?' . $queryParams;
-        $headers = Headers::getCTJson();
-        $headers += Headers::getAuth($this->accessToken);
-        $headers += Headers::getTrk();
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('GET', $path, null, $headers);
     }
 }
