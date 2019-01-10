@@ -25,7 +25,7 @@ try {
     ]);
     $checkoutService = $sumup->getCheckoutService();
     $checkoutResponse = $checkoutService->create(/* pass here the required arguments */);
-    /* use the variable $checkoutResponse */
+//  use the variable $checkoutResponse
 } catch(\SumUp\Exceptions\SumUpSDKException $e) {
     echo 'SumUp SDK error: ' . $e->getMessage();
 }
@@ -54,7 +54,7 @@ $sumup = new \SumUp\SumUp([
 |custom_headers | This sends custom headers with every http request to SumUp server | `array` with key-value pairs containing the header's name (as key) and the header's value (as value) | `[]` | No	|
 |base_uri | This is the base location of SumUp's servers. This is not recommended to be used | `string` | '`https://api.sumup.com`'	| No |
 
-### Authorization
+## Authorization
 
 Every time you make an instance of the `\SumUp\SumUp` class you get a valid OAuth 2.0 access token. The access token is then passed automatically to every service call you make but of course you can override this (see examples below). In case you need the access token you can access it like this:
 
@@ -62,16 +62,16 @@ Every time you make an instance of the `\SumUp\SumUp` class you get a valid OAut
 $sumup = \SumUp\SumUp([
     'app_id' => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
-    // other configurations
+//  other configurations
 ]);
 $accessToken = $sumup->getAccessToken();
-// use the accessToken object as you need to
+//  use the accessToken object as you need to
 echo $accessToken->getValue() . ' ' . $accessToken->getRefreshToken();
 ```
 
 This SDK supports 3 authorization flows which are described in [this guide](https://developer.sumup.com/docs/authorization).
 
-* **Authorization code flow**
+### Authorization code flow
 
 ```php
 $sumup = new \SumUp\SumUp([
@@ -85,7 +85,7 @@ $sumup = new \SumUp\SumUp([
 
 For more information about this flow read more in [this guide](https://developer.sumup.com/docs/authorization#authorization-code-flow).
 
-* **Client credentials flow**
+### Client credentials flow
 
 ```php
 $sumup = new \SumUp\SumUp([
@@ -98,7 +98,7 @@ $sumup = new \SumUp\SumUp([
 
 For more information about this flow read more in [this guide](https://developer.sumup.com/docs/authorization#client-credentials-flow).
 
-* **Password flow**
+### Password flow
 
 ```php
 $sumup = new \SumUp\SumUp([
@@ -111,6 +111,8 @@ $sumup = new \SumUp\SumUp([
 ]);
 ```
 
+### Reuse access token
+
 In case you **already have a valid access token** you can **reuse it** like this:
 
 ```php
@@ -122,6 +124,8 @@ $sumup = new \SumUp\SumUp([
 ]);
 ```
 
+### Use refresh token
+
 Here is how to get a **new access token from a refresh token**:
 
 ```php
@@ -129,11 +133,12 @@ $sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
-    'default_access_token' => 'VALID-ACCESS-TOKEN',
     'default_refresh_token' => 'REFRESH-TOKEN'
 ]);
 $sumup->refreshToken();
 ```
+
+### Override access token
 
 You can always **initialize** some **service** with a new **access token** like this:
 
@@ -141,11 +146,93 @@ You can always **initialize** some **service** with a new **access token** like 
 $checkoutService = $sumup->getCheckoutService('VALID-ACCESS-TOKEN');
 ```
 
-### Services
+## Services
 
-### Exceptions handling
+To get a particular service you first need to create a `\SumUp\SumUp` object. Then from this object you can get any of the services we support in the SDK.
 
-Exceptions handling is as important part of our code. We pay attention to this detail and **we recommend to wrap every statement from the SDK with a `try {} catch() {}` clause**.
+Here is an example how to get transactions history:
+
+```php
+try {
+    $sumup = new \SumUp\SumUp([
+        'app_id' => 'YOUR-CLIENT-ID',
+        'app_secret' => 'YOUR-CLIENT-SECRET',
+        'grant_type' => 'authorization_code',
+        'scope' => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
+        'code' => 'YOUR-AUTHORIZATION-CODE'
+    ]);
+    $transactionsService = $sumup->getTransactionService();
+    $filters = [
+        'limit' => 100,
+        'statuses' => ['SUCCESSFUL', 'REFUND']
+    ];
+    $transactionsHistory = $transactionsService->getTransactionHistory($filters)->getBody();
+//  you can now iterate over the result in $transactionsHistory
+} catch (\SumUp\Exceptions\SumUpSDKException $e) {
+//  handle exceptions
+}
+```
+
+> All services' methods return response of type `\SumUp\HttpClients\Response` or throw an exception (view [exceptions handling](https://github.com/sumup/sumup-ecom-php-sdk#exceptions-handling)).
+
+### Checkouts
+
+You can get a service of type `\SumUp\Services\Checkouts` like this:
+
+```php
+$checkoutService = $sumup->getCheckoutService();
+```
+
+| Methods | Description |
+|--- |--- |
+| create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null) | Creates a new checkout.  | 
+| findById($checkoutId) | Returns a checkout if it finds one. |
+| findByReferenceId($referenceId) | Returns a checkout if it finds one. |
+| delete($checkoutId) | Deletes a checkout. |
+| pay($checkoutId, $customerId, $cardToken, $installments = 1) | Processes a payment and returns a transaction information.  |
+
+More information about checkouts can be found [here](https://developer.sumup.com/rest-api/#tag/Checkouts).
+
+### Customers
+
+You can get a service of type `\SumUp\Services\Customers` like this:
+
+```php
+$customerService = $sumup->getCustomerService();
+```
+
+| Methods | Description |
+|--- |--- |
+| create($customerId, array $customerDetails = [], array $customerAddress = []) | Creates a new customer. |
+| update($customerId, array $customerDetails = [], array $customerAddress = []) | Edits a customer. |
+| get($customerId) | Returns an existing customer. |
+| getPaymentInstruments($customerId) | Returns payment instruments for a customer. |
+| deletePaymentInstruments($customerId, $cardToken) | Deletes a payment instrument for a customer. |
+
+More information about checkouts can be found [here](https://developer.sumup.com/rest-api/#tag/Customers).
+
+### Transactions
+
+You can get a service of type `\SumUp\Services\Transactions` like this:
+
+```php
+$transactionService = $sumup->getTransactionService();
+```
+
+| Methods | Description |
+|--- |--- |
+| findById($transactionId) | Returns data about a transaction. |
+| findByInternalId($internalId) | Returns data about a transaction. |
+| findByTransactionCode($transactionCode) | Returns data about a transaction. |
+| getTransactionHistory($filters = []) | Returns all transactions according to the provided filters. |
+| refund($transactionId, $amount) | Refunds a transaction. |
+| getReceipt($transactionId, $merchantId) | Returns receipt information about a transaction. |
+
+More information about checkouts can be found [here](https://developer.sumup.com/rest-api/#tag/Transactions).
+
+## Exceptions handling
+
+Exceptions handling is an important part of our code. We pay attention to this detail and **we recommend to wrap every statement from this SDK with a `try {} catch() {}` clause**.
 
 You should at least handle `\SumUp\Exceptions\SumUpSDKException` exception but if you want you can handle all sorts of exceptions.
 
@@ -163,8 +250,8 @@ try {
 
 Here is a table with all the exceptions that are thrown from this SDK:
  
-|Exception | Conditions   	|
-|---	   |---	            |
+| Exception | Conditions   	|
+|---	    |---	        |
 |`\SumUp\Exceptions\SumUpAuthenticationException`| This exception is thrown when there is no access token or it is already expired. |
 |`\SumUp\Exceptions\SumUpConnectionException`    | This exception is thrown when there is connectivity issues over the network. 	|
 |`\SumUp\Exceptions\SumUpResponseException`   	 | This exception is thrown when there are some [4xx http errors](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_errors) such as `404 Not Found`.   	|
@@ -172,12 +259,18 @@ Here is a table with all the exceptions that are thrown from this SDK:
 |`\SumUp\Exceptions\SumUpServerException`   	 | This exception is thrown when there are http errors of [5xx](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_Server_errors). 	|
 |`\SumUp\Exceptions\SumUpConfigurationException` | This exception is thrown when you provide a bad configuration for initialization of the `\SumUp\SumUp` object.	|
 |`\SumUp\Exceptions\SumUpArgumentException`  	 | This exception is thrown when you don't provide a mandatory argument to a function. 	|
+|`\SumUp\Exceptions\SumUpSDKException`           | This is the main exception which others inherit from. So this is the last exception to handle in your code if you want to catch many exceptions.|
 
-## Development
+## Roadmap
+
+| Version | Status | PHP Version |
+|--- |--- |--- |
+| 1.x | Latest | \>= 5.6 |
 
 ## License
 
 For information about the license see the [license](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/LICENSE) file.
 
+## Contact us
 
-
+If you have found a bug or you lack some functionality please [open an issue](https://github.com/sumup/sumup-ecom-php-sdk/issues/new). If you have other issues when integrating with SumUp's API you can send an email to [integration@sumup.com](mailto:integration@sumup.com).
