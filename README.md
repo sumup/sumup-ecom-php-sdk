@@ -18,7 +18,7 @@ composer require sumup/sumup-ecom-php-sdk
 
 ```php
 try {
-    $sumup = new SumUp\SumUp([
+    $sumup = new \SumUp\SumUp([
         'app_id' => 'YOUR-CLIENT-ID',
         'app_secret' => 'YOUR-CLIENT-SECRET',
         'code' => 'YOUR-AUTHORIZATION-CODE'
@@ -34,7 +34,7 @@ try {
 ## Configurations
 
 ```php
-$sumup = new SumUp\SumUp([
+$sumup = new \SumUp\SumUp([
 //  'config-name': 'config-value'
 ]);
 ```
@@ -52,7 +52,7 @@ $sumup = new SumUp\SumUp([
 |default_refresh_token | This is the refresh token through which can be requested new access token | `string` | `null` | No	|
 |use_guzzlehttp_over_curl | This is a configuration whether to use GuzzleHttp if both GuzzleHttp library and cURL module are installed. | `bool` | `false` | No	|
 |custom_headers | This sends custom headers with every http request to SumUp server | `array` with key-value pairs containing the header's name (as key) and the header's value (as value) | `[]` | No	|
-|base_uri | This is the base location of SumUp's servers. This is not recommended to be used | `string` | '`https\://api.sumup.com`'	| No |
+|base_uri | This is the base location of SumUp's servers. This is not recommended to be used | `string` | '`https://api.sumup.com`'	| No |
 
 ### Authorization
 
@@ -71,10 +71,10 @@ echo $accessToken->getValue() . ' ' . $accessToken->getRefreshToken();
 
 This SDK supports 3 authorization flows which are described in [this guide](https://developer.sumup.com/docs/authorization).
 
-* Authorization code flow
+* **Authorization code flow**
 
 ```php
-$sumup = new SumUp\SumUp([
+$sumup = new \SumUp\SumUp([
     'app_id' => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'grant_type' => 'authorization_code',
@@ -85,10 +85,10 @@ $sumup = new SumUp\SumUp([
 
 For more information about this flow read more in [this guide](https://developer.sumup.com/docs/authorization#authorization-code-flow).
 
-* Client credentials flow
+* **Client credentials flow**
 
 ```php
-$sumup = new SumUp\SumUp([
+$sumup = new \SumUp\SumUp([
     'app_id' => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'grant_type' => 'client_credentials',
@@ -98,10 +98,10 @@ $sumup = new SumUp\SumUp([
 
 For more information about this flow read more in [this guide](https://developer.sumup.com/docs/authorization#client-credentials-flow).
 
-* Password flow
+* **Password flow**
 
 ```php
-$sumup = new SumUp\SumUp([
+$sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'grant_type' => 'password',
@@ -111,10 +111,10 @@ $sumup = new SumUp\SumUp([
 ]);
 ```
 
-In case you already have a valid access token you can reuse it like this:
+In case you **already have a valid access token** you can **reuse it** like this:
 
 ```php
-$sumup = new SumUp\SumUp([
+$sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
@@ -122,10 +122,10 @@ $sumup = new SumUp\SumUp([
 ]);
 ```
 
-Here is how to get a new access token from a refresh token:
+Here is how to get a **new access token from a refresh token**:
 
 ```php
-$sumup = new SumUp\SumUp([
+$sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
@@ -135,7 +135,7 @@ $sumup = new SumUp\SumUp([
 $sumup->refreshToken();
 ```
 
-You can always initialize some service with a new access token like this:
+You can always **initialize** some **service** with a new **access token** like this:
 
 ```php
 $checkoutService = $sumup->getCheckoutService('VALID-ACCESS-TOKEN');
@@ -144,6 +144,34 @@ $checkoutService = $sumup->getCheckoutService('VALID-ACCESS-TOKEN');
 ### Services
 
 ### Exceptions handling
+
+Exceptions handling is as important part of our code. We pay attention to this detail and **we recommend to wrap every statement from the SDK with a `try {} catch() {}` clause**.
+
+You should at least handle `\SumUp\Exceptions\SumUpSDKException` exception but if you want you can handle all sorts of exceptions.
+
+```php
+try {
+    $sumup = new \SumUp\SumUp(/* configuration */);
+} catch (\SumUp\Exceptions\SumUpAuthenticationException $e) {
+    echo $e->getCode() . ': ' . $e->getMessage();
+} catch (\SumUp\Exceptions\SumUpResponseException $e) {
+    echo $e->getCode() . ': ' . $e->getMessage();
+} catch (\SumUp\Exceptions\SumUpSDKException $e) {
+    echo $e->getCode() . ': ' . $e->getMessage();
+}
+```
+
+Here is a table with all the exceptions that are thrown from this SDK:
+ 
+|Exception | Conditions   	|
+|---	   |---	            |
+|`\SumUp\Exceptions\SumUpAuthenticationException`| This exception is thrown when there is no access token or it is already expired. |
+|`\SumUp\Exceptions\SumUpConnectionException`    | This exception is thrown when there is connectivity issues over the network. 	|
+|`\SumUp\Exceptions\SumUpResponseException`   	 | This exception is thrown when there are some [4xx http errors](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_errors) such as `404 Not Found`.   	|
+|`\SumUp\Exceptions\SumUpValidationException`    | This exception is thrown when there is one or more wrong data send to the server. In the message there is information about which field(s) is incorrect.  	|
+|`\SumUp\Exceptions\SumUpServerException`   	 | This exception is thrown when there are http errors of [5xx](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#5xx_Server_errors). 	|
+|`\SumUp\Exceptions\SumUpConfigurationException` | This exception is thrown when you provide a bad configuration for initialization of the `\SumUp\SumUp` object.	|
+|`\SumUp\Exceptions\SumUpArgumentException`  	 | This exception is thrown when you don't provide a mandatory argument to a function. 	|
 
 ## Development
 
