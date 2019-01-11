@@ -66,6 +66,20 @@ interface ApplicationConfigurationInterface
     public function getPassword();
 
     /**
+     * Returns access token.
+     *
+     * @return string
+     */
+    public function getAccessToken();
+
+    /**
+     * Returns refresh token.
+     *
+     * @return string
+     */
+    public function getRefreshToken();
+
+    /**
      * Returns a flag whether to use GuzzleHttp over cURL if both are present.
      *
      * @return bool

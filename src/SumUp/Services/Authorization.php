@@ -51,21 +51,21 @@ class Authorization implements SumUpService
     public function getToken(SumUpHttpClientInterface $client)
     {
         $accessToken = null;
-        if (!empty($this->appConfig->getDefaultAccessToken())) {
+        if (!empty($this->appConfig->getAccessToken())) {
             $accessToken = new AccessToken(
-                $this->appConfig->getDefaultAccessToken(),
+                $this->appConfig->getAccessToken(),
                 '',
                 0,
                 $this->appConfig->getScopes(),
-                $this->appConfig->getDefaultRefreshToken()
+                $this->appConfig->getRefreshToken()
             );
-        } else if (!empty($this->appConfig->getDefaultRefreshToken())) {
+        } else if (!empty($this->appConfig->getRefreshToken())) {
             $accessToken = new AccessToken(
                 '',
                 '',
                 0,
                 $this->appConfig->getScopes(),
-                $this->appConfig->getDefaultRefreshToken()
+                $this->appConfig->getRefreshToken()
             );
         } else {
             switch ($this->appConfig->getGrantType()) {

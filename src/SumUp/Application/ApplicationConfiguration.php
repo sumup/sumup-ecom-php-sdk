@@ -78,14 +78,14 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     protected $code;
 
     /**
-     * Default access token.
+     * The access token.
      *
      * @var null|string
      */
     protected $accessToken;
 
     /**
-     * Default refresh token.
+     * The refresh token.
      *
      * @var null|string
      */
@@ -121,8 +121,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
             'base_uri' => 'https://api.sumup.com',
             'scopes' => [],
             'code' => null,
-            'default_access_token' => null,
-            'default_refresh_token' => null,
+            'access_token' => null,
+            'refresh_token' => null,
             'username' => null,
             'password' => null,
             'use_guzzlehttp_over_curl' => false,
@@ -137,8 +137,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
         $this->username = $config['username'];
         $this->password = $config['password'];
         $this->code = $config['code'];
-        $this->accessToken = $config['default_access_token'];
-        $this->refreshToken = $config['default_refresh_token'];
+        $this->accessToken = $config['access_token'];
+        $this->refreshToken = $config['refresh_token'];
         $this->setForceGuzzle($config['use_guzzlehttp_over_curl']);
         $this->setCustomHeaders($config['custom_headers']);
     }
@@ -238,7 +238,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return null|string
      */
-    public function getDefaultAccessToken()
+    public function getAccessToken()
     {
         return $this->accessToken;
     }
@@ -248,7 +248,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return null|string
      */
-    public function getDefaultRefreshToken()
+    public function getRefreshToken()
     {
         return $this->refreshToken;
     }

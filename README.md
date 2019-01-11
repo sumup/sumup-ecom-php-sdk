@@ -48,11 +48,10 @@ $sumup = new \SumUp\SumUp([
 |code | This is the code returned at the last step from [authorization code flow](https://developer.sumup.com/docs/authorization#authorization-flows) | `string` | `null` | Conditional (required only if `grant_type => 'authorization_code'`) |
 |username | This is your SumUp's username if you want to use password authorization flow | `string` | `null` | Conditional (required only if `grant_type => 'password'`) |
 |password | This is your SumUp's password if you want to use password authorization flow | `string` | `null` | Conditional (required only if `grant_type => 'password'`) |
-|default_access_token | This is the value of a valid access token that is acquired through other methods. It is used if you don't want to request new access token | `string` | `null` | No	|
-|default_refresh_token | This is the refresh token through which can be requested new access token | `string` | `null` | No	|
+|access_token | This is the value of a valid access token that is acquired through other methods. It is used if you don't want to request new access token | `string` | `null` | No	|
+|refresh_token | This is the refresh token through which can be requested new access token | `string` | `null` | No	|
 |use_guzzlehttp_over_curl | This is a configuration whether to use GuzzleHttp if both GuzzleHttp library and cURL module are installed. | `bool` | `false` | No	|
 |custom_headers | This sends custom headers with every http request to SumUp server | `array` with key-value pairs containing the header's name (as key) and the header's value (as value) | `[]` | No	|
-|base_uri | This is the base location of SumUp's servers. This is not recommended to be used | `string` | '`https://api.sumup.com`'	| No |
 
 ## Authorization
 
@@ -120,7 +119,7 @@ $sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
-    'default_access_token' => 'VALID-ACCESS-TOKEN'
+    'access_token' => 'VALID-ACCESS-TOKEN'
 ]);
 ```
 
@@ -133,7 +132,7 @@ $sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
-    'default_refresh_token' => 'REFRESH-TOKEN'
+    'refresh_token' => 'REFRESH-TOKEN'
 ]);
 $sumup->refreshToken();
 ```
@@ -174,61 +173,6 @@ try {
 ```
 
 > All services' methods return response of type `\SumUp\HttpClients\Response` or throw an exception (view [exceptions handling](https://github.com/sumup/sumup-ecom-php-sdk#exceptions-handling)).
-
-### Checkouts
-
-You can get a service of type `\SumUp\Services\Checkouts` like this:
-
-```php
-$checkoutService = $sumup->getCheckoutService();
-```
-
-| Methods | Description |
-|--- |--- |
-| create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null) | Creates a new checkout.  | 
-| findById($checkoutId) | Returns a checkout if it finds one. |
-| findByReferenceId($referenceId) | Returns a checkout if it finds one. |
-| delete($checkoutId) | Deletes a checkout. |
-| pay($checkoutId, $customerId, $cardToken, $installments = 1) | Processes a payment and returns a transaction information.  |
-
-More information about checkouts can be found [here](https://developer.sumup.com/rest-api/#tag/Checkouts).
-
-### Customers
-
-You can get a service of type `\SumUp\Services\Customers` like this:
-
-```php
-$customerService = $sumup->getCustomerService();
-```
-
-| Methods | Description |
-|--- |--- |
-| create($customerId, array $customerDetails = [], array $customerAddress = []) | Creates a new customer. |
-| update($customerId, array $customerDetails = [], array $customerAddress = []) | Edits a customer. |
-| get($customerId) | Returns an existing customer. |
-| getPaymentInstruments($customerId) | Returns payment instruments for a customer. |
-| deletePaymentInstruments($customerId, $cardToken) | Deletes a payment instrument for a customer. |
-
-More information about checkouts can be found [here](https://developer.sumup.com/rest-api/#tag/Customers).
-
-### Transactions
-
-You can get a service of type `\SumUp\Services\Transactions` like this:
-
-```php
-$transactionService = $sumup->getTransactionService();
-```
-
-| Methods | Description |
-|--- |--- |
-| findById($transactionId) | Returns data about a transaction. |
-| findByInternalId($internalId) | Returns data about a transaction. |
-| findByTransactionCode($transactionCode) | Returns data about a transaction. |
-| getTransactionHistory($filters = []) | Returns all transactions according to the provided filters. |
-| refund($transactionId, $amount) | Refunds a transaction. |
-| getReceipt($transactionId, $merchantId) | Returns receipt information about a transaction. |
-
-More information about checkouts can be found [here](https://developer.sumup.com/rest-api/#tag/Transactions).
 
 ## Exceptions handling
 
