@@ -1,0 +1,26 @@
+{
+    "name": "sumup/sumup-ecom-php-sdk",
+    "description": "SumUp eCom SDK for PHP",
+    "type": "library",
+    "version": "1.0.0-rc",
+    "keywords": ["sumup", "sdk", "payment processing", "ecommerce", "payment", "checkout"],
+    "homepage": "https://developer.sumup.com",
+    "authors": [
+        {
+            "name": "SumUp",
+            "email": "integration@sumup.com",
+            "homepage": "https://github.com/sumup"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.0"
+    },
+    "suggest": {
+      "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
+    },
+    "autoload": {
+        "psr-4": {
+            "SumUp\\": "src/SumUp/"
+        }
+    }
+}
