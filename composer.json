@@ -2,7 +2,7 @@
     "name": "sumup/sumup-ecom-php-sdk",
     "description": "SumUp eCom SDK for PHP",
     "type": "library",
-    "license": "SumUp SDK License",
+    "license": "proprietary",
     "keywords": ["sumup", "sdk", "payment processing", "ecommerce", "payment", "checkout"],
     "homepage": "https://developer.sumup.com",
     "authors": [
