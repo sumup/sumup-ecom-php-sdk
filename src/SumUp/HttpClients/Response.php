@@ -84,10 +84,10 @@ class Response
         if (isset($this->body->error_code) && $this->body->error_code === 'NOT_AUTHORIZED') {
             throw new SumUpAuthenticationException($this->body->error_message, $this->httpResponseCode);
         }
-        if (isset($this->body->error_code) && $this->body->error_code === 'MISSING') {
+        if (isset($this->body->error_code) && ($this->body->error_code === 'MISSING' || $this->body->error_code === 'INVALID')) {
             throw new SumUpValidationException([$this->body->param], $this->httpResponseCode);
         }
-        if (is_array($this->body) && sizeof($this->body) > 0 && isset($this->body[0]->error_code) && $this->body[0]->error_code === 'MISSING') {
+        if (is_array($this->body) && sizeof($this->body) > 0 && isset($this->body[0]->error_code) && ($this->body[0]->error_code === 'MISSING' || $this->body[0]->error_code === 'INVALID')) {
             $invalidFields = [];
             foreach ($this->body as $errorObject) {
                 $invalidFields[] = $errorObject->param;
