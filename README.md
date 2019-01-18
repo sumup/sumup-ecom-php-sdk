@@ -58,7 +58,7 @@ $sumup = new \SumUp\SumUp([
 Every time you make an instance of the `\SumUp\SumUp` class you get a valid OAuth 2.0 access token. The access token is then passed automatically to every service call you make but of course you can override this (see examples below). In case you need the access token you can access it like this:
 
 ```php
-$sumup = \SumUp\SumUp([
+$sumup = new \SumUp\SumUp([
     'app_id' => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
 //  other configurations
