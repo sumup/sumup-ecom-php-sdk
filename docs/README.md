@@ -7,6 +7,8 @@ Here is the API reference for the SumUp Ecommerce SDK for PHP.
 | Class name | Description |
 |---	     |---	       |
 | [SumUp\SumUp]() | The main object that helps tie all the SDK components together. |
+| [SumUp\Application\ApplicationConfiguration]() | An entity that represents all the application's configurations. |
+| [SumUp\Authentication\AccessToken]() | An entity that represents an access token. |
 
 ## Services
 

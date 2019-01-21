@@ -6,7 +6,7 @@ Represents an exception thrown by any service in the SDK.
 
 A `SumUpConfigurationException` is thrown when there is a problem with some configuration parameters mostly when initializing the main `SumUp\SumUp` instance.
 
-> **Note:** This exception is helpful during development but in most case there is no need to be handled for production code.
+> **Note:** This exception is helpful during development but in most cases there is no need to be handled for production code.
 
 ## Instance Methods
 

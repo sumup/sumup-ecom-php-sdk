@@ -196,7 +196,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Returns authorization code.
      *
-     * @return string
+     * @return null|string
      */
     public function getCode()
     {
@@ -216,7 +216,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Returns merchant's username.
      *
-     * @return string
+     * @return null|string
      */
     public function getUsername()
     {
@@ -226,7 +226,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Returns merchant's password.
      *
-     * @return string
+     * @return null|string
      */
     public function getPassword()
     {
