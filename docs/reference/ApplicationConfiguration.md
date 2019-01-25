@@ -1,8 +1,8 @@
 # ApplicationConfiguration for the SumUp Ecommerce SDK for PHP
 
-## SumUp\Application\ApplicationConfiguration
+## \SumUp\Application\ApplicationConfiguration
 
-The `SumUp\Application\ApplicationConfiguration` entity provides all the configurations needed to work with this SDK.
+The `\SumUp\Application\ApplicationConfiguration` entity provides all the configurations needed to work with this SDK.
 
 ## Instance Methods
 

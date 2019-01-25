@@ -1,10 +1,10 @@
 # AccessToken for the SumUp Ecommerce SDK for PHP
 
-Requests to the SumUp's API need to have an access token sent with them to identify the application and the user. The `SumUp\Authentication\AccessToken` entity represents an access token.
+Requests to the SumUp's API need to have an access token sent with them to identify the application and the user. The `\SumUp\Authentication\AccessToken` entity represents an access token.
 
-## SumUp\Authentication\AccessToken
+## \SumUp\Authentication\AccessToken
 
-Every time you create an instance of `SumUp\SumUp` you get an `AccessToken` that can be used to request other resources.
+Every time you create an instance of `\SumUp\SumUp` you get an `AccessToken` that can be used to request other resources.
 
 ## Instance Methods
 

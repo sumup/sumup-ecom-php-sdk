@@ -1,15 +1,14 @@
 # Checkouts service for the SumUp Ecommerce SDK for PHP
 
-## SumUp\Services\Checkouts
+## \SumUp\Services\Checkouts
 
-The `SumUp\Services\Checkouts` service is responsible for managing the checkouts - creating, listing, processing, deactivating.
+The `\SumUp\Services\Checkouts` service is responsible for managing the checkouts - creating, listing, processing, deactivating.
 
 ```php
-$checkoutService = new SumUp\Services\Checkouts($client, $configuration);
-/* 
- * $client - instance of a class that implements the interface SumUp\HttpClients\SumUpHttpClientInterface
- * $configuration - instance of a class that implements the interface SumUp\Application\ApplicationConfiguration
- */
+$checkoutService = new \SumUp\Services\Checkouts(
+  \SumUp\HttpClients\SumUpHttpClientInterface $client,
+  \SumUp\Application\ApplicationConfiguration $configuration
+);
 ```
 
 ## Instance Methods
@@ -27,40 +26,40 @@ public function create(
   string $description = '',
   string $payFromEmail = null,
   string $returnURL = null
-): SumUp\HttpClients\Response
+): \SumUp\HttpClients\Response
 ```
 
-Returns a `SumUp\HttpClients\Response` or throws an exception.
+Returns a `\SumUp\HttpClients\Response` or throws an exception.
 
 ### findById()
 
 Searches for a checkout with particular `id`.
 
 ```php
-public function findById(string $checkoutId): SumUp\HttpClients\Response
+public function findById(string $checkoutId): \SumUp\HttpClients\Response
 ```
 
-Returns a `SumUp\HttpClients\Response` or throws an exception.
+Returns a `\SumUp\HttpClients\Response` or throws an exception.
 
 ### findByReferenceId()
 
 Searches for a checkout with particular `checkout_reference_id`.
 
 ```php
-public function findByReferenceId(string $referenceId): SumUp\HttpClients\Response
+public function findByReferenceId(string $referenceId): \SumUp\HttpClients\Response
 ```
 
-Returns a `SumUp\HttpClients\Response` or throws an exception.
+Returns a `\SumUp\HttpClients\Response` or throws an exception.
 
 ### delete()
 
 Deactivates a checkout with particular `checkout_reference_id`;
 
 ```php
-public function delete(string $checkoutId): SumUp\HttpClients\Response
+public function delete(string $checkoutId): \SumUp\HttpClients\Response
 ```
 
-Returns a `SumUp\HttpClients\Response` or throws an exception.
+Returns a `\SumUp\HttpClients\Response` or throws an exception.
 
 ### pay()
 
@@ -74,7 +73,7 @@ public function pay(
     string $customerId,
     string $cardToken,
     int    $installments = 1
-): SumUp\HttpClients\Response
+): \SumUp\HttpClients\Response
 ```
 
-Returns a `SumUp\HttpClients\Response` or throws an exception.
+Returns a `\SumUp\HttpClients\Response` or throws an exception.
