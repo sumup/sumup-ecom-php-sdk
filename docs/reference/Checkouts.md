@@ -7,7 +7,7 @@ The `\SumUp\Services\Checkouts` service is responsible for managing the checkout
 ```php
 $checkoutService = new \SumUp\Services\Checkouts(
     \SumUp\HttpClients\SumUpHttpClientInterface $client,
-    \SumUp\Application\ApplicationConfiguration $configuration
+    \SumUp\Authentication\AccessToken $accessToken
 );
 ```
 

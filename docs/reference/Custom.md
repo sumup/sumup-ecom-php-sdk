@@ -7,7 +7,7 @@ The `\SumUp\Services\Custom` service should be used for the [endpoints](https://
 ```php
 $customService = new \SumUp\Services\Custom(
     \SumUp\HttpClients\SumUpHttpClientInterface $client,
-    \SumUp\Application\ApplicationConfiguration $configuration
+    \SumUp\Authentication\AccessToken $accessToken
 );
 ```
 

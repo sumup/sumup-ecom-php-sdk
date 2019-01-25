@@ -7,7 +7,7 @@ The `\SumUp\Services\Customers` is responsible for managing customers and assign
 ```php
 $customerService = new \SumUp\Services\Customers(
     \SumUp\HttpClients\SumUpHttpClientInterface $client,
-    \SumUp\Application\ApplicationConfiguration $configuration
+    \SumUp\Authentication\AccessToken $accessToken
 );
 ```
 
