@@ -9,7 +9,7 @@ The `\SumUp\Application\ApplicationConfiguration` entity provides all the config
 ### getAppId()
 
 ```php
-public string getAppId()
+public function getAppId(): string
 ```
 
 Returns the app id.
@@ -17,7 +17,7 @@ Returns the app id.
 ### getAppSecret()
 
 ```php
-public string getAppSecret()
+public function getAppSecret(): string
 ```
 
 Returns the app secret.
@@ -25,7 +25,7 @@ Returns the app secret.
 ### getScopes()
 
 ```php
-public array getScopes()
+public function getScopes(): array
 ```
 
 Returns an array with scopes.
@@ -33,7 +33,7 @@ Returns an array with scopes.
 ### getFormattedScopes()
 
 ```php
-public string getFormattedScopes()
+public function getFormattedScopes(): string
 ```
 
 Returns scopes formatted for requests.
@@ -41,7 +41,7 @@ Returns scopes formatted for requests.
 ### getCode()
 
 ```php
-public string|null getCode()
+public function getCode(): ?string
 ```
 
 Returns code needed for authorization with grant type `authorization_code`.
@@ -49,7 +49,7 @@ Returns code needed for authorization with grant type `authorization_code`.
 ### getGrantType()
 
 ```php
-public string getGrantType()
+public function getGrantType(): string
 ```
 
 Returns a string with value one of: `authorization_code`, `client_credentials`, `password`.
@@ -57,7 +57,7 @@ Returns a string with value one of: `authorization_code`, `client_credentials`, 
 ### getUsername()
 
 ```php
-public string|null getUsername()
+public function getUsername(): ?string
 ```
 
 Returns username needed for authorization with grant type `password`.
@@ -65,7 +65,7 @@ Returns username needed for authorization with grant type `password`.
 ### getPassword()
 
 ```php
-public string|null getPassword()
+public function getPassword(): ?string
 ```
 
 Returns password needed for authorization with grant type `password`.
@@ -73,7 +73,7 @@ Returns password needed for authorization with grant type `password`.
 ### getAccessToken()
 
 ```php
-public string|null getAccessToken()
+public function getAccessToken(): ?string
 ```
 
 Returns the value of an access token.
@@ -81,7 +81,7 @@ Returns the value of an access token.
 ### getRefreshToken()
 
 ```php
-public string|null getRefreshToken()
+public function getRefreshToken(): ?string
 ```
 
 Returns the value of a refresh token.
@@ -89,7 +89,7 @@ Returns the value of a refresh token.
 ### getForceGuzzle()
 
 ```php
-public bool getForceGuzzle()
+public function getForceGuzzle(): bool
 ```
 
 Returns a flag whether [GuzzleHttp](https://packagist.org/packages/guzzlehttp/guzzle) should be used instead of cURL.

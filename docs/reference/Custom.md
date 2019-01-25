@@ -2,7 +2,7 @@
 
 ## \SumUp\Services\Custom
 
-The `\SumUp\Services\Custom` service should be used for the endpoints that are not implemented by the SDK.
+The `\SumUp\Services\Custom` service should be used for the [endpoints](https://developer.sumup.com/rest-api/) that are not implemented by the SDK.
 
 ```php
 $customService = new \SumUp\Services\Custom(
@@ -27,4 +27,4 @@ public function request(
 
 `$relativePath` is relative path to the resource. For example: `/v0.1/me`.
 
-`$payload` is optional but if you provide it it should be an associative array with the needed data.
+`$payload` is *optional* but if you provide it it have to be an associative array with the data needed for that particular endpoint.

@@ -6,7 +6,8 @@ The `\SumUp\Services\Authorization` service is responsible for getting a valid a
 
 ```php
 $authService = new \SumUp\Services\Authorization(
-  \SumUp\HttpClients\SumUpHttpClientInterface $client, \SumUp\Application\ApplicationConfiguration $configuration
+  \SumUp\HttpClients\SumUpHttpClientInterface $client,
+  \SumUp\Application\ApplicationConfiguration $configuration
 );
 ```
 

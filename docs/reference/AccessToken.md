@@ -11,7 +11,7 @@ Every time you create an instance of `\SumUp\SumUp` you get an `AccessToken` tha
 ### getValue()
 
 ```php
-public string getValue()
+public function getValue(): string
 ```
 
 Returns the actual value of the access token as a string.
@@ -19,7 +19,7 @@ Returns the actual value of the access token as a string.
 ### getType()
 
 ```php
-public string getType()
+public function getType(): string
 ```
 
 Returns the type of authentication that the access token should be used for.
@@ -27,7 +27,7 @@ Returns the type of authentication that the access token should be used for.
 ### getExpiresIn()
 
 ```php
-public int getExpiresIn()
+public function getExpiresIn(): int
 ```
 
 Returns the total number of seconds the access token is valid for.
@@ -35,7 +35,7 @@ Returns the total number of seconds the access token is valid for.
 ### getScopes()
 
 ```php
-public array getScopes()
+public function getScopes(): array
 ```
 
 Returns the scopes for which the access token is valid.
@@ -43,7 +43,7 @@ Returns the scopes for which the access token is valid.
 ### getRefreshToken()
 
 ```php
-public string|null getRefreshToken()
+public function getRefreshToken(): ?string
 ```
 
 Returns the value of a refresh token if there is one provided.
