@@ -6,8 +6,8 @@ The `\SumUp\Services\Checkouts` service is responsible for managing the checkout
 
 ```php
 $checkoutService = new \SumUp\Services\Checkouts(
-  \SumUp\HttpClients\SumUpHttpClientInterface $client,
-  \SumUp\Application\ApplicationConfiguration $configuration
+    \SumUp\HttpClients\SumUpHttpClientInterface $client,
+    \SumUp\Application\ApplicationConfiguration $configuration
 );
 ```
 
@@ -19,13 +19,13 @@ Creates a new checkout.
 
 ```php
 public function create(
-  float  $amount,
-  string $currency,
-  string $checkoutRef,
-  string $payToEmail,
-  string $description = '',
-  string $payFromEmail = null,
-  string $returnURL = null
+    float  $amount,
+    string $currency,
+    string $checkoutRef,
+    string $payToEmail,
+    string $description = '',
+    string $payFromEmail = null,
+    string $returnURL = null
 ): \SumUp\HttpClients\Response
 ```
 
