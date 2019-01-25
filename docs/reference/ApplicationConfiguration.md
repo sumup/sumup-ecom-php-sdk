@@ -4,6 +4,8 @@
 
 The `SumUp\Application\ApplicationConfiguration` entity provides all the configurations needed to work with this SDK.
 
+## Instance Methods
+
 ### getAppId()
 
 ```php

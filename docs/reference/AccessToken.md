@@ -6,6 +6,8 @@ Requests to the SumUp's API need to have an access token sent with them to ident
 
 Every time you create an instance of `SumUp\SumUp` you get an `AccessToken` that can be used to request other resources.
 
+## Instance Methods
+
 ### getValue()
 
 ```php
