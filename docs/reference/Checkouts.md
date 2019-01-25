@@ -20,7 +20,7 @@ Creates a new checkout.
 
 ```php
 public function create(
-  number $amount,
+  float  $amount,
   string $currency,
   string $checkoutRef,
   string $payToEmail,
@@ -73,7 +73,7 @@ public function pay(
     string $checkoutId,
     string $customerId,
     string $cardToken,
-    number $installments = 1
+    int    $installments = 1
 ): SumUp\HttpClients\Response
 ```
 
