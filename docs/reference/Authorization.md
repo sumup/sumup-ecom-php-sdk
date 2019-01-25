@@ -17,7 +17,7 @@ $authService = new \SumUp\Services\Authorization($client, $configuration);
 ### getToken()
 
 ```php
-public SumUp\Authentication\AccessToken getToken()
+public function getToken(): SumUp\Authentication\AccessToken
 ```
 
 Returns a `SumUp\Authentication\AccessToken` according to the initial configuration or throws an exception.
@@ -25,31 +25,31 @@ Returns a `SumUp\Authentication\AccessToken` according to the initial configurat
 ### getTokenByCode()
 
 ```php
-public SumUp\Authentication\AccessToken getTokenByCode()
+public function getTokenByCode(): SumUp\Authentication\AccessToken
 ```
 
 Returns a `SumUp\Authentication\AccessToken` according to the initial configuration or throws an exception.
 
-## getTokenByClientCredentials()
+### getTokenByClientCredentials()
 
 ```php
-public SumUp\Authentication\AccessToken getTokenByClientCredentials()
+public function getTokenByClientCredentials(): SumUp\Authentication\AccessToken
 ```
 
 Returns a `SumUp\Authentication\AccessToken` according to the initial configuration or throws an exception.
 
-## getTokenByPassword()
+### getTokenByPassword()
 
 ```php
-public SumUp\Authentication\AccessToken getTokenByPassword()
+public function getTokenByPassword(): SumUp\Authentication\AccessToken
 ```
 
 Returns a `SumUp\Authentication\AccessToken` according to the initial configuration or throws an exception.
 
-## refreshToken()
+### refreshToken()
 
 ```php
-public SumUp\Authentication\AccessToken refreshToken($refreshToken)
+public function refreshToken($refreshToken): SumUp\Authentication\AccessToken
 
 ```
 
