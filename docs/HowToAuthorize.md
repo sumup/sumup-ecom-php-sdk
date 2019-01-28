@@ -4,7 +4,7 @@
 
 This guide will help you to authorize and get an OAuth 2.0 token using the SDK. If you want to know what happens behind the scenes you can visit this [authorization guide](https://developer.sumup.com/docs/authorization).
 
-Every time you make an instance of the `\SumUp\SumUp` class you get a valid OAuth 2.0 access token. The access token is then passed to every service call you make (but of course you can [override]() this).
+Every time you make an instance of the `\SumUp\SumUp` class you get a valid OAuth 2.0 access token. The access token is then passed to every service call you make (but of course you can [override](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/HowToOverrideHttpClient.md) this).
 
 ## Authorization code flow
 
