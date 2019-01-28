@@ -22,12 +22,10 @@ $sumup = new \SumUp\SumUp([
 ]);
 $accessToken = $sumup->getAccessToken();
 $refreshToken = $accessToken->getRefreshToken();
-/*
- * Once you get a refresh token you can store it in a database
- * and then use it to get new access tokens for the same merchant.
- */
 $value = $accessToken->getValue();
 ```
+
+> **Note:** once you get a refresh token you can store it in a database and then use it to get new access tokens for the same merchant.
 
 For more information about this flow read in [this guide](https://developer.sumup.com/docs/authorization#authorization-code-flow).
 
