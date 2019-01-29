@@ -15,6 +15,7 @@ use SumUp\Services\Customers;
 use SumUp\Services\Merchant;
 use SumUp\Services\Transactions;
 use SumUp\Services\Payouts;
+use SumUp\Services\Custom;
 
 /**
  * Class SumUp
@@ -52,8 +53,8 @@ class SumUp
     {
         $this->appConfig = new ApplicationConfiguration($config);
         $this->client = HttpClientsFactory::createHttpClient($this->appConfig, $customHttpClient);
-        $authorizationService = new Authorization($this->appConfig);
-        $this->accessToken = $authorizationService->getToken($this->client, $this->appConfig);
+        $authorizationService = new Authorization($this->client, $this->appConfig);
+        $this->accessToken = $authorizationService->getToken();
     }
 
     /**
@@ -84,8 +85,8 @@ class SumUp
         } else {
             $rToken = $this->accessToken->getRefreshToken();
         }
-        $authorizationService = new Authorization($this->appConfig);
-        $this->accessToken = $authorizationService->refreshToken($this->client, $rToken);
+        $authorizationService = new Authorization($this->client, $this->appConfig);
+        $this->accessToken = $authorizationService->refreshToken($rToken);
         return $this->accessToken;
     }
 
@@ -103,7 +104,7 @@ class SumUp
         } else {
             $cfg = $config;
         }
-        return new Authorization($cfg);
+        return new Authorization($this->client, $cfg);
     }
 
     /**
@@ -189,5 +190,20 @@ class SumUp
             $accToken = $this->accessToken;
         }
         return new Payouts($this->client, $accToken);
+    }
+
+    /**
+     * @param AccessToken|null $accessToken
+     *
+     * @return Custom
+     */
+    public function getCustomService(AccessToken $accessToken = null)
+    {
+        if (!empty($accessToken)) {
+            $accToken = $accessToken;
+        } else {
+            $accToken = $this->accessToken;
+        }
+        return new Custom($this->client, $accToken);
     }
 }

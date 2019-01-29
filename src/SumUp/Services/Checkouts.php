@@ -44,13 +44,13 @@ class Checkouts implements SumUpService
     /**
      * Create new checkout.
      *
-     * @param number $amount
+     * @param float  $amount
      * @param string $currency
      * @param string $checkoutRef
      * @param string $payToEmail
      * @param string $description
-     * @param null $payFromEmail
-     * @param null $returnURL
+     * @param null   $payFromEmail
+     * @param null   $returnURL
      *
      * @return \SumUp\HttpClients\Response
      *

@@ -19,6 +19,13 @@ use SumUp\Utils\Headers;
 class Authorization implements SumUpService
 {
     /**
+     * The client for the http communication.
+     *
+     * @var SumUpHttpClientInterface
+     */
+    protected $client;
+
+    /**
      * The application's configuration.
      *
      * @var ApplicationConfiguration
@@ -28,17 +35,17 @@ class Authorization implements SumUpService
     /**
      * Authorization constructor.
      *
+     * @param SumUpHttpClientInterface $client
      * @param ApplicationConfigurationInterface $config
      */
-    public function __construct(ApplicationConfigurationInterface $config)
+    public function __construct(SumUpHttpClientInterface $client, ApplicationConfigurationInterface $config)
     {
+        $this->client = $client;
         $this->appConfig = $config;
     }
 
     /**
      * Returns an access token according to the grant_type.
-     *
-     * @param SumUpHttpClientInterface $client
      *
      * @return null|AccessToken
      *
@@ -48,7 +55,7 @@ class Authorization implements SumUpService
      * @throws \SumUp\Exceptions\SumUpResponseException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getToken(SumUpHttpClientInterface $client)
+    public function getToken()
     {
         $accessToken = null;
         if (!empty($this->appConfig->getAccessToken())) {
@@ -70,13 +77,13 @@ class Authorization implements SumUpService
         } else {
             switch ($this->appConfig->getGrantType()) {
                 case 'authorization_code':
-                    $accessToken = $this->getTokenByCode($client);
+                    $accessToken = $this->getTokenByCode();
                     break;
                 case 'client_credentials':
-                    $accessToken = $this->getTokenByClientCredentials($client);
+                    $accessToken = $this->getTokenByClientCredentials();
                     break;
                 case 'password':
-                    $accessToken = $this->getTokenByPassword($client);
+                    $accessToken = $this->getTokenByPassword();
                     break;
             }
         }
@@ -86,8 +93,6 @@ class Authorization implements SumUpService
     /**
      * Returns an access token for the grant type "authorization_code".
      *
-     * @param SumUpHttpClientInterface $client
-     *
      * @return AccessToken
      *
      * @throws \SumUp\Exceptions\SumUpConnectionException
@@ -95,7 +100,7 @@ class Authorization implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getTokenByCode(SumUpHttpClientInterface $client)
+    public function getTokenByCode()
     {
         $payload = [
             'grant_type' => 'authorization_code',
@@ -105,7 +110,7 @@ class Authorization implements SumUpService
             'code' => $this->appConfig->getCode()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
         if (!empty($resBody->scope)) {
@@ -117,8 +122,6 @@ class Authorization implements SumUpService
     /**
      * Returns an access token for the grant type "client_credentials".
      *
-     * @param SumUpHttpClientInterface $client
-     *
      * @return AccessToken
      *
      * @throws \SumUp\Exceptions\SumUpConnectionException
@@ -126,7 +129,7 @@ class Authorization implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getTokenByClientCredentials(SumUpHttpClientInterface $client)
+    public function getTokenByClientCredentials()
     {
         $payload = [
             'grant_type' => 'client_credentials',
@@ -135,15 +138,13 @@ class Authorization implements SumUpService
             'scope' => $this->appConfig->getFormattedScopes()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in);
     }
 
     /**
      * Returns an access token for the grant type "password".
-     *
-     * @param SumUpHttpClientInterface $client
      *
      * @return AccessToken
      *
@@ -153,7 +154,7 @@ class Authorization implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getTokenByPassword(SumUpHttpClientInterface $client)
+    public function getTokenByPassword()
     {
         if (empty($this->appConfig->getUsername())) {
             throw new SumUpConfigurationException(ExceptionMessages::getMissingParamMsg('username'));
@@ -170,7 +171,7 @@ class Authorization implements SumUpService
             'password' => $this->appConfig->getPassword()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
         if (!empty($resBody->scope)) {
@@ -182,7 +183,6 @@ class Authorization implements SumUpService
     /**
      * Refresh access token.
      *
-     * @param SumUpHttpClientInterface $client
      * @param string $refreshToken
      *
      * @return AccessToken
@@ -193,7 +193,7 @@ class Authorization implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function refreshToken(SumUpHttpClientInterface $client, $refreshToken)
+    public function refreshToken($refreshToken)
     {
         if (empty($refreshToken)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('refresh token'));
@@ -206,7 +206,7 @@ class Authorization implements SumUpService
             'scope' => $this->appConfig->getFormattedScopes()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send( 'POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
         if (!empty($resBody->scope)) {
