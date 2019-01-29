@@ -24,7 +24,7 @@ try {
         'code' => 'YOUR-AUTHORIZATION-CODE'
     ]);
     $checkoutService = $sumup->getCheckoutService();
-    $checkoutResponse = $checkoutService->create(/* . . . */);
+    $checkoutResponse = $checkoutService->create($config);
 //  use the variable $checkoutResponse
 } catch (\SumUp\Exceptions\SumUpAuthenticationException $e) {
     echo 'Authentication error: ' . $e->getMessage();
@@ -43,7 +43,7 @@ For a full list of classes, see the [API reference page](https://github.com/sumu
 
 * [How to authorize?](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/HowToAuthorize.md)
 * [How to handle exceptions?](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/ExceptionsHandling.md)
-* [How to use my own http client?](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/HowToOverrideHttpClient.md)
+* [How to use my own HTTP client?](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/HowToOverrideHttpClient.md)
 
 ## Roadmap
 

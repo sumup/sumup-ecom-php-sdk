@@ -6,7 +6,7 @@ You should at least handle `\SumUp\Exceptions\SumUpSDKException` exception but i
 
 ```php
 try {
-    $sumup = new \SumUp\SumUp(/* configuration */);
+    $sumup = new \SumUp\SumUp($config);
 } catch (\SumUp\Exceptions\SumUpAuthenticationException $e) {
     echo $e->getCode() . ': ' . $e->getMessage();
 } catch (\SumUp\Exceptions\SumUpResponseException $e) {
