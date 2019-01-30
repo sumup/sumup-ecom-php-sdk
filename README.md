@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the open source PHP SDK that allows you to integrate quickly with the SumUp's ecommerce [API](https://developer.sumup.com/rest-api) endpoints. As a transport layer it support cURL or [GuzzleHttp](https://packagist.org/packages/guzzlehttp/guzzle) but they are not required if you provide your own.
+This repository contains the open source PHP SDK that allows you to integrate quickly with the SumUp's [API](https://developer.sumup.com/rest-api) endpoints.
 
 ## Installation
 
@@ -11,8 +11,6 @@ The SumUp eCom PHP SDK can be installed with [Composer](https://getcomposer.org/
 ```
 composer require sumup/sumup-ecom-php-sdk
 ```
-
-> **Note:** This version of the SumUp SDK for PHP requires PHP 5.6 or greater.
 
 ## Basic usage
 
