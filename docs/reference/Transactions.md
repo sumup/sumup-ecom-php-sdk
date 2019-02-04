@@ -77,7 +77,7 @@ Returns a `\SumUp\HttpClients\Response` or throws an exception.
 Refunds a transaction partially or fully depending on the `amount`.
 
 ```php
-public function refund(string $transactionId, float $amount): \SumUp\HttpClients\Response
+public function refund(string $transactionId, float $amount = null): \SumUp\HttpClients\Response
 ```
 
 Returns a `\SumUp\HttpClients\Response` or throws an exception.
