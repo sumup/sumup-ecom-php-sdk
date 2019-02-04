@@ -56,8 +56,7 @@ class Headers
      */
     public static function getTrk()
     {
-        $version = self::getProjectVersion();
-        return ['X-SDK' => 'PHP-SDK/v' . $version . ' PHP/v' . phpversion()];
+        return ['X-SDK' => 'PHP-SDK/v' . self::getProjectVersion() . ' PHP/v' . phpversion()];
     }
 
     /**
