@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the open source PHP SDK that allows you to integrate quickly with the SumUp's ecommerce [API](https://developer.sumup.com/rest-api) endpoints. As a transport layer it support cURL or [GuzzleHttp](https://packagist.org/packages/guzzlehttp/guzzle) but they are not required if you provide your own.
+This repository contains the open source PHP SDK that allows you to integrate quickly with the SumUp's [API](https://developer.sumup.com/rest-api) endpoints.
 
 ## Installation
 
@@ -12,20 +12,19 @@ The SumUp eCom PHP SDK can be installed with [Composer](https://getcomposer.org/
 composer require sumup/sumup-ecom-php-sdk
 ```
 
-> **Note:** This version of the SumUp SDK for PHP requires PHP 5.6 or greater.
-
 ## Basic usage
 
 ```php
 try {
     $sumup = new \SumUp\SumUp([
-        'app_id' => 'YOUR-CLIENT-ID',
+        'app_id'     => 'YOUR-CLIENT-ID',
         'app_secret' => 'YOUR-CLIENT-SECRET',
-        'code' => 'YOUR-AUTHORIZATION-CODE'
+        'code'       => 'YOUR-AUTHORIZATION-CODE'
     ]);
     $checkoutService = $sumup->getCheckoutService();
-    $checkoutResponse = $checkoutService->create($config);
-//  use the variable $checkoutResponse
+    $checkoutResponse = $checkoutService->create($amount, $currency, $checkoutRef, $payToEmail);
+    $checkoutId = $checkoutResponse->getBody()->id;
+//  pass the $chekoutId to the front-end to be processed
 } catch (\SumUp\Exceptions\SumUpAuthenticationException $e) {
     echo 'Authentication error: ' . $e->getMessage();
 } catch (\SumUp\Exceptions\SumUpResponseException $e) {

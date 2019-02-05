@@ -154,7 +154,7 @@ class Transactions implements SumUpService
      * Refund a transaction partially or fully.
      *
      * @param $transactionId
-     * @param $amount
+     * @param null $amount
      *
      * @return \SumUp\HttpClients\Response
      *
@@ -164,17 +164,17 @@ class Transactions implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function refund($transactionId, $amount)
+    public function refund($transactionId, $amount = null)
     {
         if (empty($transactionId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
         }
-        if (empty($amount)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('amount'));
+        $payload = [];
+        if (!empty($amount)) {
+            $payload = [
+                'amount' => $amount
+            ];
         }
-        $payload = [
-            'amount' => $amount
-        ];
         $path = '/v0.1/me/refund/' . $transactionId;
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
         return $this->client->send('POST', $path, $payload, $headers);

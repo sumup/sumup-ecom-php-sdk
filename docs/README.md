@@ -9,6 +9,7 @@ Here is the API reference for the SumUp Ecommerce SDK for PHP.
 | [\SumUp\SumUp](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/SumUp.md) | The main object that helps tie all the SDK components together. |
 | [\SumUp\Application\ApplicationConfiguration](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/ApplicationConfiguration.md) | An entity that represents all the application's configurations. |
 | [\SumUp\Authentication\AccessToken](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/AccessToken.md) | An entity that represents an access token. |
+| [\SumUp\HttpClients\Response](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/Response.md) | The response object that every service returns. |
 
 ## Services
 
@@ -25,7 +26,6 @@ Here is the API reference for the SumUp Ecommerce SDK for PHP.
 
 | Class name | Description |
 |---	     |---	       |
-| [\SumUp\HttpClients\Response]() | The response object that every service returns. |
 | [\SumUp\HttpClients\SumUpCUrlClient]() | The HTTP client for managing cURL requests. |
 | [\SumUp\HttpClients\SumUpGuzzleHttpClient]() | The HTTP client for managing [Guzzle HTTP](https://packagist.org/packages/guzzlehttp/guzzle) requests. |
 | [\SumUp\HttpClients\HttpClientsFactory]() | The factory class that creates HTTP clients. | -->
