@@ -17,6 +17,7 @@ Here is the API reference for the SumUp Ecommerce SDK for PHP.
 |---	     |---	       |
 | [\SumUp\Services\Authorization](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/Authorization.md) | The service that manages creating and refreshing OAuth2.0 access tokens. |
 | [\SumUp\Services\Checkouts](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/Checkouts.md) | The service that manages checkouts. |
+| [\SumUp\Services\Custom](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/Custom.md) | The generic service that can be used for endpoints that are not part of the core functionality. |
 | [\SumUp\Services\Customers](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/Customers.md) | The service that manages customers. |
 | [\SumUp\Services\Merchant](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/Merchant.md) | The service that manages merchant's profile. |
 | [\SumUp\Services\Payouts](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/docs/reference/Payouts.md) | The service that manages payouts. |
