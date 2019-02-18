@@ -95,11 +95,25 @@ class Response
             throw new SumUpValidationException($invalidFields, $this->httpResponseCode);
         }
         if ($this->httpResponseCode >= 500) {
-            $message = (!is_null($this->body) && !is_null($this->body->message)) ? $this->body->message : $this->body;
+            $message = 'Server error';
+            if (!is_null($this->body)) {
+                if (!is_null($this->body->message)) {
+                    $message = $this->body->message;
+                } elseif (!is_null($this->body->error_message)) {
+                    $message = $this->body->error_message;
+                }
+            }
             throw new SumUpServerException($message, $this->httpResponseCode);
         }
         if ($this->httpResponseCode >= 400) {
-            $message = (!is_null($this->body) && !is_null($this->body->message)) ? $this->body->message : $this->body;
+            $message = 'Error';
+            if (!is_null($this->body)) {
+                if (!is_null($this->body->message)) {
+                    $message = $this->body->message;
+                } elseif (!is_null($this->body->error_message)) {
+                    $message = $this->body->error_message;
+                }
+            }
             throw new SumUpResponseException($message, $this->httpResponseCode);
         }
     }
