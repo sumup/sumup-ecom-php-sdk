@@ -95,12 +95,36 @@ class Response
             throw new SumUpValidationException($invalidFields, $this->httpResponseCode);
         }
         if ($this->httpResponseCode >= 500) {
-            $message = (!is_null($this->body) && !is_null($this->body->message)) ? $this->body->message : $this->body;
+            $message = $this->parseErrorMessage('Server error');
             throw new SumUpServerException($message, $this->httpResponseCode);
         }
         if ($this->httpResponseCode >= 400) {
-            $message = (!is_null($this->body) && !is_null($this->body->message)) ? $this->body->message : $this->body;
+            $message = $this->parseErrorMessage('Client error');
             throw new SumUpResponseException($message, $this->httpResponseCode);
         }
+    }
+
+    /**
+     * Return error message.
+     * 
+     * @param string $defaultMessage
+     * 
+     * @return string
+     */
+    protected function parseErrorMessage($defaultMessage = '')
+    {
+        if (is_null($this->body)) {
+            return $defaultMessage;
+        }
+
+        if (isset($this->body->message)) {
+            return $this->body->message;
+        }
+
+        if (isset($this->body->error_message)) {
+            return $this->body->error_message;
+        }
+
+        return $defaultMessage;
     }
 }
