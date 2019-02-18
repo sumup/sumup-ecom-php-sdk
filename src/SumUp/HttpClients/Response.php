@@ -113,18 +113,18 @@ class Response
      */
     protected function parseErrorMessage($defaultMessage = '')
     {
-        $message = $defaultMessage;
-
         if (is_null($this->body)) {
-            return $message;
+            return $defaultMessage;
         }
 
         if (isset($this->body->message)) {
-            $message = $this->body->message;
-        } elseif (isset($this->body->error_message)) {
-            $message = $this->body->error_message;
+            return $this->body->message;
         }
 
-        return $message;
+        if (isset($this->body->error_message)) {
+            return $this->body->error_message;
+        }
+
+        return $defaultMessage;
     }
 }
