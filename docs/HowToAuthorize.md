@@ -17,7 +17,7 @@ $sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'grant_type' => 'authorization_code',
-    'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
+    'scopes'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
     'code'       => 'YOUR-AUTHORIZATION-CODE'
 ]);
 $accessToken = $sumup->getAccessToken();
@@ -38,7 +38,7 @@ $sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'grant_type' => 'client_credentials',
-    'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly']
+    'scopes'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly']
 ]);
 $accessToken = $sumup->getAccessToken();
 $value = $accessToken->getValue();
@@ -55,7 +55,7 @@ $sumup = new \SumUp\SumUp([
     'app_id'     => 'YOUR-CLIENT-ID',
     'app_secret' => 'YOUR-CLIENT-SECRET',
     'grant_type' => 'password',
-    'scope'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
+    'scopes'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
     'username'   => 'YOUR-SUMUP-USERNAME',
     'password'   => 'YOUR-SUMUP-PASSWORD'
 ]);
@@ -71,7 +71,7 @@ Here is how to get a **new access token from a refresh token**:
 $sumup = new \SumUp\SumUp([
     'app_id'        => 'YOUR-CLIENT-ID',
     'app_secret'    => 'YOUR-CLIENT-SECRET',
-    'scope'         => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
+    'scopes'         => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
     'refresh_token' => 'REFRESH-TOKEN'
 ]);
 // you need to call the method `refreshToken()` to get a new access token
@@ -89,7 +89,7 @@ If you already have a valid access token you can reuse it like this:
 $sumup = new \SumUp\SumUp([
     'app_id'       => 'YOUR-CLIENT-ID',
     'app_secret'   => 'YOUR-CLIENT-SECRET',
-    'scope'        => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
+    'scopes'        => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
     'access_token' => 'VALID-ACCESS-TOKEN'
 ]);
 ```
