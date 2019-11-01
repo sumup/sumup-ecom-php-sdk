@@ -52,7 +52,7 @@ For a full list of classes, see the [API reference page](https://github.com/sumu
 
 ## License
 
-For information about the license see the [license](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/LICENSE) file.
+For information about the license see the [license](https://github.com/sumup/sumup-ecom-php-sdk/blob/master/LICENSE.md) file.
 
 ## Contact us
 
