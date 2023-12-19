@@ -51,6 +51,7 @@ class Checkouts implements SumUpService
      * @param string $description
      * @param null   $payFromEmail
      * @param null   $returnURL
+     * @param null   $redirectURL
      *
      * @return \SumUp\HttpClients\Response
      *
@@ -60,7 +61,7 @@ class Checkouts implements SumUpService
      * @throws \SumUp\Exceptions\SumUpAuthenticationException
      * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null)
+    public function create($amount, $currency, $checkoutRef, $payToEmail, $description = '', $payFromEmail = null, $returnURL = null, $redirectURL = null)
     {
         if (empty($amount) || !is_numeric($amount)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('amount'));
@@ -86,6 +87,9 @@ class Checkouts implements SumUpService
         }
         if (isset($returnURL)) {
             $payload['return_url'] = $returnURL;
+        }
+        if (isset($redirectURL)) {
+            $payload['redirect_url'] = $redirectURL;
         }
         $path = '/v0.1/checkouts';
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
