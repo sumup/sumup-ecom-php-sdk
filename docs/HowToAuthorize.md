@@ -46,23 +46,6 @@ $value = $accessToken->getValue();
 
 For more information about this flow read in [this guide](https://developer.sumup.com/docs/authorization#client-credentials-flow).
 
-## Password flow
-
-Here is an example how you can use the `password` flow. But also keep in mind that not all endpoints can be requested with access token from this flow.
-
-```php
-$sumup = new \SumUp\SumUp([
-    'app_id'     => 'YOUR-CLIENT-ID',
-    'app_secret' => 'YOUR-CLIENT-SECRET',
-    'grant_type' => 'password',
-    'scopes'      => ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'],
-    'username'   => 'YOUR-SUMUP-USERNAME',
-    'password'   => 'YOUR-SUMUP-PASSWORD'
-]);
-$accessToken = $sumup->getAccessToken();
-$value = $accessToken->getValue();
-```
-
 ## How to get new access from a refresh token
 
 Here is how to get a **new access token from a refresh token**:
