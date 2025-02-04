@@ -59,7 +59,7 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_URL, $this->baseUrl . $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->formatHeaders($reqHeaders));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         if (!empty($body)) {
             $payload = json_encode($body);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
@@ -70,11 +70,11 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
 
         $error = curl_error($ch);
         if ($error) {
-            curl_close ($ch);
+            curl_close($ch);
             throw new SumUpConnectionException($error, $code);
         }
 
-        curl_close ($ch);
+        curl_close($ch);
         return new Response($code, $this->parseBody($response));
     }
 
@@ -93,7 +93,7 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
 
         $keys = array_keys($headers);
         $formattedHeaders = [];
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             $formattedHeaders[] = $key . ': ' . $headers[$key];
         }
         return $formattedHeaders;

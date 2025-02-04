@@ -4,7 +4,7 @@ namespace SumUp\Services;
 
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
-USE SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Exceptions\SumUpArgumentException;
 use SumUp\Utils\ExceptionMessages;
 use SumUp\Utils\Headers;
 

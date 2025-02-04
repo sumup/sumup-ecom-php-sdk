@@ -325,7 +325,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      */
     protected function setScopes(array $scopes = [])
     {
-        $this->scopes = array_unique(array_merge($this::DEFAULT_SCOPES, $scopes), SORT_REGULAR);;
+        $this->scopes = array_unique(array_merge($this::DEFAULT_SCOPES, $scopes), SORT_REGULAR);
+        ;
     }
 
     /**

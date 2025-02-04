@@ -106,9 +106,9 @@ class Response
 
     /**
      * Return error message.
-     * 
+     *
      * @param string $defaultMessage
-     * 
+     *
      * @return string
      */
     protected function parseErrorMessage($defaultMessage = '')
