@@ -33,6 +33,22 @@ public function findByInternalId(string $internalId): \SumUp\HttpClients\Respons
 
 Returns a `\SumUp\HttpClients\Response` or throws an exception.
 
+
+
+
+### findByForeignId()
+
+Searches for a transaction by `foreign transaction id`.
+
+```php
+public function findByForeignId(string $foreignId): \SumUp\HttpClients\Response
+```
+
+Returns a `\SumUp\HttpClients\Response` or throws an exception.
+
+
+
+
 ### findByTransactionCode()
 
 Searches for a transaction by `transaction_code`.
