@@ -66,7 +66,7 @@ class Authorization implements SumUpService
                 $this->appConfig->getScopes(),
                 $this->appConfig->getRefreshToken()
             );
-        } else if (!empty($this->appConfig->getRefreshToken())) {
+        } elseif (!empty($this->appConfig->getRefreshToken())) {
             $accessToken = new AccessToken(
                 '',
                 '',
@@ -110,7 +110,7 @@ class Authorization implements SumUpService
             'code' => $this->appConfig->getCode()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $this->client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send('POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
         if (!empty($resBody->scope)) {
@@ -138,7 +138,7 @@ class Authorization implements SumUpService
             'scope' => $this->appConfig->getFormattedScopes()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $this->client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send('POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         return new AccessToken($resBody->access_token, $resBody->token_type, $resBody->expires_in);
     }
@@ -171,7 +171,7 @@ class Authorization implements SumUpService
             'password' => $this->appConfig->getPassword()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $this->client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send('POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
         if (!empty($resBody->scope)) {
@@ -206,7 +206,7 @@ class Authorization implements SumUpService
             'scope' => $this->appConfig->getFormattedScopes()
         ];
         $headers = Headers::getStandardHeaders();
-        $response = $this->client->send( 'POST', '/token', $payload, $headers);
+        $response = $this->client->send('POST', '/token', $payload, $headers);
         $resBody = $response->getBody();
         $scopes = [];
         if (!empty($resBody->scope)) {

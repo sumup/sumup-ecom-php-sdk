@@ -93,7 +93,7 @@ class Checkouts implements SumUpService
         }
         $path = '/v0.1/checkouts';
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send( 'POST', $path, $payload, $headers);
+        return $this->client->send('POST', $path, $payload, $headers);
     }
 
     /**

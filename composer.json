@@ -23,6 +23,9 @@
 	"require": {
 		"php": "^5.6|^7.0|^8.0"
 	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "3.5.0"
+	},
 	"suggest": {
 		"guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
 	},

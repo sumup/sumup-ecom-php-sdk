@@ -67,6 +67,6 @@ class Custom implements SumUpService
             throw new SumUpArgumentException($message);
         }
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send( $method, $relativePath, $payload, $headers);
+        return $this->client->send($method, $relativePath, $payload, $headers);
     }
 }
