@@ -1,4 +1,14 @@
+<div align="center">
+
 # SumUp Ecommerce PHP SDK
+
+[![Stars](https://img.shields.io/github/stars/sumup/sumup-ecom-php-sdk?style=social)](https://github.com/sumup/sumup-go/)
+[![Latest Stable Version](https://poser.pugx.org/sumup/sumup-ecom-php-sdk/v/stable.svg)](https://packagist.org/packages/sumup/sumup-ecom-php-sdk)
+[![Total Downloads](https://poser.pugx.org/sumup/sumup-ecom-php-sdk/downloads.svg)](https://packagist.org/packages/sumup/sumup-ecom-php-sdk)
+[![License](https://img.shields.io/github/license/sumup/sumup-go)](./LICENSE)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](https://github.com/sumup/sumup-go/tree/main/CODE_OF_CONDUCT.md)
+
+</div>
 
 ## Overview
 
