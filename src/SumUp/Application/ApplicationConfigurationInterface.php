@@ -92,4 +92,11 @@ interface ApplicationConfigurationInterface
      * @return array
      */
     public function getCustomHeaders();
+
+    /**
+     * Returns the API key if set.
+     *
+     * @return string|null
+     */
+    public function getApiKey();
 }

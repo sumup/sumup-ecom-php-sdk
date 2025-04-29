@@ -57,6 +57,16 @@ class Authorization implements SumUpService
      */
     public function getToken()
     {
+        if (!empty($this->appConfig->getApiKey())) {
+            return new AccessToken(
+                $this->appConfig->getApiKey(),
+                'Bearer',
+                null,
+                [],
+                null
+            );
+        }
+
         $accessToken = null;
         if (!empty($this->appConfig->getAccessToken())) {
             $accessToken = new AccessToken(

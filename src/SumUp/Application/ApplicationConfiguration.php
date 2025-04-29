@@ -106,6 +106,13 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     protected $customHeaders;
 
     /**
+     * The API key for authentication.
+     *
+     * @var string|null
+     */
+    protected $apiKey;
+
+    /**
      * Create a new application configuration.
      *
      * @param array $config
@@ -115,6 +122,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     public function __construct(array $config = [])
     {
         $config = array_merge([
+            'api_key' => null,
             'app_id' => null,
             'app_secret' => null,
             'grant_type' => 'authorization_code',
@@ -129,6 +137,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
             'custom_headers' => []
         ], $config);
 
+        $this->apiKey = $config['api_key'];
         $this->setAppId($config['app_id']);
         $this->setAppSecret($config['app_secret']);
         $this->setScopes($config['scopes']);
@@ -274,6 +283,16 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     }
 
     /**
+     * Returns the API key if set.
+     *
+     * @return string|null
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
+    /**
      * Set application ID.
      *
      * @param string $appId
@@ -282,8 +301,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      */
     protected function setAppId($appId)
     {
-        if (empty($appId)) {
-            throw new SumUpConfigurationException('Missing mandatory parameter app_id');
+        if (empty($appId) && empty($this->apiKey)) {
+            throw new SumUpConfigurationException('Missing mandatory parameter app_id or api_key');
         }
         $this->appId = $appId;
     }
@@ -297,8 +316,8 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      */
     protected function setAppSecret($appSecret)
     {
-        if (empty($appSecret)) {
-            throw new SumUpConfigurationException('Missing mandatory parameter app_secret');
+        if (empty($appSecret) && empty($this->apiKey)) {
+            throw new SumUpConfigurationException('Missing mandatory parameter app_secret or api_key');
         }
         $this->appSecret = $appSecret;
     }
