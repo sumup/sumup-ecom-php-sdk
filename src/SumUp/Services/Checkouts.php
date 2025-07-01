@@ -72,11 +72,14 @@ class Checkouts implements SumUpService
         if (empty($checkoutRef)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout reference id'));
         }
+        if (empty($merchantCode)) {
+            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('merchant code'));
+        }
 
         $payload = [
+            'merchant_code' => $merchantCode,
             'amount' => $amount,
             'currency' => $currency,
-            'merchant_code' => $merchantCode,
             'checkout_reference' => $checkoutRef,
             'description' => $description
         ];
