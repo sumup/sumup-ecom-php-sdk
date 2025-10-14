@@ -332,7 +332,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     protected function setGrantType($grantType)
     {
         if (!in_array($grantType, $this::GRANT_TYPES)) {
-            throw new SumUpConfigurationException('Invalid parameter for "grant_type". Allowed values are: ' . implode($this::GRANT_TYPES, ' | ') . '.');
+            throw new SumUpConfigurationException('Invalid parameter for "grant_type". Allowed values are: ' . implode(' | ', $this::GRANT_TYPES) . '.');
         }
         $this->grantType = $grantType;
     }
