@@ -67,10 +67,16 @@ class Headers
     public static function getProjectVersion()
     {
         if (is_null(self::$cacheVersion)) {
-            $pathToComposer = realpath(dirname(__FILE__) . '/../../../composer.json');
-            $content = file_get_contents($pathToComposer);
-            $content = json_decode($content, true);
-            self::$cacheVersion = $content['version'];
+            self::$cacheVersion = 'unknown';
+            $pathToComposer = dirname(__FILE__) . '/../../../composer.json';
+
+            if (is_readable($pathToComposer)) {
+                $content = file_get_contents($pathToComposer);
+                $content = json_decode($content, true);
+                if (is_array($content) && !empty($content['version'])) {
+                    self::$cacheVersion = $content['version'];
+                }
+            }
         }
 
         return self::$cacheVersion;
