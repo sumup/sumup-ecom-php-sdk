@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"SumUp\\Tests\\ApplicationConfigurationTest::testCustomScopesAreMergedWithDefaults":0.001,"SumUp\\Tests\\ApplicationConfigurationTest::testInvalidGrantTypeThrowsException":0,"SumUp\\Tests\\AuthorizationTest::testApiKeyShortCircuitsHttpCalls":0,"SumUp\\Tests\\AuthorizationTest::testClientCredentialsFlowMakesHttpRequest":0}}

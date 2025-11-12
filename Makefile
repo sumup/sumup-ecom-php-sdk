@@ -17,3 +17,7 @@ fmt: vendor ## Format code using php-cs-fixer
 .PHONY: fmtcheck
 fmtcheck: vendor ## Check code formatting
 	PHP_CS_FIXER_IGNORE_ENV=true vendor/bin/php-cs-fixer fix -v --using-cache=no --dry-run 
+
+.PHONY: test
+test: vendor ## Run PHPUnit test suite
+	composer test

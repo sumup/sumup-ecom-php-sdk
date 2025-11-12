@@ -21,13 +21,15 @@
 		}
 	],
 	"scripts": {
-		"cs": "php-cs-fixer fix --dry-run --diff"
+		"cs": "php-cs-fixer fix --dry-run --diff",
+		"test": "phpunit"
 	},
 	"require": {
 		"php": "^5.6|^7.0|^8.0"
 	},
 	"require-dev": {
-		"friendsofphp/php-cs-fixer": "3.5.0"
+		"friendsofphp/php-cs-fixer": "3.5.0",
+		"phpunit/phpunit": "^9.6"
 	},
 	"suggest": {
 		"guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
@@ -35,6 +37,11 @@
 	"autoload": {
 		"psr-4": {
 			"SumUp\\": "src/SumUp/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"SumUp\\Tests\\": "tests/"
 		}
 	}
 }
