@@ -125,6 +125,14 @@ class Response
             return $this->body->error_message;
         }
 
+        if (isset($this->body->error_description)) {
+            return $this->body->error_description;
+        }
+
+        if (isset($this->body->error)) {
+            return $this->body->error;
+        }
+
         return $defaultMessage;
     }
 }
