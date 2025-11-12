@@ -94,6 +94,13 @@ interface ApplicationConfigurationInterface
     public function getCustomHeaders();
 
     /**
+     * Returns the path to the CA bundle used for HTTPS verification.
+     *
+     * @return string|null
+     */
+    public function getCABundlePath();
+
+    /**
      * Returns the API key if set.
      *
      * @return string|null

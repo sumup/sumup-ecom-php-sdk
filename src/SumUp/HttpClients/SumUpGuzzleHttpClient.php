@@ -35,12 +35,18 @@ class SumUpGuzzleHttpClient implements SumUpHttpClientInterface
     /**
      * SumUpGuzzleHttpClient constructor.
      *
-     * @param string $baseUrl
-     * @param array  $customHeaders
+     * @param string      $baseUrl
+     * @param array       $customHeaders
+     * @param string|bool|null $caBundlePath
      */
-    public function __construct($baseUrl, $customHeaders)
+    public function __construct($baseUrl, $customHeaders, $caBundlePath = null)
     {
-        $this->guzzleClient = new Client(['base_uri' => $baseUrl]);
+        $options = ['base_uri' => $baseUrl];
+        if ($caBundlePath !== null) {
+            $options['verify'] = $caBundlePath;
+        }
+
+        $this->guzzleClient = new Client($options);
         $this->customHeaders = $customHeaders;
     }
 

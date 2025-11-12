@@ -44,6 +44,21 @@ try {
 }
 ```
 
+### TLS certificates
+
+The SDK now ships with the latest Mozilla CA bundle to prevent `SSL certificate problem: unable to get local issuer certificate` errors on Windows and other environments that do not expose a system-wide trust store. You can override the bundled file by passing the `ca_bundle_path` configuration key:
+
+```php
+$sumup = new \SumUp\SumUp([
+    'app_id'         => 'YOUR-CLIENT-ID',
+    'app_secret'     => 'YOUR-CLIENT-SECRET',
+    'code'           => 'YOUR-AUTHORIZATION-CODE',
+    'ca_bundle_path' => __DIR__ . '/storage/certs/company-ca.pem',
+]);
+```
+
+If not provided, the bundled `resources/ca-bundle.crt` file is used automatically by both the cURL and Guzzle HTTP clients.
+
 ## API Reference
 
 For a full list of classes, see the [API reference page](https://github.com/sumup/sumup-ecom-php-sdk/tree/master/docs).
