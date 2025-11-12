@@ -27,15 +27,24 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
     private $customHeaders;
 
     /**
+     * The CA bundle path used to verify HTTPS calls.
+     *
+     * @var string|null
+     */
+    private $caBundlePath;
+
+    /**
      * SumUpCUrlClient constructor.
      *
-     * @param string $baseUrl
-     * @param array  $customHeaders
+     * @param string      $baseUrl
+     * @param array       $customHeaders
+     * @param string|null $caBundlePath
      */
-    public function __construct($baseUrl, $customHeaders)
+    public function __construct($baseUrl, $customHeaders, $caBundlePath = null)
     {
         $this->baseUrl = $baseUrl;
         $this->customHeaders = $customHeaders;
+        $this->caBundlePath = $caBundlePath;
     }
 
     /**
@@ -63,6 +72,10 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
         if (!empty($body)) {
             $payload = json_encode($body);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        }
+
+        if (!empty($this->caBundlePath)) {
+            curl_setopt($ch, CURLOPT_CAINFO, $this->caBundlePath);
         }
 
         $response = curl_exec($ch);
