@@ -47,7 +47,7 @@ class Checkouts implements SumUpService
      * @param float  $amount
      * @param string $currency
      * @param string $checkoutRef
-     * @param string $payToEmail
+     * @param string $merchantCode
      * @param string $description
      * @param null   $payFromEmail
      * @param null   $returnURL
