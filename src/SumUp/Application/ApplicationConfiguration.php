@@ -3,6 +3,7 @@
 namespace SumUp\Application;
 
 use SumUp\Exceptions\SumUpConfigurationException;
+use SumUp\SdkInfo;
 
 /**
  * Class ApplicationConfiguration
@@ -15,6 +16,11 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      * The default scopes that are recommended to be requested every time.
      */
     const DEFAULT_SCOPES = ['payments', 'transactions.history', 'user.app-settings', 'user.profile_readonly'];
+
+    /**
+     * Header name for the SDK's User-Agent.
+     */
+    const USER_AGENT_HEADER = 'User-Agent';
 
     /**
      * The possible values for grant type.
@@ -393,7 +399,10 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      */
     public function setCustomHeaders($customHeaders)
     {
-        $this->customHeaders = is_array($customHeaders) ? $customHeaders : [];
+        $headers = is_array($customHeaders) ? $customHeaders : [];
+        $headers[self::USER_AGENT_HEADER] = SdkInfo::getUserAgent();
+
+        $this->customHeaders = $headers;
     }
 
     /**

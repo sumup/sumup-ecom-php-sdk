@@ -5,6 +5,7 @@ namespace SumUp\Tests;
 use PHPUnit\Framework\TestCase;
 use SumUp\Application\ApplicationConfiguration;
 use SumUp\Exceptions\SumUpConfigurationException;
+use SumUp\SdkInfo;
 
 class ApplicationConfigurationTest extends TestCase
 {
@@ -33,5 +34,33 @@ class ApplicationConfigurationTest extends TestCase
             'api_key' => 'test-api-key',
             'grant_type' => 'invalid',
         ]);
+    }
+
+    public function testUserAgentHeaderIsAlwaysAdded()
+    {
+        $config = new ApplicationConfiguration([
+            'api_key' => 'test-api-key',
+        ]);
+
+        $headers = $config->getCustomHeaders();
+
+        $this->assertArrayHasKey(ApplicationConfiguration::USER_AGENT_HEADER, $headers);
+        $this->assertSame(SdkInfo::getUserAgent(), $headers[ApplicationConfiguration::USER_AGENT_HEADER]);
+    }
+
+    public function testCustomUserAgentHeaderIsOverridden()
+    {
+        $config = new ApplicationConfiguration([
+            'api_key' => 'test-api-key',
+            'custom_headers' => [
+                'User-Agent' => 'custom-agent',
+                'X-Custom' => 'value',
+            ],
+        ]);
+
+        $headers = $config->getCustomHeaders();
+
+        $this->assertSame(SdkInfo::getUserAgent(), $headers[ApplicationConfiguration::USER_AGENT_HEADER]);
+        $this->assertSame('value', $headers['X-Custom']);
     }
 }
