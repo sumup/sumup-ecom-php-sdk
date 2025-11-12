@@ -3,6 +3,7 @@
 namespace SumUp\Utils;
 
 use SumUp\Authentication\AccessToken;
+use SumUp\SdkInfo;
 
 /**
  * Class Headers
@@ -11,12 +12,6 @@ use SumUp\Authentication\AccessToken;
  */
 class Headers
 {
-    /**
-     * Cached value of the project's version.
-     *
-     * @var string $cacheVersion
-     */
-    protected static $cacheVersion;
     /**
      * Get the common header for Content-Type: application/json.
      *
@@ -50,39 +45,6 @@ class Headers
     }
 
     /**
-     * Get custom array.
-     *
-     * @return array
-     */
-    public static function getTrk()
-    {
-        return ['X-SDK' => 'PHP-SDK/v' . self::getProjectVersion() . ' PHP/v' . phpversion()];
-    }
-
-    /**
-     * Get the version of the project accroding to the composer.json
-     *
-     * @return string
-     */
-    public static function getProjectVersion()
-    {
-        if (is_null(self::$cacheVersion)) {
-            self::$cacheVersion = 'unknown';
-            $pathToComposer = dirname(__FILE__) . '/../../../composer.json';
-
-            if (is_readable($pathToComposer)) {
-                $content = file_get_contents($pathToComposer);
-                $content = json_decode($content, true);
-                if (is_array($content) && !empty($content['version'])) {
-                    self::$cacheVersion = $content['version'];
-                }
-            }
-        }
-
-        return self::$cacheVersion;
-    }
-
-    /**
      * Get standard headers needed for every request.
      *
      * @return array
@@ -90,7 +52,7 @@ class Headers
     public static function getStandardHeaders()
     {
         $headers = self::getCTJson();
-        $headers += self::getTrk();
+        $headers['User-Agent'] = SdkInfo::getUserAgent();
         return $headers;
     }
 }
