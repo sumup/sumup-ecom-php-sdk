@@ -22,10 +22,11 @@ public function create(
     float  $amount,
     string $currency,
     string $checkoutRef,
-    string $payToEmail,
+    string $merchantCode,
     string $description = '',
     string $payFromEmail = null,
-    string $returnURL = null
+    string $returnURL = null,
+    string $redirectURL = null
 ): \SumUp\HttpClients\Response
 ```
 
@@ -43,7 +44,7 @@ Returns a `\SumUp\HttpClients\Response` or throws an exception.
 
 ### findByReferenceId()
 
-Searches for a checkout with particular `checkout_reference_id`.
+Searches for a checkout with particular `checkout_reference`.
 
 ```php
 public function findByReferenceId(string $referenceId): \SumUp\HttpClients\Response
@@ -53,7 +54,7 @@ Returns a `\SumUp\HttpClients\Response` or throws an exception.
 
 ### delete()
 
-Deactivates a checkout with particular `checkout_reference_id`;
+Deactivates a checkout with particular checkout `id`.
 
 ```php
 public function delete(string $checkoutId): \SumUp\HttpClients\Response
