@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.5.0](https://github.com/sumup/sumup-ecom-php-sdk/compare/v1.4.0...v1.5.0) (2025-11-20)
+
+
+### Features
+
+* **ci:** install deps via composer ([#75](https://github.com/sumup/sumup-ecom-php-sdk/issues/75)) ([5b7e1bc](https://github.com/sumup/sumup-ecom-php-sdk/commit/5b7e1bc9a62e93968de60017f5e1382c3a319a22))
+* **tooling:** configure dependabot ([#76](https://github.com/sumup/sumup-ecom-php-sdk/issues/76)) ([0b41fa6](https://github.com/sumup/sumup-ecom-php-sdk/commit/0b41fa621baa48e65bbc41d2922141061a39ad3c))
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** update friendsofphp/php-cs-fixer requirement ([#79](https://github.com/sumup/sumup-ecom-php-sdk/issues/79)) ([0133559](https://github.com/sumup/sumup-ecom-php-sdk/commit/01335594a4a6e7457de3f51449e0dbb8b2f304ec))
+* **deps:** bump actions/checkout from 5.0.0 to 5.0.1 ([#78](https://github.com/sumup/sumup-ecom-php-sdk/issues/78)) ([72f6ce7](https://github.com/sumup/sumup-ecom-php-sdk/commit/72f6ce7d0f11f10fced3fc230fb5e2c374ecede3))
+* **deps:** bump shivammathur/setup-php from 2.29.0 to 2.35.5 ([#77](https://github.com/sumup/sumup-ecom-php-sdk/issues/77)) ([540ffe7](https://github.com/sumup/sumup-ecom-php-sdk/commit/540ffe799e1416f10ed1d39cab2b6dcb897af884))
+
 ## [1.4.0](https://github.com/sumup/sumup-ecom-php-sdk/compare/1.3.0...v1.4.0) (2025-11-12)
 
 
