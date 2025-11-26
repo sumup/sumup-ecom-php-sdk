@@ -7,11 +7,11 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Utils\Headers;
 
 /**
- * Class Transactions
+ * Class Members
  *
  * @package SumUp\Services
  */
-class Transactions implements SumUpService
+class Members implements SumUpService
 {
     /**
      * The client for the http communication.
@@ -28,7 +28,7 @@ class Transactions implements SumUpService
     protected $accessToken;
 
     /**
-     * Transactions constructor.
+     * Members constructor.
      *
      * @param SumUpHttpClientInterface $client
      * @param AccessToken $accessToken
@@ -40,110 +40,16 @@ class Transactions implements SumUpService
     }
 
     /**
-     * Retrieve a transaction
+     * Create a member
      *
-     * @param string $merchantCode
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     */
-    public function get($merchantCode, $queryParams = [])
-    {
-        $path = sprintf('/v2.1/merchants/%s/transactions', rawurlencode((string) $merchantCode));
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * Retrieve a transaction
-     *
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @deprecated
-     */
-    public function getDeprecated($queryParams = [])
-    {
-        $path = '/v0.1/me/transactions';
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * List transactions
-     *
-     * @param string $merchantCode
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     */
-    public function list($merchantCode, $queryParams = [])
-    {
-        $path = sprintf('/v2.1/merchants/%s/transactions/history', rawurlencode((string) $merchantCode));
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * List transactions
-     *
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @deprecated
-     */
-    public function listDeprecated($queryParams = [])
-    {
-        $path = '/v0.1/me/transactions/history';
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * Refund a transaction
-     *
-     * @param string $txnId Unique ID of the transaction.
+     * @param string $merchantCode Merchant code.
      * @param array|null $body Optional request payload
      *
      * @return \SumUp\HttpClients\Response
      */
-    public function refund($txnId, $body = null)
+    public function create($merchantCode, $body = null)
     {
-        $path = sprintf('/v0.1/me/refund/%s', rawurlencode((string) $txnId));
+        $path = sprintf('/v0.1/merchants/%s/members', rawurlencode((string) $merchantCode));
         $payload = [];
         if ($body !== null) {
             $payload = $body;
@@ -151,5 +57,83 @@ class Transactions implements SumUpService
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
 
         return $this->client->send('POST', $path, $payload, $headers);
+    }
+
+    /**
+     * Delete a member
+     *
+     * @param string $merchantCode Merchant code.
+     * @param string $memberId The ID of the member to retrieve.
+     *
+     * @return \SumUp\HttpClients\Response
+     */
+    public function delete($merchantCode, $memberId)
+    {
+        $path = sprintf('/v0.1/merchants/%s/members/%s', rawurlencode((string) $merchantCode), rawurlencode((string) $memberId));
+        $payload = [];
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('DELETE', $path, $payload, $headers);
+    }
+
+    /**
+     * Retrieve a member
+     *
+     * @param string $merchantCode Merchant code.
+     * @param string $memberId The ID of the member to retrieve.
+     *
+     * @return \SumUp\HttpClients\Response
+     */
+    public function get($merchantCode, $memberId)
+    {
+        $path = sprintf('/v0.1/merchants/%s/members/%s', rawurlencode((string) $merchantCode), rawurlencode((string) $memberId));
+        $payload = [];
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('GET', $path, $payload, $headers);
+    }
+
+    /**
+     * List members
+     *
+     * @param string $merchantCode Merchant code.
+     * @param array $queryParams Optional query string parameters
+     *
+     * @return \SumUp\HttpClients\Response
+     */
+    public function list($merchantCode, $queryParams = [])
+    {
+        $path = sprintf('/v0.1/merchants/%s/members', rawurlencode((string) $merchantCode));
+        if (!empty($queryParams)) {
+            $queryString = http_build_query($queryParams);
+            if (!empty($queryString)) {
+                $path .= '?' . $queryString;
+            }
+        }
+        $payload = [];
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('GET', $path, $payload, $headers);
+    }
+
+    /**
+     * Update a member
+     *
+     * @param string $merchantCode Merchant code.
+     * @param string $memberId The ID of the member to retrieve.
+     * @param array|null $body Optional request payload
+     *
+     * @return \SumUp\HttpClients\Response
+     */
+    public function update($merchantCode, $memberId, $body = null)
+    {
+        $path = sprintf('/v0.1/merchants/%s/members/%s', rawurlencode((string) $merchantCode), rawurlencode((string) $memberId));
+        $payload = [];
+        if ($body !== null) {
+            $payload = $body;
+        }
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('PUT', $path, $payload, $headers);
     }
 }

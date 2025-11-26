@@ -2,10 +2,8 @@
 
 namespace SumUp\Services;
 
-use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
-use SumUp\Exceptions\SumUpArgumentException;
-use SumUp\Utils\ExceptionMessages;
+use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Utils\Headers;
 
 /**
@@ -30,7 +28,7 @@ class Merchant implements SumUpService
     protected $accessToken;
 
     /**
-     * Checkouts constructor.
+     * Merchant constructor.
      *
      * @param SumUpHttpClientInterface $client
      * @param AccessToken $accessToken
@@ -42,82 +40,77 @@ class Merchant implements SumUpService
     }
 
     /**
-     * Get merchant's profile.
+     * Retrieve a profile
+     *
+     * @param array $queryParams Optional query string parameters
      *
      * @return \SumUp\HttpClients\Response
      *
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @deprecated
      */
-    public function getProfile()
+    public function get($queryParams = [])
     {
-        $path = '/v0.1/me/merchant-profile';
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET', $path, [], $headers);
-    }
-
-    /**
-     * Update merchant's profile.
-     *
-     * @param array $data
-     *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
-     */
-    public function updateProfile(array $data)
-    {
-        if (empty($data)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
+        $path = '/v0.1/me';
+        if (!empty($queryParams)) {
+            $queryString = http_build_query($queryParams);
+            if (!empty($queryString)) {
+                $path .= '?' . $queryString;
+            }
         }
-        $path = '/v0.1/me/merchant-profile';
+        $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('PUT', $path, $data, $headers);
+
+        return $this->client->send('GET', $path, $payload, $headers);
     }
 
     /**
-     * Get data for doing business as.
+     * Retrieve DBA
+     *
      *
      * @return \SumUp\HttpClients\Response
      *
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @deprecated
      */
     public function getDoingBusinessAs()
     {
         $path = '/v0.1/me/merchant-profile/doing-business-as';
+        $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET', $path, [], $headers);
+
+        return $this->client->send('GET', $path, $payload, $headers);
     }
 
     /**
-     * Update data for doing business as.
+     * Retrieve a merchant profile
      *
-     * @param array $data
      *
      * @return \SumUp\HttpClients\Response
      *
-     * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @deprecated
      */
-    public function updateDoingBusinessAs(array $data)
+    public function getMerchantProfile()
     {
-        if (empty($data)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
-        }
-        $path = '/v0.1/me/merchant-profile/doing-business-as';
+        $path = '/v0.1/me/merchant-profile';
+        $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('PUT', $path, $data, $headers);
+
+        return $this->client->send('GET', $path, $payload, $headers);
+    }
+
+    /**
+     * Retrieve a personal profile
+     *
+     *
+     * @return \SumUp\HttpClients\Response
+     *
+     * @deprecated
+     */
+    public function getPersonalProfile()
+    {
+        $path = '/v0.1/me/personal-profile';
+        $payload = [];
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('GET', $path, $payload, $headers);
     }
 }

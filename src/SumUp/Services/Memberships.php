@@ -7,11 +7,11 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Utils\Headers;
 
 /**
- * Class Payouts
+ * Class Memberships
  *
  * @package SumUp\Services
  */
-class Payouts implements SumUpService
+class Memberships implements SumUpService
 {
     /**
      * The client for the http communication.
@@ -28,7 +28,7 @@ class Payouts implements SumUpService
     protected $accessToken;
 
     /**
-     * Payouts constructor.
+     * Memberships constructor.
      *
      * @param SumUpHttpClientInterface $client
      * @param AccessToken $accessToken
@@ -40,40 +40,15 @@ class Payouts implements SumUpService
     }
 
     /**
-     * List payouts
-     *
-     * @param string $merchantCode
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     */
-    public function list($merchantCode, $queryParams = [])
-    {
-        $path = sprintf('/v1.0/merchants/%s/payouts', rawurlencode((string) $merchantCode));
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * List payouts
+     * List memberships
      *
      * @param array $queryParams Optional query string parameters
      *
      * @return \SumUp\HttpClients\Response
-     *
-     * @deprecated
      */
-    public function listDeprecated($queryParams = [])
+    public function list($queryParams = [])
     {
-        $path = '/v0.1/me/financials/payouts';
+        $path = '/v0.1/memberships';
         if (!empty($queryParams)) {
             $queryString = http_build_query($queryParams);
             if (!empty($queryString)) {

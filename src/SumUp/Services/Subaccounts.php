@@ -7,11 +7,11 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Utils\Headers;
 
 /**
- * Class Transactions
+ * Class Subaccounts
  *
  * @package SumUp\Services
  */
-class Transactions implements SumUpService
+class Subaccounts implements SumUpService
 {
     /**
      * The client for the http communication.
@@ -28,7 +28,7 @@ class Transactions implements SumUpService
     protected $accessToken;
 
     /**
-     * Transactions constructor.
+     * Subaccounts constructor.
      *
      * @param SumUpHttpClientInterface $client
      * @param AccessToken $accessToken
@@ -40,46 +40,17 @@ class Transactions implements SumUpService
     }
 
     /**
-     * Retrieve a transaction
+     * Retrieve an operator
      *
-     * @param string $merchantCode
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     */
-    public function get($merchantCode, $queryParams = [])
-    {
-        $path = sprintf('/v2.1/merchants/%s/transactions', rawurlencode((string) $merchantCode));
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * Retrieve a transaction
-     *
-     * @param array $queryParams Optional query string parameters
+     * @param string $operatorId The unique identifier for the operator.
      *
      * @return \SumUp\HttpClients\Response
      *
      * @deprecated
      */
-    public function getDeprecated($queryParams = [])
+    public function compatGetOperator($operatorId)
     {
-        $path = '/v0.1/me/transactions';
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
+        $path = sprintf('/v0.1/me/accounts/%s', rawurlencode((string) $operatorId));
         $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
 
@@ -87,63 +58,17 @@ class Transactions implements SumUpService
     }
 
     /**
-     * List transactions
+     * Create an operator
      *
-     * @param string $merchantCode
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     */
-    public function list($merchantCode, $queryParams = [])
-    {
-        $path = sprintf('/v2.1/merchants/%s/transactions/history', rawurlencode((string) $merchantCode));
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * List transactions
-     *
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @deprecated
-     */
-    public function listDeprecated($queryParams = [])
-    {
-        $path = '/v0.1/me/transactions/history';
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * Refund a transaction
-     *
-     * @param string $txnId Unique ID of the transaction.
      * @param array|null $body Optional request payload
      *
      * @return \SumUp\HttpClients\Response
+     *
+     * @deprecated
      */
-    public function refund($txnId, $body = null)
+    public function createSubAccount($body = null)
     {
-        $path = sprintf('/v0.1/me/refund/%s', rawurlencode((string) $txnId));
+        $path = '/v0.1/me/accounts';
         $payload = [];
         if ($body !== null) {
             $payload = $body;
@@ -151,5 +76,69 @@ class Transactions implements SumUpService
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
 
         return $this->client->send('POST', $path, $payload, $headers);
+    }
+
+    /**
+     * Disable an operator.
+     *
+     * @param string $operatorId The unique identifier for the operator.
+     *
+     * @return \SumUp\HttpClients\Response
+     *
+     * @deprecated
+     */
+    public function deactivateSubAccount($operatorId)
+    {
+        $path = sprintf('/v0.1/me/accounts/%s', rawurlencode((string) $operatorId));
+        $payload = [];
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('DELETE', $path, $payload, $headers);
+    }
+
+    /**
+     * List operators
+     *
+     * @param array $queryParams Optional query string parameters
+     *
+     * @return \SumUp\HttpClients\Response
+     *
+     * @deprecated
+     */
+    public function listSubAccounts($queryParams = [])
+    {
+        $path = '/v0.1/me/accounts';
+        if (!empty($queryParams)) {
+            $queryString = http_build_query($queryParams);
+            if (!empty($queryString)) {
+                $path .= '?' . $queryString;
+            }
+        }
+        $payload = [];
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('GET', $path, $payload, $headers);
+    }
+
+    /**
+     * Update an operator
+     *
+     * @param string $operatorId The unique identifier for the operator.
+     * @param array|null $body Optional request payload
+     *
+     * @return \SumUp\HttpClients\Response
+     *
+     * @deprecated
+     */
+    public function updateSubAccount($operatorId, $body = null)
+    {
+        $path = sprintf('/v0.1/me/accounts/%s', rawurlencode((string) $operatorId));
+        $payload = [];
+        if ($body !== null) {
+            $payload = $body;
+        }
+        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
+        return $this->client->send('PUT', $path, $payload, $headers);
     }
 }

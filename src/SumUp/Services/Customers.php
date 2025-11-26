@@ -2,10 +2,8 @@
 
 namespace SumUp\Services;
 
-use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
-use SumUp\Exceptions\SumUpArgumentException;
-use SumUp\Utils\ExceptionMessages;
+use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Utils\Headers;
 
 /**
@@ -42,178 +40,90 @@ class Customers implements SumUpService
     }
 
     /**
-     * Create new customer.
+     * Create a customer
      *
-     * @param $customerId
-     * @param array $customerDetails
-     * @param array $customerAddress
+     * @param array|null $body Optional request payload
      *
      * @return \SumUp\HttpClients\Response
-     *
-     * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function create($customerId, array $customerDetails = [], array $customerAddress = [])
+    public function create($body = null)
     {
-        if (empty($customerId)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
-        }
-
-        $details = array_merge([
-            'first_name' => null,
-            'last_name' => null,
-            'email' => null,
-            'phone' => null
-        ], $customerDetails);
-        $details = array_filter($details);
-
-        $address = array_merge([
-            'city' => null,
-            'country' => null,
-            'line1' => null,
-            'line2' => null,
-            'state' => null,
-            'postalCode' => null
-        ], $customerAddress);
-        $address = array_filter($address);
-
-        if (sizeof($address) > 0) {
-            $details['address'] = $address;
-        }
-
-        $payload = [
-            'customer_id' => $customerId,
-            'personal_details' => $details
-        ];
         $path = '/v0.1/customers';
+        $payload = [];
+        if ($body !== null) {
+            $payload = $body;
+        }
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
+
         return $this->client->send('POST', $path, $payload, $headers);
     }
 
     /**
-     * Update existing customer.
+     * Deactivate a payment instrument
      *
-     * @param $customerId
-     * @param array $customerDetails
-     * @param array $customerAddress
+     * @param string $customerId Unique ID of the saved customer resource.
+     * @param string $token Unique token identifying the card saved as a payment instrument resource.
      *
      * @return \SumUp\HttpClients\Response
-     *
-     * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function update($customerId, array $customerDetails = [], array $customerAddress = [])
+    public function deactivatePaymentInstrument($customerId, $token)
     {
-        if (empty($customerId)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
-        }
-
-        $details = array_merge([
-            'first_name' => null,
-            'last_name' => null,
-            'email' => null,
-            'phone' => null
-        ], $customerDetails);
-        $details = array_filter($details);
-
-        $address = array_merge([
-            'city' => null,
-            'country' => null,
-            'line1' => null,
-            'line2' => null,
-            'state' => null,
-            'postalCode' => null
-        ], $customerAddress);
-        $address = array_filter($address);
-
-        if (sizeof($address) > 0) {
-            $details['address'] = $address;
-        }
-        $payload = [
-            'customer_id' => $customerId,
-            'personal_details' => $details
-        ];
-        $path = '/v0.1/customers/' . $customerId;
+        $path = sprintf('/v0.1/customers/%s/payment-instruments/%s', rawurlencode((string) $customerId), rawurlencode((string) $token));
+        $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('PUT', $path, $payload, $headers);
+
+        return $this->client->send('DELETE', $path, $payload, $headers);
     }
 
     /**
-     * Get customer by ID.
+     * Retrieve a customer
      *
-     * @param $customerId
+     * @param string $customerId Unique ID of the saved customer resource.
      *
      * @return \SumUp\HttpClients\Response
-     *
-     * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
      */
     public function get($customerId)
     {
-        if (empty($customerId)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
-        }
-        $path = '/v0.1/customers/' . $customerId;
+        $path = sprintf('/v0.1/customers/%s', rawurlencode((string) $customerId));
+        $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET', $path, [], $headers);
+
+        return $this->client->send('GET', $path, $payload, $headers);
     }
 
     /**
-     * Get payment instruments for a customer.
+     * List payment instruments
      *
-     * @param $customerId
+     * @param string $customerId Unique ID of the saved customer resource.
      *
      * @return \SumUp\HttpClients\Response
-     *
-     * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getPaymentInstruments($customerId)
+    public function listPaymentInstruments($customerId)
     {
-        if (empty($customerId)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
-        }
-        $path = '/v0.1/customers/' . $customerId . '/payment-instruments';
+        $path = sprintf('/v0.1/customers/%s/payment-instruments', rawurlencode((string) $customerId));
+        $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET', $path, [], $headers);
+
+        return $this->client->send('GET', $path, $payload, $headers);
     }
 
     /**
-     * Deactivate payment instrument for a customer.
+     * Update a customer
      *
-     * @param $customerId
-     * @param $cardToken
+     * @param string $customerId Unique ID of the saved customer resource.
+     * @param array|null $body Optional request payload
      *
      * @return \SumUp\HttpClients\Response
-     *
-     * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function deletePaymentInstruments($customerId, $cardToken)
+    public function update($customerId, $body = null)
     {
-        if (empty($customerId)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
+        $path = sprintf('/v0.1/customers/%s', rawurlencode((string) $customerId));
+        $payload = [];
+        if ($body !== null) {
+            $payload = $body;
         }
-        if (empty($cardToken)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('card token'));
-        }
-        $path = '/v0.1/customers/' . $customerId . '/payment-instruments/' . $cardToken;
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('DELETE', $path, [], $headers);
+
+        return $this->client->send('PUT', $path, $payload, $headers);
     }
 }

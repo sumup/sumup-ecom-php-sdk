@@ -21,3 +21,7 @@ fmtcheck: vendor ## Check code formatting
 .PHONY: test
 test: vendor ## Run PHPUnit test suite
 	composer test
+
+.PHONY: generate
+generate: ## Generate SDK from the local OpenAPI specs
+	cd codegen && go run ./... generate ../openapi.yaml ../src

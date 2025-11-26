@@ -4,18 +4,25 @@ namespace SumUp;
 
 use SumUp\Application\ApplicationConfiguration;
 use SumUp\Application\ApplicationConfigurationInterface;
-use SumUp\HttpClients\HttpClientsFactory;
-use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Exceptions\SumUpSDKException;
+use SumUp\HttpClients\HttpClientsFactory;
+use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Services\Authorization;
 use SumUp\Services\Checkouts;
-use SumUp\Services\Customers;
-use SumUp\Services\Merchant;
-use SumUp\Services\Transactions;
-use SumUp\Services\Payouts;
 use SumUp\Services\Custom;
+use SumUp\Services\Customers;
+use SumUp\Services\Members;
+use SumUp\Services\Memberships;
+use SumUp\Services\Merchant;
+use SumUp\Services\Merchants;
+use SumUp\Services\Payouts;
+use SumUp\Services\Readers;
+use SumUp\Services\Receipts;
+use SumUp\Services\Roles;
+use SumUp\Services\Subaccounts;
+use SumUp\Services\Transactions;
 
 /**
  * Class SumUp
@@ -34,11 +41,13 @@ class SumUp
     /**
      * The access token that holds the data from the response.
      *
-     * @var Authentication\AccessToken
+     * @var AccessToken
      */
     protected $accessToken;
 
-    /** @var HttpClients\SumUpGuzzleHttpClient */
+    /**
+     * @var SumUpHttpClientInterface
+     */
     protected $client;
 
     /**
@@ -60,7 +69,7 @@ class SumUp
     /**
      * Returns the access token.
      *
-     * @return Authentication\AccessToken
+     * @return AccessToken
      */
     public function getAccessToken()
     {
@@ -72,7 +81,7 @@ class SumUp
      *
      * @param string $refreshToken
      *
-     * @return Authentication\AccessToken
+     * @return AccessToken
      *
      * @throws SumUpSDKException
      */
@@ -108,7 +117,23 @@ class SumUp
     }
 
     /**
-     * Get the service for checkouts management.
+     * Resolve the access token that should be used for a service.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return AccessToken
+     */
+    protected function resolveAccessToken(AccessToken $accessToken = null)
+    {
+        if (!empty($accessToken)) {
+            return $accessToken;
+        }
+
+        return $this->accessToken;
+    }
+
+    /**
+     * Get the service for checkouts.
      *
      * @param AccessToken|null $accessToken
      *
@@ -116,16 +141,13 @@ class SumUp
      */
     public function getCheckoutService(AccessToken $accessToken = null)
     {
-        if (!empty($accessToken)) {
-            $accToken = $accessToken;
-        } else {
-            $accToken = $this->accessToken;
-        }
-        return new Checkouts($this->client, $accToken);
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Checkouts($this->client, $token);
     }
 
     /**
-     * Get the service for customers management.
+     * Get the service for customers.
      *
      * @param AccessToken|null $accessToken
      *
@@ -133,33 +155,41 @@ class SumUp
      */
     public function getCustomerService(AccessToken $accessToken = null)
     {
-        if (!empty($accessToken)) {
-            $accToken = $accessToken;
-        } else {
-            $accToken = $this->accessToken;
-        }
-        return new Customers($this->client, $accToken);
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Customers($this->client, $token);
     }
 
     /**
-     * Get the service for transactions management.
+     * Get the service for members.
      *
      * @param AccessToken|null $accessToken
      *
-     * @return Transactions
+     * @return Members
      */
-    public function getTransactionService(AccessToken $accessToken = null)
+    public function getMembersService(AccessToken $accessToken = null)
     {
-        if (!empty($accessToken)) {
-            $accToken = $accessToken;
-        } else {
-            $accToken = $this->accessToken;
-        }
-        return new Transactions($this->client, $accToken);
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Members($this->client, $token);
     }
 
     /**
-     * Get the service for merchant management.
+     * Get the service for memberships.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return Memberships
+     */
+    public function getMembershipsService(AccessToken $accessToken = null)
+    {
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Memberships($this->client, $token);
+    }
+
+    /**
+     * Get the service for merchant.
      *
      * @param AccessToken|null $accessToken
      *
@@ -167,12 +197,23 @@ class SumUp
      */
     public function getMerchantService(AccessToken $accessToken = null)
     {
-        if (!empty($accessToken)) {
-            $accToken = $accessToken;
-        } else {
-            $accToken = $this->accessToken;
-        }
-        return new Merchant($this->client, $accToken);
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Merchant($this->client, $token);
+    }
+
+    /**
+     * Get the service for merchants.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return Merchants
+     */
+    public function getMerchantsService(AccessToken $accessToken = null)
+    {
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Merchants($this->client, $token);
     }
 
     /**
@@ -184,12 +225,79 @@ class SumUp
      */
     public function getPayoutService(AccessToken $accessToken = null)
     {
-        if (!empty($accessToken)) {
-            $accToken = $accessToken;
-        } else {
-            $accToken = $this->accessToken;
-        }
-        return new Payouts($this->client, $accToken);
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Payouts($this->client, $token);
+    }
+
+    /**
+     * Get the service for readers.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return Readers
+     */
+    public function getReadersService(AccessToken $accessToken = null)
+    {
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Readers($this->client, $token);
+    }
+
+    /**
+     * Get the service for receipts.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return Receipts
+     */
+    public function getReceiptsService(AccessToken $accessToken = null)
+    {
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Receipts($this->client, $token);
+    }
+
+    /**
+     * Get the service for roles.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return Roles
+     */
+    public function getRolesService(AccessToken $accessToken = null)
+    {
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Roles($this->client, $token);
+    }
+
+    /**
+     * Get the service for subaccounts.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return Subaccounts
+     */
+    public function getSubaccountsService(AccessToken $accessToken = null)
+    {
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Subaccounts($this->client, $token);
+    }
+
+    /**
+     * Get the service for transactions.
+     *
+     * @param AccessToken|null $accessToken
+     *
+     * @return Transactions
+     */
+    public function getTransactionService(AccessToken $accessToken = null)
+    {
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Transactions($this->client, $token);
     }
 
     /**
@@ -199,11 +307,8 @@ class SumUp
      */
     public function getCustomService(AccessToken $accessToken = null)
     {
-        if (!empty($accessToken)) {
-            $accToken = $accessToken;
-        } else {
-            $accToken = $this->accessToken;
-        }
-        return new Custom($this->client, $accToken);
+        $token = $this->resolveAccessToken($accessToken);
+
+        return new Custom($this->client, $token);
     }
 }

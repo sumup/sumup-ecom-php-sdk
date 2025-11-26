@@ -7,11 +7,11 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Utils\Headers;
 
 /**
- * Class Checkouts
+ * Class Roles
  *
  * @package SumUp\Services
  */
-class Checkouts implements SumUpService
+class Roles implements SumUpService
 {
     /**
      * The client for the http communication.
@@ -28,7 +28,7 @@ class Checkouts implements SumUpService
     protected $accessToken;
 
     /**
-     * Checkouts constructor.
+     * Roles constructor.
      *
      * @param SumUpHttpClientInterface $client
      * @param AccessToken $accessToken
@@ -40,15 +40,16 @@ class Checkouts implements SumUpService
     }
 
     /**
-     * Create a checkout
+     * Create a role
      *
+     * @param string $merchantCode Merchant code.
      * @param array|null $body Optional request payload
      *
      * @return \SumUp\HttpClients\Response
      */
-    public function create($body = null)
+    public function create($merchantCode, $body = null)
     {
-        $path = '/v0.1/checkouts';
+        $path = sprintf('/v0.1/merchants/%s/roles', rawurlencode((string) $merchantCode));
         $payload = [];
         if ($body !== null) {
             $payload = $body;
@@ -59,15 +60,16 @@ class Checkouts implements SumUpService
     }
 
     /**
-     * Deactivate a checkout
+     * Delete a role
      *
-     * @param string $id Unique ID of the checkout resource.
+     * @param string $merchantCode Merchant code.
+     * @param string $roleId The ID of the role to retrieve.
      *
      * @return \SumUp\HttpClients\Response
      */
-    public function deactivate($id)
+    public function delete($merchantCode, $roleId)
     {
-        $path = sprintf('/v0.1/checkouts/%s', rawurlencode((string) $id));
+        $path = sprintf('/v0.1/merchants/%s/roles/%s', rawurlencode((string) $merchantCode), rawurlencode((string) $roleId));
         $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
 
@@ -75,15 +77,16 @@ class Checkouts implements SumUpService
     }
 
     /**
-     * Retrieve a checkout
+     * Retrieve a role
      *
-     * @param string $id Unique ID of the checkout resource.
+     * @param string $merchantCode Merchant code.
+     * @param string $roleId The ID of the role to retrieve.
      *
      * @return \SumUp\HttpClients\Response
      */
-    public function get($id)
+    public function get($merchantCode, $roleId)
     {
-        $path = sprintf('/v0.1/checkouts/%s', rawurlencode((string) $id));
+        $path = sprintf('/v0.1/merchants/%s/roles/%s', rawurlencode((string) $merchantCode), rawurlencode((string) $roleId));
         $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
 
@@ -91,21 +94,15 @@ class Checkouts implements SumUpService
     }
 
     /**
-     * List checkouts
+     * List roles
      *
-     * @param array $queryParams Optional query string parameters
+     * @param string $merchantCode Merchant code.
      *
      * @return \SumUp\HttpClients\Response
      */
-    public function list($queryParams = [])
+    public function list($merchantCode)
     {
-        $path = '/v0.1/checkouts';
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
+        $path = sprintf('/v0.1/merchants/%s/roles', rawurlencode((string) $merchantCode));
         $payload = [];
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
 
@@ -113,45 +110,23 @@ class Checkouts implements SumUpService
     }
 
     /**
-     * Get available payment methods
+     * Update a role
      *
-     * @param string $merchantCode The SumUp merchant code.
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     */
-    public function listAvailablePaymentMethods($merchantCode, $queryParams = [])
-    {
-        $path = sprintf('/v0.1/merchants/%s/payment-methods', rawurlencode((string) $merchantCode));
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * Process a checkout
-     *
-     * @param string $id Unique ID of the checkout resource.
+     * @param string $merchantCode Merchant code.
+     * @param string $roleId The ID of the role to retrieve.
      * @param array|null $body Optional request payload
      *
      * @return \SumUp\HttpClients\Response
      */
-    public function process($id, $body = null)
+    public function update($merchantCode, $roleId, $body = null)
     {
-        $path = sprintf('/v0.1/checkouts/%s', rawurlencode((string) $id));
+        $path = sprintf('/v0.1/merchants/%s/roles/%s', rawurlencode((string) $merchantCode), rawurlencode((string) $roleId));
         $payload = [];
         if ($body !== null) {
             $payload = $body;
         }
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
 
-        return $this->client->send('PUT', $path, $payload, $headers);
+        return $this->client->send('PATCH', $path, $payload, $headers);
     }
 }

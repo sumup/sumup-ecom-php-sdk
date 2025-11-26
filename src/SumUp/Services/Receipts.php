@@ -7,11 +7,11 @@ use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Utils\Headers;
 
 /**
- * Class Payouts
+ * Class Receipts
  *
  * @package SumUp\Services
  */
-class Payouts implements SumUpService
+class Receipts implements SumUpService
 {
     /**
      * The client for the http communication.
@@ -28,7 +28,7 @@ class Payouts implements SumUpService
     protected $accessToken;
 
     /**
-     * Payouts constructor.
+     * Receipts constructor.
      *
      * @param SumUpHttpClientInterface $client
      * @param AccessToken $accessToken
@@ -40,40 +40,16 @@ class Payouts implements SumUpService
     }
 
     /**
-     * List payouts
+     * Retrieve receipt details
      *
-     * @param string $merchantCode
+     * @param string $id SumUp unique transaction ID or transaction code, e.g. TS7HDYLSKD.
      * @param array $queryParams Optional query string parameters
      *
      * @return \SumUp\HttpClients\Response
      */
-    public function list($merchantCode, $queryParams = [])
+    public function get($id, $queryParams = [])
     {
-        $path = sprintf('/v1.0/merchants/%s/payouts', rawurlencode((string) $merchantCode));
-        if (!empty($queryParams)) {
-            $queryString = http_build_query($queryParams);
-            if (!empty($queryString)) {
-                $path .= '?' . $queryString;
-            }
-        }
-        $payload = [];
-        $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-
-        return $this->client->send('GET', $path, $payload, $headers);
-    }
-
-    /**
-     * List payouts
-     *
-     * @param array $queryParams Optional query string parameters
-     *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @deprecated
-     */
-    public function listDeprecated($queryParams = [])
-    {
-        $path = '/v0.1/me/financials/payouts';
+        $path = sprintf('/v1.1/receipts/%s', rawurlencode((string) $id));
         if (!empty($queryParams)) {
             $queryString = http_build_query($queryParams);
             if (!empty($queryString)) {
