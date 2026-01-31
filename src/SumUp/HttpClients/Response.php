@@ -4,6 +4,7 @@ namespace SumUp\HttpClients;
 
 use SumUp\Exceptions\SumUpAuthenticationException;
 use SumUp\Exceptions\SumUpResponseException;
+use SumUp\Exceptions\SumUpSDKException;
 use SumUp\Exceptions\SumUpServerException;
 use SumUp\Exceptions\SumUpValidationException;
 
@@ -17,7 +18,7 @@ class Response
     /**
      * The HTTP response code.
      *
-     * @var number
+     * @var int
      */
     protected $httpResponseCode;
 
@@ -31,17 +32,17 @@ class Response
     /**
      * Response constructor.
      *
-     * @param number $httpResponseCode
-     * @param $body
+     * @param int $httpResponseCode
+     * @param mixed $body
      *
      * @throws SumUpAuthenticationException
      * @throws SumUpResponseException
      * @throws SumUpValidationException
      * @throws SumUpServerException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      * @throws SumUpValidationException
      */
-    public function __construct($httpResponseCode, $body)
+    public function __construct(int $httpResponseCode, $body)
     {
         $this->httpResponseCode = $httpResponseCode;
         $this->body = $body;
@@ -51,9 +52,9 @@ class Response
     /**
      * Get HTTP response code.
      *
-     * @return number
+     * @return int
      */
-    public function getHttpResponseCode()
+    public function getHttpResponseCode(): int
     {
         return $this->httpResponseCode;
     }
@@ -77,9 +78,9 @@ class Response
      * @throws SumUpResponseException
      * @throws SumUpValidationException
      * @throws SumUpServerException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    protected function parseResponseForErrors()
+    protected function parseResponseForErrors(): void
     {
         if (isset($this->body->error_code) && $this->body->error_code === 'NOT_AUTHORIZED') {
             throw new SumUpAuthenticationException($this->body->error_message, $this->httpResponseCode);
@@ -111,7 +112,7 @@ class Response
      *
      * @return string
      */
-    protected function parseErrorMessage($defaultMessage = '')
+    protected function parseErrorMessage(string $defaultMessage = ''): string
     {
         if (is_null($this->body)) {
             return $defaultMessage;

@@ -2,6 +2,8 @@
 
 namespace SumUp\Services;
 
+use SumUp\Exceptions\SumUpSDKException;
+use SumUp\HttpClients\Response;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
@@ -44,19 +46,16 @@ class Customers implements SumUpService
     /**
      * Create new customer.
      *
-     * @param $customerId
+     * @param string $customerId
      * @param array $customerDetails
      * @param array $customerAddress
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function create($customerId, array $customerDetails = [], array $customerAddress = [])
+    public function create(string $customerId, array $customerDetails = [], array $customerAddress = []): Response
     {
         if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
@@ -96,19 +95,16 @@ class Customers implements SumUpService
     /**
      * Update existing customer.
      *
-     * @param $customerId
+     * @param string $customerId
      * @param array $customerDetails
      * @param array $customerAddress
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function update($customerId, array $customerDetails = [], array $customerAddress = [])
+    public function update(string $customerId, array $customerDetails = [], array $customerAddress = []): Response
     {
         if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
@@ -147,17 +143,14 @@ class Customers implements SumUpService
     /**
      * Get customer by ID.
      *
-     * @param $customerId
+     * @param string $customerId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function get($customerId)
+    public function get(string $customerId): Response
     {
         if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
@@ -170,17 +163,14 @@ class Customers implements SumUpService
     /**
      * Get payment instruments for a customer.
      *
-     * @param $customerId
+     * @param string $customerId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function getPaymentInstruments($customerId)
+    public function getPaymentInstruments(string $customerId): Response
     {
         if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));
@@ -193,18 +183,15 @@ class Customers implements SumUpService
     /**
      * Deactivate payment instrument for a customer.
      *
-     * @param $customerId
-     * @param $cardToken
+     * @param string $customerId
+     * @param string $cardToken
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function deletePaymentInstruments($customerId, $cardToken)
+    public function deletePaymentInstruments(string $customerId, string $cardToken): Response
     {
         if (empty($customerId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('customer id'));

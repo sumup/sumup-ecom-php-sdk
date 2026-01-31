@@ -17,5 +17,5 @@ interface SumUpHttpClientInterface
      *
      * @return Response|mixed
      */
-    public function send($method, $url, $body, $headers);
+    public function send(string $method, string $url, array $body, array $headers);
 }

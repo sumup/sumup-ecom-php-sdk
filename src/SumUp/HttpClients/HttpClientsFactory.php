@@ -27,7 +27,7 @@ class HttpClientsFactory
      *
      * @throws SumUpConfigurationException
      */
-    public static function createHttpClient(ApplicationConfigurationInterface $appConfig, SumUpHttpClientInterface $customHttpClient = null)
+    public static function createHttpClient(ApplicationConfigurationInterface $appConfig, ?SumUpHttpClientInterface $customHttpClient = null): SumUpHttpClientInterface
     {
         if ($customHttpClient) {
             return $customHttpClient;
@@ -45,12 +45,14 @@ class HttpClientsFactory
      *
      * @param string $baseURL
      * @param bool $forceUseGuzzle
+     * @param array $customHeaders
+     * @param string|null $caBundlePath
      *
      * @return SumUpCUrlClient|SumUpGuzzleHttpClient
      *
      * @throws SumUpConfigurationException
      */
-    private static function detectDefaultClient($baseURL, $forceUseGuzzle, $customHeaders, $caBundlePath)
+    private static function detectDefaultClient(string $baseURL, bool $forceUseGuzzle, array $customHeaders, ?string $caBundlePath): SumUpHttpClientInterface
     {
         if (extension_loaded('curl') && !$forceUseGuzzle) {
             return new SumUpCUrlClient($baseURL, $customHeaders, $caBundlePath);

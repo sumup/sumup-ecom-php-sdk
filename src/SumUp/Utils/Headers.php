@@ -17,7 +17,7 @@ class Headers
      *
      * @return array
      */
-    public static function getCTJson()
+    public static function getCTJson(): array
     {
         return ['Content-Type' => 'application/json'];
     }
@@ -27,7 +27,7 @@ class Headers
      *
      * @return array
      */
-    public static function getCTForm()
+    public static function getCTForm(): array
     {
         return ['Content-Type' => 'application/x-www-form-urlencoded'];
     }
@@ -39,7 +39,7 @@ class Headers
      *
      * @return array
      */
-    public static function getAuth(AccessToken $accessToken)
+    public static function getAuth(AccessToken $accessToken): array
     {
         return ['Authorization' => 'Bearer ' . $accessToken->getValue()];
     }
@@ -49,7 +49,7 @@ class Headers
      *
      * @return array
      */
-    public static function getStandardHeaders()
+    public static function getStandardHeaders(): array
     {
         $headers = self::getCTJson();
         $headers['User-Agent'] = SdkInfo::getUserAgent();

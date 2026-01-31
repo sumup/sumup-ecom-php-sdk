@@ -14,7 +14,7 @@ class SdkInfo
      *
      * @return string
      */
-    public static function getVersion()
+    public static function getVersion(): string
     {
         return Version::CURRENT;
     }
@@ -24,7 +24,7 @@ class SdkInfo
      *
      * @return string
      */
-    public static function getUserAgent()
+    public static function getUserAgent(): string
     {
         return sprintf(self::USER_AGENT_TEMPLATE, self::getVersion());
     }

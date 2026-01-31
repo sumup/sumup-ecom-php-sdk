@@ -172,7 +172,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string
      */
-    public function getAppId()
+    public function getAppId(): string
     {
         return $this->appId;
     }
@@ -182,7 +182,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string
      */
-    public function getAppSecret()
+    public function getAppSecret(): string
     {
         return $this->appSecret;
     }
@@ -192,7 +192,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return array
      */
-    public function getScopes()
+    public function getScopes(): array
     {
         return $this->scopes;
     }
@@ -202,7 +202,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string
      */
-    public function getFormattedScopes()
+    public function getFormattedScopes(): string
     {
         return implode(' ', $this->scopes);
     }
@@ -212,7 +212,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string
      */
-    public function getBaseURL()
+    public function getBaseURL(): string
     {
         return $this->baseURL;
     }
@@ -220,9 +220,9 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Returns authorization code.
      *
-     * @return null|string
+     * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -232,7 +232,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string;
      */
-    public function getGrantType()
+    public function getGrantType(): string
     {
         return $this->grantType;
     }
@@ -240,9 +240,9 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Returns merchant's username.
      *
-     * @return null|string
+     * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -250,9 +250,9 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Returns merchant's password.
      *
-     * @return null|string
+     * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -262,7 +262,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return null|string
      */
-    public function getAccessToken()
+    public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
@@ -272,7 +272,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return null|string
      */
-    public function getRefreshToken()
+    public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }
@@ -282,7 +282,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return bool
      */
-    public function getForceGuzzle()
+    public function getForceGuzzle(): bool
     {
         return $this->forceGuzzle;
     }
@@ -292,7 +292,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return array
      */
-    public function getCustomHeaders()
+    public function getCustomHeaders(): array
     {
         return $this->customHeaders;
     }
@@ -302,7 +302,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string|null
      */
-    public function getCABundlePath()
+    public function getCABundlePath(): ?string
     {
         if (!empty($this->caBundlePath)) {
             return $this->caBundlePath;
@@ -316,7 +316,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string|null
      */
-    public function getApiKey()
+    public function getApiKey(): ?string
     {
         return $this->apiKey;
     }
@@ -324,11 +324,11 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Set application ID.
      *
-     * @param string $appId
+     * @param ?string $appId
      *
      * @throws SumUpConfigurationException
      */
-    protected function setAppId($appId)
+    protected function setAppId(?string $appId): void
     {
         if (empty($appId) && empty($this->apiKey)) {
             throw new SumUpConfigurationException('Missing mandatory parameter app_id or api_key');
@@ -343,7 +343,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @throws SumUpConfigurationException
      */
-    protected function setAppSecret($appSecret)
+    protected function setAppSecret(?string $appSecret): void
     {
         if (empty($appSecret) && empty($this->apiKey)) {
             throw new SumUpConfigurationException('Missing mandatory parameter app_secret or api_key');
@@ -354,11 +354,11 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
     /**
      * Set the authorization grant type.
      *
-     * @param array $grantType
+     * @param string $grantType
      *
      * @throws SumUpConfigurationException
      */
-    protected function setGrantType($grantType)
+    protected function setGrantType(string $grantType): void
     {
         if (!in_array($grantType, $this::GRANT_TYPES)) {
             throw new SumUpConfigurationException('Invalid parameter for "grant_type". Allowed values are: ' . implode(' | ', $this::GRANT_TYPES) . '.');
@@ -371,24 +371,18 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @param array $scopes
      */
-    protected function setScopes(array $scopes = [])
+    protected function setScopes(array $scopes = []): void
     {
         $this->scopes = array_unique(array_merge($this::DEFAULT_SCOPES, $scopes), SORT_REGULAR);
-        ;
     }
 
     /**
      * Set the flag whether to use GuzzleHttp.
      *
      * @param bool $forceGuzzle
-     *
-     * @throws SumUpConfigurationException
      */
-    protected function setForceGuzzle($forceGuzzle)
+    protected function setForceGuzzle(bool $forceGuzzle): void
     {
-        if (!is_bool($forceGuzzle)) {
-            throw new SumUpConfigurationException('Invalid value for boolean parameter use_guzzlehttp_over_curl.');
-        }
         $this->forceGuzzle = $forceGuzzle;
     }
 
@@ -397,12 +391,11 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @param array $customHeaders
      */
-    public function setCustomHeaders($customHeaders)
+    public function setCustomHeaders(array $customHeaders): void
     {
-        $headers = is_array($customHeaders) ? $customHeaders : [];
-        $headers[self::USER_AGENT_HEADER] = SdkInfo::getUserAgent();
+        $customHeaders[self::USER_AGENT_HEADER] = SdkInfo::getUserAgent();
 
-        $this->customHeaders = $headers;
+        $this->customHeaders = $customHeaders;
     }
 
     /**
@@ -412,15 +405,11 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @throws SumUpConfigurationException
      */
-    protected function setCABundlePath($caBundlePath)
+    protected function setCABundlePath(?string $caBundlePath): void
     {
         if ($caBundlePath === null || $caBundlePath === '') {
             $this->caBundlePath = null;
             return;
-        }
-
-        if (!is_string($caBundlePath)) {
-            throw new SumUpConfigurationException('Invalid value for "ca_bundle_path". Expected string path or null.');
         }
 
         if (!is_readable($caBundlePath)) {
@@ -435,7 +424,7 @@ class ApplicationConfiguration implements ApplicationConfigurationInterface
      *
      * @return string|null
      */
-    private function getDefaultCABundlePath()
+    private function getDefaultCABundlePath(): ?string
     {
         $path = realpath(__DIR__ . '/../../../resources/ca-bundle.crt');
         if ($path && is_readable($path)) {

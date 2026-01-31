@@ -2,6 +2,8 @@
 
 namespace SumUp\Services;
 
+use SumUp\Exceptions\SumUpSDKException;
+use SumUp\HttpClients\Response;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
@@ -44,14 +46,9 @@ class Merchant implements SumUpService
     /**
      * Get merchant's profile.
      *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @return Response
      */
-    public function getProfile()
+    public function getProfile(): Response
     {
         $path = '/v0.1/me/merchant-profile';
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
@@ -63,15 +60,12 @@ class Merchant implements SumUpService
      *
      * @param array $data
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function updateProfile(array $data)
+    public function updateProfile(array $data): Response
     {
         if (empty($data)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));
@@ -84,14 +78,9 @@ class Merchant implements SumUpService
     /**
      * Get data for doing business as.
      *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @return Response
      */
-    public function getDoingBusinessAs()
+    public function getDoingBusinessAs(): Response
     {
         $path = '/v0.1/me/merchant-profile/doing-business-as';
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
@@ -103,15 +92,12 @@ class Merchant implements SumUpService
      *
      * @param array $data
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function updateDoingBusinessAs(array $data)
+    public function updateDoingBusinessAs(array $data): Response
     {
         if (empty($data)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('payload data'));

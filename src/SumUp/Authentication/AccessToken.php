@@ -49,11 +49,11 @@ class AccessToken
      *
      * @param string $value
      * @param string $type
-     * @param int    $expiresIn
+     * @param int|null    $expiresIn
      * @param array  $scope
-     * @param string $refreshToken
+     * @param string|null $refreshToken
      */
-    public function __construct($value, $type = '', $expiresIn = -1, array $scope = [], $refreshToken = null)
+    public function __construct(string $value, string $type = '', ?int $expiresIn = -1, array $scope = [], ?string $refreshToken = null)
     {
         if ($value) {
             $this->value = $value;
@@ -77,7 +77,7 @@ class AccessToken
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -87,7 +87,7 @@ class AccessToken
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -97,7 +97,7 @@ class AccessToken
      *
      * @return int
      */
-    public function getExpiresIn()
+    public function getExpiresIn(): int
     {
         return $this->expiresIn;
     }
@@ -107,7 +107,7 @@ class AccessToken
      *
      * @return array
      */
-    public function getScopes()
+    public function getScopes(): array
     {
         return $this->scope;
     }
@@ -117,7 +117,7 @@ class AccessToken
      *
      * @return null|string
      */
-    public function getRefreshToken()
+    public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }

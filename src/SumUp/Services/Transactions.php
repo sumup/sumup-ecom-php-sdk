@@ -2,6 +2,8 @@
 
 namespace SumUp\Services;
 
+use SumUp\Exceptions\SumUpSDKException;
+use SumUp\HttpClients\Response;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
@@ -44,17 +46,14 @@ class Transactions implements SumUpService
     /**
      * Get single transaction by transaction ID.
      *
-     * @param $transactionId
+     * @param string $transactionId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function findById($transactionId)
+    public function findById(string $transactionId): Response
     {
         if (empty($transactionId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
@@ -67,17 +66,14 @@ class Transactions implements SumUpService
     /**
      * Get single transaction by internal ID.
      *
-     * @param $internalId
+     * @param string $internalId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function findByInternalId($internalId)
+    public function findByInternalId(string $internalId): Response
     {
         if (empty($internalId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('internal id'));
@@ -90,17 +86,14 @@ class Transactions implements SumUpService
     /**
      * Get single transaction by foreign transaction id.
      *
-     * @param $foreignId
+     * @param string $foreignId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function findByForeignId($foreignId)
+    public function findByForeignId(string $foreignId): Response
     {
         if (empty($foreignId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('foreign transaction id'));
@@ -113,17 +106,14 @@ class Transactions implements SumUpService
     /**
      * Get single transaction by transaction code.
      *
-     * @param $transactionCode
+     * @param string $transactionCode
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function findByTransactionCode($transactionCode)
+    public function findByTransactionCode(string $transactionCode): Response
     {
         if (empty($transactionCode)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction code'));
@@ -138,14 +128,9 @@ class Transactions implements SumUpService
      *
      * @param array $filters
      *
-     * @return \SumUp\HttpClients\Response
-     *
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @return Response
      */
-    public function getTransactionHistory($filters = [])
+    public function getTransactionHistory(array $filters = []): Response
     {
         $filters = array_merge([
             'order' => 'ascending',
@@ -176,18 +161,15 @@ class Transactions implements SumUpService
     /**
      * Refund a transaction partially or fully.
      *
-     * @param $transactionId
-     * @param null $amount
+     * @param string $transactionId
+     * @param string|null $amount
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function refund($transactionId, $amount = null)
+    public function refund(string $transactionId, ?string $amount = null): Response
     {
         if (empty($transactionId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
@@ -206,18 +188,15 @@ class Transactions implements SumUpService
     /**
      * Get a receipt for a transaction.
      *
-     * @param $transactionId
-     * @param $merchantId
+     * @param string $transactionId
+     * @param string $merchantId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function getReceipt($transactionId, $merchantId)
+    public function getReceipt(string $transactionId, string $merchantId): Response
     {
         if (empty($transactionId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('transaction id'));
