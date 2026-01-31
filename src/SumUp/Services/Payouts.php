@@ -2,6 +2,8 @@
 
 namespace SumUp\Services;
 
+use SumUp\Exceptions\SumUpSDKException;
+use SumUp\HttpClients\Response;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Exceptions\SumUpArgumentException;
@@ -50,15 +52,12 @@ class Payouts implements SumUpService
      * @param bool   $descendingOrder
      * @param string $format
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function getPayouts($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
+    public function getPayouts(string $startDate, string $endDate, int $limit = 10, bool $descendingOrder = true, string $format = 'json'): Response
     {
         if (empty($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
@@ -68,9 +67,6 @@ class Payouts implements SumUpService
         }
         if (empty($limit) || !is_int($limit)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
-        }
-        if (empty($descendingOrder)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
         if (empty($format)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
@@ -85,11 +81,11 @@ class Payouts implements SumUpService
         $queryParams = http_build_query($filters);
         $path = '/v0.1/me/financials/payouts?' . $queryParams;
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET', $path, null, $headers);
+        return $this->client->send('GET', $path, [], $headers);
     }
 
     /**
-     * Get a list of payed out transactions.
+     * Get a list of paid out transactions.
      *
      * @param string $startDate
      * @param string $endDate
@@ -97,15 +93,12 @@ class Payouts implements SumUpService
      * @param bool   $descendingOrder
      * @param string $format
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function getTransactions($startDate, $endDate, $limit = 10, $descendingOrder = true, $format = 'json')
+    public function getTransactions(string $startDate, string $endDate, int $limit = 10, bool $descendingOrder = true, string $format = 'json'): Response
     {
         if (empty($startDate)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('start date'));
@@ -115,9 +108,6 @@ class Payouts implements SumUpService
         }
         if (empty($limit) || !is_int($limit)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('limit'));
-        }
-        if (empty($descendingOrder)) {
-            throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('order'));
         }
         if (empty($format)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('format'));
@@ -132,6 +122,6 @@ class Payouts implements SumUpService
         $queryParams = http_build_query($filters);
         $path = '/v0.1/me/financials/transactions?' . $queryParams;
         $headers = array_merge(Headers::getStandardHeaders(), Headers::getAuth($this->accessToken));
-        return $this->client->send('GET', $path, null, $headers);
+        return $this->client->send('GET', $path, [], $headers);
     }
 }

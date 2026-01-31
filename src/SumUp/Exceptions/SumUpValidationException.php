@@ -2,6 +2,8 @@
 
 namespace SumUp\Exceptions;
 
+use Throwable;
+
 /**
  * Class SumUpValidationException
  *
@@ -22,9 +24,9 @@ class SumUpValidationException extends SumUpSDKException
      *
      * @param array $fields
      * @param int   $code
-     * @param null  $previous
+     * @param Throwable|null  $previous
      */
-    public function __construct($fields = [], $code = 0, $previous = null)
+    public function __construct(array $fields = [], int $code = 0, ?Throwable $previous = null)
     {
         $this->fields = $fields;
         $message = self::VALIDATION_ERROR_BASE . implode(', ', $fields);
@@ -36,7 +38,7 @@ class SumUpValidationException extends SumUpSDKException
      *
      * @return array
      */
-    public function getInvalidFields()
+    public function getInvalidFields(): array
     {
         return $this->fields;
     }

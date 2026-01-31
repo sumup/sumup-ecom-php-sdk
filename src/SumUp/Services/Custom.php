@@ -3,6 +3,8 @@
 namespace SumUp\Services;
 
 use SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Exceptions\SumUpSDKException;
+use SumUp\HttpClients\Response;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Utils\Headers;
@@ -52,15 +54,12 @@ class Custom implements SumUpService
      * @param string     $relativePath
      * @param array|null $payload
      *
-     * @return mixed|\SumUp\HttpClients\Response
+     * @return mixed|Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function request($method, $relativePath, $payload = null)
+    public function request(string $method, string $relativePath, ?array $payload = null)
     {
         if (!in_array($method, $this::HTTP_METHODS)) {
             $message = "Not allowed method provided: $method. Allowed values: " . implode(', ', $this::HTTP_METHODS) . '.';

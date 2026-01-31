@@ -2,8 +2,11 @@
 
 namespace SumUp\HttpClients;
 
+use SumUp\Exceptions\SumUpAuthenticationException;
 use SumUp\Exceptions\SumUpConnectionException;
+use SumUp\Exceptions\SumUpResponseException;
 use SumUp\Exceptions\SumUpSDKException;
+use SumUp\Exceptions\SumUpValidationException;
 
 /**
  * Class SumUpCUrlClient
@@ -40,7 +43,7 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
      * @param array       $customHeaders
      * @param string|null $caBundlePath
      */
-    public function __construct($baseUrl, $customHeaders, $caBundlePath = null)
+    public function __construct(string $baseUrl, array $customHeaders, ?string $caBundlePath = null)
     {
         $this->baseUrl = $baseUrl;
         $this->customHeaders = $customHeaders;
@@ -56,12 +59,12 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
      * @return Response
      *
      * @throws SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpValidationException
+     * @throws SumUpResponseException
+     * @throws SumUpAuthenticationException
+     * @throws SumUpValidationException
      * @throws SumUpSDKException
      */
-    public function send($method, $url, $body, $headers = [])
+    public function send(string $method, string $url, array $body, array $headers = []): Response
     {
         $reqHeaders = array_merge($headers, $this->customHeaders);
         $ch = curl_init();
@@ -98,7 +101,7 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
      *
      * @return array
      */
-    private function formatHeaders($headers = null)
+    private function formatHeaders(?array $headers = null): array
     {
         if (count($headers) == 0) {
             return $headers;
@@ -115,9 +118,9 @@ class SumUpCUrlClient implements SumUpHttpClientInterface
     /**
      * Returns JSON encoded the response's body if it is of JSON type.
      *
-     * @param $response
+     * @param bool|string $response
      *
-     * @return mixed
+     * @return bool|string
      */
     private function parseBody($response)
     {
