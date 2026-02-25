@@ -10,6 +10,9 @@
 
 </div>
 
+> [!IMPORTANT]
+> `sumup-ecom-php-sdk` is deprecated in favor of our newer [sumup-php](https://github.com/sumup/sumup-php) SDK.
+
 ## Overview
 
 This repository contains the open source PHP SDK that allows you to integrate quickly with the SumUp's [API](https://developer.sumup.com/rest-api) endpoints.
