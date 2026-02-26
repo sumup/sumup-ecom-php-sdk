@@ -3,8 +3,12 @@
 namespace SumUp\Services;
 
 use SumUp\Application\ApplicationConfigurationInterface;
+use SumUp\Exceptions\SumUpAuthenticationException;
 use SumUp\Exceptions\SumUpConfigurationException;
 use SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Exceptions\SumUpConnectionException;
+use SumUp\Exceptions\SumUpResponseException;
+use SumUp\Exceptions\SumUpSDKException;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Application\ApplicationConfiguration;
 use SumUp\Authentication\AccessToken;
@@ -50,12 +54,12 @@ class Authorization implements SumUpService
      * @return null|AccessToken
      *
      * @throws SumUpConfigurationException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpAuthenticationException
+     * @throws SumUpConnectionException
+     * @throws SumUpResponseException
+     * @throws SumUpSDKException
      */
-    public function getToken()
+    public function getToken(): ?AccessToken
     {
         if (!empty($this->appConfig->getApiKey())) {
             return new AccessToken(
@@ -104,13 +108,8 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "authorization_code".
      *
      * @return AccessToken
-     *
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getTokenByCode()
+    public function getTokenByCode(): AccessToken
     {
         $payload = [
             'grant_type' => 'authorization_code',
@@ -133,13 +132,8 @@ class Authorization implements SumUpService
      * Returns an access token for the grant type "client_credentials".
      *
      * @return AccessToken
-     *
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
      */
-    public function getTokenByClientCredentials()
+    public function getTokenByClientCredentials(): AccessToken
     {
         $payload = [
             'grant_type' => 'client_credentials',
@@ -159,12 +153,9 @@ class Authorization implements SumUpService
      * @return AccessToken
      *
      * @throws SumUpConfigurationException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function getTokenByPassword()
+    public function getTokenByPassword(): AccessToken
     {
         if (empty($this->appConfig->getUsername())) {
             throw new SumUpConfigurationException(ExceptionMessages::getMissingParamMsg('username'));
@@ -198,12 +189,9 @@ class Authorization implements SumUpService
      * @return AccessToken
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function refreshToken($refreshToken)
+    public function refreshToken(string $refreshToken): AccessToken
     {
         if (empty($refreshToken)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('refresh token'));

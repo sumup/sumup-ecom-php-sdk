@@ -3,6 +3,8 @@
 namespace SumUp\Services;
 
 use SumUp\Exceptions\SumUpArgumentException;
+use SumUp\Exceptions\SumUpSDKException;
+use SumUp\HttpClients\Response;
 use SumUp\HttpClients\SumUpHttpClientInterface;
 use SumUp\Authentication\AccessToken;
 use SumUp\Utils\ExceptionMessages;
@@ -49,20 +51,25 @@ class Checkouts implements SumUpService
      * @param string $checkoutRef
      * @param string $merchantCode
      * @param string $description
-     * @param null   $payFromEmail
-     * @param null   $returnURL
-     * @param null   $redirectURL
+     * @param null|string   $payFromEmail
+     * @param null|string   $returnURL
+     * @param null|string   $redirectURL
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function create($amount, $currency, $checkoutRef, $merchantCode, $description = '', $payFromEmail = null, $returnURL = null, $redirectURL = null)
-    {
+    public function create(
+        float $amount,
+        string $currency,
+        string $checkoutRef,
+        string $merchantCode,
+        string $description = '',
+        ?string $payFromEmail = null,
+        ?string $returnURL = null,
+        ?string $redirectURL = null
+    ): Response {
         if (empty($amount) || !is_numeric($amount)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('amount'));
         }
@@ -103,15 +110,12 @@ class Checkouts implements SumUpService
      *
      * @param string $checkoutId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function findById($checkoutId)
+    public function findById(string $checkoutId): Response
     {
         if (empty($checkoutId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
@@ -126,15 +130,12 @@ class Checkouts implements SumUpService
      *
      * @param string $referenceId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function findByReferenceId($referenceId)
+    public function findByReferenceId(string $referenceId): Response
     {
         if (empty($referenceId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('reference id'));
@@ -149,15 +150,12 @@ class Checkouts implements SumUpService
      *
      * @param string $checkoutId
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function delete($checkoutId)
+    public function delete(string $checkoutId): Response
     {
         if (empty($checkoutId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));
@@ -175,15 +173,12 @@ class Checkouts implements SumUpService
      * @param string $cardToken
      * @param int    $installments
      *
-     * @return \SumUp\HttpClients\Response
+     * @return Response
      *
      * @throws SumUpArgumentException
-     * @throws \SumUp\Exceptions\SumUpConnectionException
-     * @throws \SumUp\Exceptions\SumUpResponseException
-     * @throws \SumUp\Exceptions\SumUpAuthenticationException
-     * @throws \SumUp\Exceptions\SumUpSDKException
+     * @throws SumUpSDKException
      */
-    public function pay($checkoutId, $customerId, $cardToken, $installments = 1)
+    public function pay(string $checkoutId, string $customerId, string $cardToken, int $installments = 1): Response
     {
         if (empty($checkoutId)) {
             throw new SumUpArgumentException(ExceptionMessages::getMissingParamMsg('checkout id'));

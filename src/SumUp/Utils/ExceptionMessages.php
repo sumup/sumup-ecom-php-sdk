@@ -12,11 +12,11 @@ class ExceptionMessages
     /**
      * Get formatted message for missing parameter.
      *
-     * @param $missingParamName
+     * @param string $missingParamName
      *
      * @return string
      */
-    public static function getMissingParamMsg($missingParamName)
+    public static function getMissingParamMsg(string $missingParamName): string
     {
         return 'Missing parameter: "' . $missingParamName . '".';
     }
